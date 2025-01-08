@@ -14,6 +14,47 @@
     <link rel="stylesheet" href="{{ asset('homes/assets/css/owl.css') }}">
     <link rel="stylesheet" href="{{ asset('homes/assets/css/animate.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+
+    <style>
+        /* Success Message Styling */
+    .success-message {
+        background-color: #f73838;
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 300px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        font-size: 16px;
+        z-index: 1000;
+        opacity: 0;
+        transform: translateX(100%);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .success-message.show {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .success-message .close-btn {
+        color: white;
+        font-size: 20px;
+        background: transparent;
+        border: none;
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+    .success-message .close-btn:hover {
+        color: #ffffff;
+    }
+
+    </style>
 </head>
 
 <body>
@@ -47,82 +88,83 @@
         </div>
     </div>
 
+      <!-- Succuess Message -->
+      @if(session('success'))
+      <div class="success-message show">
+          <p style="color: white;">{{ session('success') }}</p>
+          <button class="close-btn" onclick="document.querySelector('.success-message').classList.remove('show')">×</button>
+      </div>
+      @endif
+
    <!-- Cart Section -->
     <div class="container mt-5">
-        @if($cart && count($cart) > 0)
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
+        @if($cartItems && count($cartItems) > 0)
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Discount</th>
+                        <th>Total</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($cartItems as $item)
                         <tr>
-                            <th>Product</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Discount</th>
-                            <th>Total</th>
+                            <td>
+                                @if(Auth::check())
+                                    {{ $item['product']->name }}
+                                @else
+                                    {{ $item['product']->name }}
+                                @endif
+                            </td>
+                            <td>
+                                @if(Auth::check())
+                                <form action="{{ route('cart.update', $item['product_id']) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <input 
+                                        type="number" 
+                                        name="quantity" 
+                                        value="{{ $item['quantity'] }}" 
+                                        min="1" 
+                                        max="10" 
+                                        class="form-control" 
+                                        onchange="this.form.submit()" 
+                                    />
+                                </form>
+                                @else
+                                    {{ $item['quantity'] }}
+                                @endif
+                            </td>
+                            <td>
+                                {{ number_format($item['product']->price, 2) }}
+                            </td>
+                            <td>
+                                {{ number_format($item['product']->discount, 2) }}
+                            </td>
+                            <td>
+                                {{ number_format($item['product']->price * $item['quantity'], 2) }}
+                            </td>
+                            <td>
+                                <form action="{{ route('cart.delete', $item['product_id']) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($cart as $item)
-                            <tr>
-                                <td>
-                                    @if(Auth::check())
-                                        {{ $item->product->name }}
-                                    @else
-                                        {{ $item['name'] }}
-                                    @endif
-                                </td>
-                                <td>
-                                    @if(Auth::check())
-                                    <form action="{{ route('cart.update', $item->id) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <input 
-                                            type="number" 
-                                            name="quantity" 
-                                            value="{{ $item->quantity }}" 
-                                            min="1" 
-                                            max="10" 
-                                            class="form-control" 
-                                            onchange="this.form.submit()" 
-                                        />
-                                    </form>
-                                    @else
-                                        {{ $item['quantity'] }}
-                                    @endif
-                                </td>
-                                <td>
-                                    @if(Auth::check())
-                                        ${{ number_format($item->product->price * $item->quantity, 2) }}
-                                    @else
-                                        ${{ number_format($item['original_total_price'] * $item['quantity'], 2) }}
-                                    @endif
-                                </td>
-                                
-                                
-                                <td>
-                                    @if(Auth::check())
-                                        ${{ $item->product->discount }}
-                                    @else
-                                        ${{ $item['discount'] }}
-                                    @endif
-                                </td>
-                                <td>
-                                    @if(Auth::check())
-                                        ${{ $item->total_price }}
-                                    @else
-                                        ${{ $item['total_price'] }}
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                    
-                </table>
-                <h4 class="text-right">Grand Total: ${{ $total }}</h4>
-                <a href="{{ route('order.page') }}" class="btn btn-primary mt-3">Proceed to Order</a>
-
-            </div>
-        @else
+                    @endforeach
+                </tbody>
+            </table>
+            <h4 class="text-right">Grand Total: ${{ number_format($total, 2) }}</h4>
+            <a href="{{ route('order.page') }}" class="btn btn-primary mt-3">Proceed to Order</a>
+        </div>
+    @else
+    
             <div class="text-center">
                 <h4>Your cart is empty.</h4>
                 <a href="{{ route('products.index') }}" class="btn btn-primary mt-3">Shop Now</a>

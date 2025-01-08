@@ -24,6 +24,27 @@ class OrderController extends Controller
         return view('checkout.orders', compact('order'));
     }
 
+
+    // order Number view
+
+    public function showOrderByNumber($order_number)
+    {
+        $orders = Order::where('order_number', $order_number)->get();
+
+        if ($orders->isEmpty()) {
+            // Handle empty orders gracefully
+            return view('order.details')->with('error', 'Order not found');
+        }
+        return view('checkout.view_order', compact('orders'));
+    }
+
+
+
+    public function OrderView()
+    {
+        $orders = Order::where('user_id', auth()->id())->get();
+        return view('checkout.orderview', compact('orders'));
+    }
     public function showOrderPage()
     {
         $user = Auth::user();
@@ -123,9 +144,9 @@ class OrderController extends Controller
         foreach ($cart as $item) {
             $message .= "- {$item->product->name} x{$item->quantity} @ \${$item->price} each\n";
         }
-
         $message .= "\n💵 *Total Price:* \${$totalPrice}\n";
         $message .= "🏠 *Delivery Address:* {$request->address}\n";
+        $message .= "🏢 *Delivery Province:* {$request->province}\n";
         $message .= "📱 *Contact Number:* {$request->telegram_number}\n";
         $message .= "🚚 *Delivery Method:* {$request->delivery}\n\n";
         $message .= "✅ *Thank you for your purchase!*";
@@ -146,7 +167,75 @@ class OrderController extends Controller
     }
 
 
+    public function callordernumber(Request $request, $order_number)
+    {
+        $order = Order::where('order_number', $order_number)->first();
 
+        if (!$order) {
+            return redirect('/ordersView')->with('error', 'Order not found!');
+        }
+
+        $order->status = 'canceled';
+        $order->save();
+
+        $telegramChatId = 1081724526; // Your Telegram chat ID
+        $telegramToken = '8124975670:AAGjJGP4ULkfEuRhNdTIk2REF_YIffcBSic'; // Your Telegram bot token
+
+        $customerName = $order->name ?? 'N/A'; // Use the name field directly
+        $telegramNumber = $order->telegram_number ?? 'N/A';
+
+        $message = "🚨 *Order Canceled Alert* 🚨\n\n";
+        $message .= "🆔 *Order ID:* {$order_number}\n";
+        $message .= "👤 *Customer Name:* {$customerName}\n";
+        $message .= "📧 *Telegram:* {$telegramNumber}\n";
+        $message .= "⛔️ *Order Canceled!*";
+        $message .= "\n\n*Cancelled Order At:*  " . now()->format('Y-m-d H:i:s');
+        $message .= "\n\n*Thank you for your purchase!*";
+
+        try {
+            Http::withOptions(['verify' => false])->post("https://api.telegram.org/bot{$telegramToken}/sendMessage", [
+                'chat_id' => $telegramChatId,
+                'text' => $message,
+                'parse_mode' => 'Markdown',
+            ]);
+        } catch (\Exception $e) {
+            // Handle the exception (e.g., log or display an error message)
+        }
+
+        return redirect('/ordersView')->with('success', 'Order canceled successfully!');
+    }
+
+
+
+
+
+
+    // delete Cart
+    public function destroy($id)
+    {
+        if (Auth::check()) {
+            // For authenticated users, delete from the database
+            $cartItem = Cart::where('user_id', Auth::id())->where('id', $id)->first();
+
+            if ($cartItem) {
+                $cartItem->delete();
+                return redirect('/cart')->with('success', 'Item removed from cart.');
+            } else {
+                return redirect('/cart')->with('error', 'Item not found.');
+            }
+        } else {
+            // For guest users, delete from session
+            $cart = session()->get('guest_cart', []);
+
+            if (isset($cart[$id])) {
+                unset($cart[$id]);
+                session()->put('guest_cart', $cart); // Update the session
+                return redirect('/cart')->with('success', 'Item removed from cart.');
+            } else {
+                return redirect('/cart')->with('error', 'Item not found.');
+            }
+        }
+    }
 
 
 
@@ -165,5 +254,93 @@ class OrderController extends Controller
         $name = $request->name;
         $province = $request->province;
         return view('checkout.show', compact('cart', 'total', 'address', 'telegram', 'delivery', 'name', 'province'));
+    }
+
+
+    public function checkout($order_number)
+    {
+        // Find the orders related to the given order number
+        $orders = Order::where('order_number', $order_number)->get();
+
+        if ($orders->isEmpty()) {
+            return back()->withErrors('Order not found.');
+        }
+
+        foreach ($orders as $order) {
+            // Find the product related to this order
+            $product = Product::find($order->product_id);
+
+            if (!$product) {
+                return back()->withErrors('Product not found for Order ID: ' . $order->order_number);
+            }
+
+            // Check stock availability
+            if ($product->stock >= $order->quantity) {
+                // Reduce stock and increase quantity sold
+                $product->stock -= $order->quantity;
+                $product->quantity_sold += $order->quantity;
+
+                // Save the updated product details
+                $product->save();
+
+                // Update the order status to 'completed'
+                $order->status = 'paid';
+                $order->save();
+            } else {
+                return back()->withErrors('Not enough stock for product: ' . $product->name);
+            }
+        }
+
+        return back()->with('success', 'Order has been successfully completed!');
+    }
+
+
+
+    public function checkoutpage($order_number)
+    {
+        // Retrieve the order based on the order_number
+        $order = Order::where('order_number', $order_number)->get(); // Use first() to get a single order
+
+        if (!$order) {
+            return redirect()->back()->with('error', 'Order not found.');
+        }
+
+        // Get the total price from the order record
+        $totalPrice = $order->sum('total_price'); // Access total_price directly from the order object
+
+        return view('home.checkout', compact('order', 'totalPrice', 'order_number'));
+    }
+
+
+    public function updateStatus(Request $request)
+    {
+        $orderNumber = $request->input('order_number');
+
+        // Find the order by order_number
+        $order = Order::where('order_number', $orderNumber)->first();
+
+        if (!$order) {
+            return response()->json(['responseMessage' => 'Order not found'], 404);
+        }
+
+        // Update the status if it's pending
+        if ($order->status === 'pending') {
+            $order->status = 'paid';
+            $order->save();
+
+            return response()->json(['responseMessage' => 'Success'], 200);
+        }
+
+        return response()->json(['responseMessage' => 'Invalid status or already paid'], 400);
+    }
+
+
+
+    public function success($order_number)
+    {
+        $orders = Order::where('order_number', $order_number)->get();
+
+
+        return view('home.success', compact('orders'));
     }
 }

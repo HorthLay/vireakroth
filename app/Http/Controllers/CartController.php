@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 class CartController extends Controller
 {
 
+
+
     public function addToCart(Request $request)
     {
         // Validate incoming request data
@@ -91,47 +93,170 @@ class CartController extends Controller
         return redirect()->back()->with('success', 'Product added to cart successfully!');
     }
 
-    public function update(Request $request, $id)
-    {
-        $cartItem = Cart::findOrFail($id);
-        $cartItem->quantity = $request->quantity;
 
-        // Calculate the total price with potential discounts
-        $discount = $cartItem->product->discount ?? 0;
-        $priceAfterDiscount = $cartItem->product->price;
-        if ($discount > 0) {
-            $priceAfterDiscount = $cartItem->product->price - ($cartItem->product->price * ($discount / 100));
+    public function CartAddDetail(Request $request)
+    {
+        // Validate incoming request data
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        // Fetch the product
+        $product = Product::findOrFail($request->product_id);
+
+        // Ensure the requested quantity is in stock
+        if ($product->stock < $request->quantity) {
+            return redirect()->back()->with('error', 'Requested quantity exceeds available stock.');
         }
 
-        $cartItem->total_price = $cartItem->quantity * $priceAfterDiscount;
-        $cartItem->save();
+        // Calculate the discount and final price
+        $discount = $product->discount > 0 ? $product->discount : 0;
+        $priceAfterDiscount = $product->price - ($product->price * ($discount / 100));
+
+        if (Auth::check()) {
+            // Authenticated user logic
+            $userId = Auth::id();
+            $existingCartItem = Cart::where('user_id', $userId)
+                ->where('product_id', $product->id)
+                ->first();
+
+            if ($existingCartItem) {
+                // Update quantity and total price
+                $existingCartItem->quantity += $request->quantity;
+                $existingCartItem->total_price += $priceAfterDiscount * $request->quantity;
+                $existingCartItem->save();
+            } else {
+                // Add new cart item
+                Cart::create([
+                    'user_id' => $userId,
+                    'product_id' => $product->id,
+                    'quantity' => $request->quantity,
+                    'total_price' => $priceAfterDiscount * $request->quantity,
+                ]);
+            }
+        } else {
+            // Guest user logic
+            $guestCart = session()->get('guest_cart', []);
+
+            if (isset($guestCart[$product->id])) {
+                // Update quantity and total price
+                $guestCart[$product->id]['quantity'] += $request->quantity;
+                $guestCart[$product->id]['total_price'] += $priceAfterDiscount * $request->quantity;
+                $guestCart[$product->id]['original_total_price'] += $product->price * $request->quantity;
+            } else {
+                // Add new product to the guest cart
+                $guestCart[$product->id] = [
+                    'product_id' => $product->id,
+                    'name' => $product->name,
+                    'quantity' => $request->quantity,
+                    'total_price' => $priceAfterDiscount * $request->quantity,
+                    'original_total_price' => $product->price * $request->quantity,
+                    'discount' => $discount,
+                ];
+            }
+
+            // Save the updated guest cart in the session
+            session()->put('guest_cart', $guestCart);
+        }
+
+        return redirect()->back()->with('success', 'Product added to cart successfully!');
+    }
+
+
+
+    public function update(Request $request, $id)
+    {
+        if (Auth::check()) {
+            // Update for authenticated user
+            $cartItem = Cart::where('user_id', Auth::id())->where('product_id', $id)->firstOrFail();
+
+            // Update quantity
+            $cartItem->quantity = $request->input('quantity');
+
+            // Calculate the total price with discounts
+            $product = $cartItem->product;
+            $discount = $product->discount ?? 0;
+            $priceAfterDiscount = $product->price;
+            if ($discount > 0) {
+                $priceAfterDiscount = $product->price - ($product->price * ($discount / 100));
+            }
+
+            $cartItem->total_price = $cartItem->quantity * $priceAfterDiscount;
+            $cartItem->save();
+        } else {
+            // Update for guest user in session
+            $cart = session()->get('guest_cart', []);
+            if (isset($cart[$id])) {
+                $cart[$id]['quantity'] = $request->input('quantity');
+
+                // Recalculate total price with discounts
+                $product = Product::find($id);
+                $discount = $product->discount ?? 0;
+                $priceAfterDiscount = $product->price;
+                if ($discount > 0) {
+                    $priceAfterDiscount = $product->price - ($product->price * ($discount / 100));
+                }
+
+                $cart[$id]['total_price'] = $cart[$id]['quantity'] * $priceAfterDiscount;
+                session()->put('guest_cart', $cart);
+            } else {
+                return redirect()->back()->with('error', 'Product not found in cart.');
+            }
+        }
 
         return redirect()->back()->with('success', 'Cart updated successfully!');
     }
 
+
     public function viewcart()
     {
-        // If the user is authenticated
-        if (Auth::check()) {
-            $user = Auth::user();
-            $cart = Cart::where('user_id', $user->id)->get();
-        } else {
-            // For guest users, use session-based cart storage
-            $cart = session()->get('guest_cart', []);
-        }
-
+        $cartItems = [];
         $total = 0;
 
-        // Calculate total price
-        foreach ($cart as $item) {
-            $total += is_array($item) ? $item['total_price'] : $item->total_price;
+        if (Auth::check()) {
+            // Authenticated user's cart
+            $user = Auth::user();
+            $cart = Cart::where('user_id', $user->id)->with('product')->get();
 
-            // Optional: Safely access discount if needed
-            $discount = is_array($item) ? ($item['discount'] ?? 0) : $item->discount ?? 0;
+            // Normalize cart items
+            foreach ($cart as $item) {
+                $cartItems[] = [
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'product' => $item->product,
+                ];
+            }
+        } else {
+            // Guest cart from session
+            $cart = session()->get('guest_cart', []);
+
+            foreach ($cart as $key => $item) {
+                $product = Product::find($item['product_id']); // Fetch product details
+                $cartItems[] = [
+                    'product_id' => $item['product_id'],
+                    'quantity' => $item['quantity'],
+                    'product' => $product,
+                ];
+            }
         }
 
-        return view('checkout.cart', compact('cart', 'total'));
+        // Calculate the total price
+        foreach ($cartItems as $item) {
+            $product = $item['product'];
+            if ($product) {
+                $priceAfterDiscount = $product->price;
+                if ($product->discount > 0) {
+                    $priceAfterDiscount -= $product->price * ($product->discount / 100);
+                }
+                $total += $priceAfterDiscount * $item['quantity'];
+            }
+        }
+
+        // Pass $cartItems and $total to the view
+        return view('checkout.cart', compact('cartItems', 'total'));
     }
+
 
 
 

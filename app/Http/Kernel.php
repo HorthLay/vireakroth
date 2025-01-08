@@ -71,5 +71,6 @@ class Kernel extends HttpKernel
         'track.visitors' => \App\Http\Middleware\TrackVisitors::class,
         'admin' => \App\Http\Middleware\IsAdmin::class,
         'localization' => \App\Http\Middleware\LocalizationMiddleware::class,
+        'redirectToHome' => \App\Http\Middleware\RedirectIfAuthenticatedToHome::class,
     ];
 }

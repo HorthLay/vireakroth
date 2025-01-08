@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <title>Lugx Gaming Shop HTML5 Template</title>
+    <title>VireakRoth PhoneShop - Home📱</title>
 
     <!-- Bootstrap core CSS -->
     <link href="homes/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -58,6 +58,88 @@
     .success-message .close-btn:hover {
         color: #ffffff;
     }
+
+
+      /* Footer Styling */
+      .footer {
+            background-color: #141414;
+            color: #f1f1f1;
+            padding: 40px 0;
+            font-size: 14px;
+        }
+
+        .footer h5 {
+            color: #000000;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .footer p, .footer li {
+            font-size: 14px;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .footer a {
+            color: #fff700;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: #ff3300;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links li a {
+            display: inline-block;
+        }
+
+        .footer .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .footer .social-icon {
+            width: 40px;
+            height: 40px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 50%;
+            background: #312aff;
+            padding: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer .social-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .footer .row {
+            margin-bottom: 30px;
+        }
+
+        .footer .text-center {
+            border-top: 1px solid #444;
+            padding-top: 15px;
+            margin-top: 20px;
+        }
 
     </style>
 
@@ -115,7 +197,7 @@ https://templatemo.com/tm-589-lugx-gaming
       <!-- Succuess Message -->
       @if(session('success'))
       <div class="success-message show">
-          <p>{{ session('success') }}</p>
+          <p style="color: white;">{{ session('success') }}</p>
           <button class="close-btn" onclick="document.querySelector('.success-message').classList.remove('show')">×</button>
       </div>
       @endif
@@ -163,95 +245,63 @@ https://templatemo.com/tm-589-lugx-gaming
 </div>
 
 
-  <div class="section most-played">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6">
+<div class="section trending">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
           <div class="section-heading">
-            <h6>TOP GAMES</h6>
-            <h2>Most Played</h2>
+              <h6>SecondHand</h6>
+              <h2>SecondHand Phone</h2>
           </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="main-button">
-            <a href="shop.html">View All</a>
-          </div>
-        </div>
-        <div class="col-lg-2 col-md-6 col-sm-6">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/top-game-01.jpg" alt=""></a>
-            </div>
-            <div class="down-content">
-                <span class="category">Adventure</span>
-                <h4>Assasin Creed</h4>
-                <a href="product-details.html">Explore</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-2 col-md-6 col-sm-6">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/top-game-02.jpg" alt=""></a>
-            </div>
-            <div class="down-content">
-                <span class="category">Adventure</span>
-                <h4>Assasin Creed</h4>
-                <a href="product-details.html">Explore</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-2 col-md-6 col-sm-6">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/top-game-03.jpg" alt=""></a>
-            </div>
-            <div class="down-content">
-                <span class="category">Adventure</span>
-                <h4>Assasin Creed</h4>
-                <a href="product-details.html">Explore</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-2 col-md-6 col-sm-6">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/top-game-04.jpg" alt=""></a>
-            </div>
-            <div class="down-content">
-                <span class="category">Adventure</span>
-                <h4>Assasin Creed</h4>
-                <a href="product-details.html">Explore</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-2 col-md-6 col-sm-6">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/top-game-05.jpg" alt=""></a>
-            </div>
-            <div class="down-content">
-                <span class="category">Adventure</span>
-                <h4>Assasin Creed</h4>
-                <a href="product-details.html">Explore</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-2 col-md-6 col-sm-6">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/top-game-06.jpg" alt=""></a>
-            </div>
-            <div class="down-content">
-                <span class="category">Adventure</span>
-                <h4>Assasin Creed</h4>
-                <a href="product-details.html">Explore</a>
-            </div>
-          </div>
-        </div>
       </div>
-    </div>
+      <div class="col-lg-6">
+          <div class="main-button">
+              <a href="{{ route('products.index') }}">View All</a>
+          </div>
+      </div>
+      <!-- Succuess Message -->
+      <!-- Dynamic Product Items -->
+      @foreach ($secondHandProducts as $product)
+      <div class="col-lg-3 col-md-6">
+          <div class="item">
+              <div class="thumb">
+                  <a href="{{ $product->stock > 0 ? route('products.show', $product->id) : '#' }}">
+                      <img src="{{ asset('products/' . $product->image) }}" alt="{{ $product->name }}" >
+                  </a>
+                  @if ($product->stock <= 0)
+                      <span class="badge badge-danger out-of-stock" style="position: absolute; top: 10px; right: 10px;color: black;">Out of Stock</span>
+                  @else
+                      <span class="price">
+                          @if ($product->discount > 0)
+                              <em>${{ $product->price }}</em> 
+                              ${{ $product->price - ($product->price * $product->discount / 100) }}
+                          @else
+                              ${{ $product->price }}
+                          @endif
+                      </span>
+                  @endif
+              </div>
+              <div class="down-content">
+                  <span class="category">{{ $product->category->name }}</span>
+                  <h4>{{ $product->name }}</h4>
+                  @if ($product->stock > 0)
+                  <form action="{{ route('cart.add') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <button type="submit" class="btn btn-primary mt-2">Add to Cart</button>
+                </form>
+                
+                  @else
+                      <span class="text-muted">Unavailable</span>
+                  @endif
+              </div>
+          </div>
+      </div>
+      @endforeach
   </div>
+  
+  </div>
+</div>
 
   <div class="section categories">
     <div class="container">
@@ -387,13 +437,7 @@ https://templatemo.com/tm-589-lugx-gaming
         </div>
     </div>
 </div>
-  <footer>
-    <div class="container">
-      <div class="col-lg-12">
-        <p>Copyright © 2048 LUGX Gaming Company. All rights reserved. &nbsp;&nbsp; <a rel="nofollow" href="https://templatemo.com" target="_blank">Design: TemplateMo</a></p>
-      </div>
-    </div>
-  </footer>
+ @include('home.footer')
 
   <!-- Scripts -->
   <!-- Bootstrap core JavaScript -->

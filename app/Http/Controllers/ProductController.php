@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Reminder;
 use Illuminate\Http\Request;
+use Laravel\Ui\Presets\React;
 
 class ProductController extends Controller
 {
@@ -68,11 +69,48 @@ class ProductController extends Controller
         return view('home.search-results', compact('products', 'searchKeyword'));
     }
 
-    public function viewproduct()
+
+
+
+    public function showByCategory($name)
     {
-        $product = Product::all();
-        return view('home.viewproduct', compact('product'));
+        $selectedCategory = Category::where('name', $name)->first();
+        $categories = Category::all();
+
+
+        if ($selectedCategory) {
+            // Corrected the method chain and placement of paginate
+            $products = Product::where('category_id', $selectedCategory->id)->paginate(5);
+        } else {
+            $products = collect(); // Empty collection
+        }
+
+        return view('products.categoryview', compact('products', 'selectedCategory', 'categories', 'name'));
     }
+
+
+
+
+
+
+    public function index(Request $request)
+    {
+        // Get all categories (for the filter)
+        $categories = Category::all();
+
+        // If a category is selected, filter products by that category
+        if ($request->has('category') && $request->category != null) {
+            $categoryFilter = $request->category;
+            $products = Product::where('category_id', $categoryFilter)->paginate(12);
+        } else {
+            // If no category is selected, display all products
+            $categoryFilter = null;
+            $products = Product::paginate(10);
+        }
+
+        return view('home.viewproduct', compact('products', 'categories', 'categoryFilter'));
+    }
+
 
     public function show($id)
     {

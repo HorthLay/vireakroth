@@ -15,6 +15,46 @@
     <link rel="stylesheet" href="{{ asset('homes/assets/css/animate.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
     <style>
+
+
+             /* Success Message Styling */
+    .success-message {
+        background-color: #4CAF50;
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 300px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-size: 16px;
+        z-index: 1000;
+        opacity: 0;
+        transform: translateX(100%);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .success-message.show {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .success-message .close-btn {
+        color: white;
+        font-size: 20px;
+        background: transparent;
+        border: none;
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+    .success-message .close-btn:hover {
+        color: #ffffff;
+    }
+    
         .left-image img,
         .related-games .thumb img {
             border-radius: 8px;
@@ -91,6 +131,15 @@
     @include('home.header')
     <!-- ***** Header Area End ***** -->
 
+
+      <!-- Succuess Message -->
+      @if(session('success'))
+      <div class="success-message show">
+          <p style="color: white;">{{ session('success') }}</p>
+          <button class="close-btn" onclick="document.querySelector('.success-message').classList.remove('show')">×</button>
+      </div>
+      @endif
+
     <div class="page-heading header-text">
         <div class="container">
             <div class="row">
@@ -129,11 +178,14 @@
                     <p>{{ $product->description }}</p>
 
                     <!-- Add to Cart Form -->
-                    <form id="qty" action="{{ route('cart.add', $product->id) }}" method="POST">
+
+                    <form action="{{ route('cart.details') }}" method="POST">
                         @csrf
-                        <input type="number" name="quantity" class="form-control" value="1" min="1" placeholder="1" required>
-                        <button type="submit"><i class="fa fa-shopping-bag"></i> ADD TO CART</button>
+                        <input type="number" name="quantity" class="form-control" placeholder="1" required>
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <button type="submit" class="btn btn-primary mt-2">Add to Cart</button>
                     </form>
+                    
 
                     <!-- Additional Information -->
                     <ul>

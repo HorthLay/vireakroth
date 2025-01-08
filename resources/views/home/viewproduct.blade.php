@@ -1,267 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
     <title>Lugx Gaming - Shop Page</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="homes/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="homes/assets/css/fontawesome.css">
-    <link rel="stylesheet" href="homes/assets/css/templatemo-lugx-gaming.css">
-    <link rel="stylesheet" href="homes/assets/css/owl.css">
-    <link rel="stylesheet" href="homes/assets/css/animate.css">
-    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
-<!--
-
-TemplateMo 589 lugx gaming
-
-https://templatemo.com/tm-589-lugx-gaming
-
--->
-  </head>
+    <link rel="stylesheet" href="{{ asset('homes/assets/css/fontawesome.css') }}">
+    <link rel="stylesheet" href="{{ asset('homes/assets/css/templatemo-lugx-gaming.css') }}">
+    <link rel="stylesheet" href="{{ asset('homes/assets/css/owl.css') }}">
+    <link rel="stylesheet" href="{{ asset('homes/assets/css/animate.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css">
+</head>
 
 <body>
-
-  <!-- ***** Preloader Start ***** -->
-  <div id="js-preloader" class="js-preloader">
-    <div class="preloader-inner">
-      <span class="dot"></span>
-      <div class="dots">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </div>
-  </div>
-  <!-- ***** Preloader End ***** -->
-
-  <!-- ***** Header Area Start ***** -->
-  @include('home.header')
-  <!-- ***** Header Area End ***** -->
-
-  <div class="page-heading header-text">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <h3>Our Shop</h3>
-          <span class="breadcrumb"><a href="#">Home</a> > Our Shop</span>
+    <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+        <div class="preloader-inner">
+            <span class="dot"></span>
+            <div class="dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+    <!-- ***** Preloader End ***** -->
 
-  <div class="section trending">
-    <div class="container">
+    <!-- ***** Header Area Start ***** -->
+    @include('home.header')
+    <!-- ***** Header Area End ***** -->
+  
+
+    <div class="page-heading header-text">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3>Our Shop</h3>
+                    <span class="breadcrumb"><a href="#">Home</a> > Our Shop</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section trending">
       <ul class="trending-filter">
         <li>
-          <a class="is_active" href="#!" data-filter="*">Show All</a>
+          <a href="{{route('products.index')}}">Show</a>
         </li>
+        @foreach($categories as $category)
         <li>
-          <a href="#!" data-filter=".adv">Adventure</a>
+            <a href="{{ route('category.show', $category->name) }}" >
+                {{ $category->name }}
+            </a>
         </li>
-        <li>
-          <a href="#!" data-filter=".str">Strategy</a>
-        </li>
-        <li>
-          <a href="#!" data-filter=".rac">Racing</a>
-        </li>
-      </ul>
-      <div class="row trending-box">
-        <div class="col-lg-3 col-md-6 align-self-center mb-30 trending-items col-md-6 adv">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/trending-01.jpg" alt=""></a>
-              <span class="price"><em>$36</em>$24</span>
+        @endforeach
+    </ul>
+        <div class="container">
+            <div class="row trending-box">
+                @if ($products->isEmpty())
+                    <div class="col-12 text-center">
+                        <p class="alert alert-warning">No products available.</p>
+                    </div>
+                @else
+                    @foreach ($products as $product)
+                    <div class="col-lg-3 col-md-6 align-self-stretch mb-30 trending-items">
+                        <div class="item">
+                            <div class="thumb">
+                                <a href="{{route('products.show', $product->id)}}">
+                                    <img src="{{ asset('products/' . $product->image) }}" alt="{{ $product->name }}" >
+                                </a>
+                                @if ($product->stock <= 0)
+                                    <span class="badge bg-danger out-of-stock">Out of Stock</span>
+                                @else
+                                    <span class="price">
+                                        @if ($product->discount > 0)
+                                            <em>${{ $product->price }}</em>
+                                            ${{ $product->price - ($product->price * $product->discount / 100) }}
+                                           
+                                        @else
+                                            ${{ $product->price }}
+                                        @endif
+                                    </span>
+                                @endif
+                            </div>
+                            <div class="down-content">
+                                <span class="category">{{ $product->category->name }}</span><br>
+                                @if ($product->status == 'new')
+                                <img src="{{ asset('pic/new.png') }}" alt="" style="max-width: 50px;">
+                                @elseif ($product->status == 'second_hand')
+                                <img src="{{ asset('pic/second.png') }}" alt="" style="max-width: 50px;">
+                                @endif
+                                <h4>{{ $product->name }}</h4>
+                                @if ($product->stock > 0)
+                                    <form action="{{ route('cart.add') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <button type="submit" class="btn btn-primary mt-2">Add to Cart</button>
+                                    </form>
+                                @else
+                                    <span class="text-muted">Unavailable</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    
+                    @endforeach
+                @endif
             </div>
-            <div class="down-content">
-              <span class="category">Action</span>
-              <h4>Assasin Creed</h4>
-              <a href="product-details.html"><i class="fa fa-shopping-bag"></i></a>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="pagination">
+                        {{ $products->links() }}
+                    </ul>
+                </div>
             </div>
-          </div>
+            
         </div>
-        <div class="col-lg-3 col-md-6 align-self-center mb-30 trending-items col-md-6 str">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/trending-02.jpg" alt=""></a>
-              <span class="price"><em>$32</em>$22</span>
-            </div>
-            <div class="down-content">
-              <span class="category">Action</span>
-              <h4>Assasin Creed</h4>
-              <a href="product-details.html"><i class="fa fa-shopping-bag"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 align-self-center mb-30 trending-items col-md-6 adv rac">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/trending-03.jpg" alt=""></a>
-              <span class="price"><em>$45</em>$30</span>
-            </div>
-            <div class="down-content">
-              <span class="category">Action</span>
-              <h4>Assasin Creed</h4>
-              <a href="product-details.html"><i class="fa fa-shopping-bag"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 align-self-center mb-30 trending-items col-md-6 str">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/trending-04.jpg" alt=""></a>
-              <span class="price"><em>$32</em>$22</span>
-            </div>
-            <div class="down-content">
-              <span class="category">Action</span>
-              <h4>Assasin Creed</h4>
-              <a href="product-details.html"><i class="fa fa-shopping-bag"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 align-self-center mb-30 trending-items col-md-6 rac str">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/trending-03.jpg" alt=""></a>
-              <span class="price"><em>$38</em>$26</span>
-            </div>
-            <div class="down-content">
-              <span class="category">Action</span>
-              <h4>Assasin Creed</h4>
-              <a href="product-details.html"><i class="fa fa-shopping-bag"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 align-self-center mb-30 trending-items col-md-6 rac adv">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/trending-01.jpg" alt=""></a>
-              <span class="price"><em>$30</em>$20</span>
-            </div>
-            <div class="down-content">
-              <span class="category">Action</span>
-              <h4>Assasin Creed</h4>
-              <a href="product-details.html"><i class="fa fa-shopping-bag"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 align-self-center mb-30 trending-items col-md-6 rac str">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/trending-04.jpg" alt=""></a>
-              <span class="price"><em>$32</em>$22</span>
-            </div>
-            <div class="down-content">
-              <span class="category">Action</span>
-              <h4>Assasin Creed</h4>
-              <a href="product-details.html"><i class="fa fa-shopping-bag"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 align-self-center mb-30 trending-items col-md-6 rac adv">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/trending-02.jpg" alt=""></a>
-              <span class="price"><em>$32</em>$22</span>
-            </div>
-            <div class="down-content">
-              <span class="category">Action</span>
-              <h4>Assasin Creed</h4>
-              <a href="product-details.html"><i class="fa fa-shopping-bag"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 align-self-center mb-30 trending-items col-md-6 adv rac">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/trending-03.jpg" alt=""></a>
-              <span class="price"><em>$28</em>$20</span>
-            </div>
-            <div class="down-content">
-              <span class="category">Action</span>
-              <h4>Assasin Creed</h4>
-              <a href="product-details.html"><i class="fa fa-shopping-bag"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 align-self-center mb-30 trending-items col-md-6 str">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/trending-04.jpg" alt=""></a>
-              <span class="price"><em>$26</em>$18</span>
-            </div>
-            <div class="down-content">
-              <span class="category">Action</span>
-              <h4>Assasin Creed</h4>
-              <a href="product-details.html"><i class="fa fa-shopping-bag"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 align-self-center mb-30 trending-items col-md-6 adv">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/trending-01.jpg" alt=""></a>
-              <span class="price"><em>$32</em>$24</span>
-            </div>
-            <div class="down-content">
-              <span class="category">Action</span>
-              <h4>Assasin Creed</h4>
-              <a href="product-details.html"><i class="fa fa-shopping-bag"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-md-6 align-self-center mb-30 trending-items col-md-6 str">
-          <div class="item">
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/trending-02.jpg" alt=""></a>
-              <span class="price"><em>$45</em>$30</span>
-            </div>
-            <div class="down-content">
-              <span class="category">Action</span>
-              <h4>Assasin Creed</h4>
-              <a href="product-details.html"><i class="fa fa-shopping-bag"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-12">
-          <ul class="pagination">
-          <li><a href="#"> &lt; </a></li>
-            <li><a href="#">1</a></li>
-            <li><a class="is_active" href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#"> &gt; </a></li>
-          </ul>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <footer>
-    <div class="container">
-      <div class="col-lg-12">
-        <p>Copyright © 2048 LUGX Gaming Company. All rights reserved. &nbsp;&nbsp; <a rel="nofollow" href="https://templatemo.com" target="_blank">Design: TemplateMo</a></p>
-      </div>
-    </div>
-  </footer>
+    <footer>
+        <div class="container">
+            <div class="col-lg-12">
+                <p>Copyright © 2048 LUGX Gaming Company. All rights reserved. &nbsp;&nbsp;
+                    <a rel="nofollow" href="https://templatemo.com" target="_blank">Design: TemplateMo</a>
+                </p>
+            </div>
+        </div>
+    </footer>
 
-  <!-- Scripts -->
-  <!-- Bootstrap core JavaScript -->
-  <script src="homes/vendor/jquery/jquery.min.js"></script>
-  <script src="homes/vendor/bootstrap/js/bootstrap.min.js"></script>
-  <script src="homes/assets/js/isotope.min.js"></script>
-  <script src="homes/assets/js/owl-carousel.js"></script>
-  <script src="homes/assets/js/counter.js"></script>
-  <script src="homes/assets/js/custom.js"></script>
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('homes/assets/js/isotope.min.js') }}"></script>
+    <script src="{{ asset('homes/assets/js/owl-carousel.js') }}"></script>
+    <script src="{{ asset('homes/assets/js/counter.js') }}"></script>
+    <script src="{{ asset('homes/assets/js/custom.js') }}"></script>
+</body>
 
-  </body>
 </html>

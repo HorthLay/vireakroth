@@ -35,7 +35,7 @@ use Illuminate\Support\Facades\Session;
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
-Route::get('/', [HomeController::class, 'home']);
+Route::get('/', [HomeController::class, 'home'])->middleware('redirectToHome');
 Route::get('/search', [ProductController::class, 'search'])->name('products.search');
 
 
@@ -45,14 +45,16 @@ Route::put('/cart/update/{id}', [CartController::class, 'update'])->name('cart.u
 Route::get('/ordersView', [OrderController::class, 'index'])->name('orders.index');
 Route::get('/order', [OrderController::class, 'showOrderPage'])->name('order.page')->middleware('auth');
 Route::post('/order/submit', [OrderController::class, 'store'])->name('order.submit');
-Route::get('/order/{order_number}', [CartController::class, 'show'])->name('order.show');
+Route::get('/order/detail/{order_number}', [CartController::class, 'show'])->name('order.show');
+Route::delete('/cart/{id}', [OrderController::class, 'destroy'])->name('cart.delete');
 
 
 
-
-Route::get('/shop', [ProductController::class, 'viewproduct'])->name('products.index');
+Route::get('/category/{name}', [ProductController::class, 'showByCategory'])->name('category.show');
+Route::get('/shop', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::post('/cart/add/details', [CartController::class, 'CartAddDetail'])->name('cart.details');
 Route::get('/cart', [CartController::class, 'viewcart'])->name('cart.view');
 
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
@@ -101,6 +103,13 @@ Route::get('auth/google', [GoogleController::class, 'redirect'])->name('google-a
 Route::get('auth/google/call-back', [GoogleController::class, 'callback']);
 
 
+// order
+Route::get('/ordersView', [OrderController::class, 'OrderView'])->name('orders.index')->middleware('auth');
+Route::get('/order/{order_number}', [OrderController::class, 'showOrderByNumber'])->name('order.number');
+Route::get('/order_cancel/{order_number}', [OrderController::class, 'callordernumber'])->name('order.cancel');
+Route::post('/order/checkout/{order_number}', [OrderController::class, 'checkout'])->name('order.checkout');
 
-
+Route::get('order/checkout/{order_number}', [OrderController::class, 'checkoutpage'])->name('order.checkoutpage');
 // checkout
+Route::post('/update-order-status', [OrderController::class, 'updateStatus'])->name('updateOrderStatus');
+Route::get('/success/{order_number}', [OrderController::class, 'success'])->name('order.success');

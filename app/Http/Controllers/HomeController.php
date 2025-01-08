@@ -28,19 +28,22 @@ class HomeController extends Controller
         } else {
             $user = User::all();
             $newProducts = Product::where('status', 'new')->take(4)->get();
+            $secondHandProducts = Product::where('status', 'second_hand')->take(4)->get();
+
             $products = Product::all();
             $ads = Ad::all();
             $cart = Cart::all();
-            return view('home.index', compact('user', 'newProducts', 'products', 'cart', 'ads'));
+            return view('home.index', compact('user', 'newProducts', 'products', 'cart', 'ads', 'secondHandProducts'));
         }
     }
 
     public function home()
     {
         $newProducts = Product::where('status', 'new')->take(4)->get();
+        $secondHandProducts = Product::where('status', 'second_hand')->take(4)->get();
         $products = Product::all();
         $ads = Ad::all();
         $cart = Cart::all();
-        return view('home.index', compact('newProducts', 'products', 'ads', 'cart'));
+        return view('home.index', compact('newProducts', 'products', 'ads', 'cart', 'secondHandProducts'));
     }
 }
