@@ -20,48 +20,136 @@
     <link rel="stylesheet" href="homes/assets/css/animate.css">
     <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
 
-    <style>
+   
+<style>
+      /* General Styling */
+      body {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        h4 {
+            font-size: 18px;
+        }
+
         /* Success Message Styling */
-    .success-message {
-        background-color: #4CAF50;
-        color: white;
-        padding: 15px;
-        border-radius: 5px;
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        width: 300px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        font-size: 16px;
-        z-index: 1000;
-        opacity: 0;
-        transform: translateX(100%);
-        transition: all 0.3s ease-in-out;
-    }
+        .success-message {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            font-size: 16px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease-in-out;
+        }
 
-    .success-message.show {
-        opacity: 1;
-        transform: translateX(0);
-    }
+        .success-message.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
 
-    .success-message .close-btn {
-        color: white;
-        font-size: 20px;
-        background: transparent;
-        border: none;
-        position: absolute;
-        top: 5px;
-        right: 10px;
-        cursor: pointer;
-    }
+        .success-message .close-btn {
+            color: white;
+            font-size: 20px;
+            background: transparent;
+            border: none;
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+        }
 
-    .success-message .close-btn:hover {
-        color: #ffffff;
-    }
+        .success-message .close-btn:hover {
+            color: #ffffff;
+        }
 
 
-      /* Footer Styling */
-      .footer {
+
+       /* Floating cart button */
+.popup-cart-btn {
+    position: fixed;
+    bottom: 20px; /* Distance from the bottom of the screen */
+    right: 20px; /* Distance from the right side of the screen */
+    background-color: #007bff; /* Button background color */
+    color: white; /* Text color */
+    padding: 15px 20px;
+    border-radius: 50%; /* Round button */
+    font-size: 24px;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 1000; /* Ensure it stays on top */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hover effect */
+.popup-cart-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Cart count styling (small red circle) */
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 18px; /* Centers the number vertically */
+    font-weight: bold;
+}
+
+
+
+        /* Product Item Styling */
+        .trending-box .trending-items .item {
+            padding: 10px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        .trending-box .thumb img {
+            width: 100%;
+            border-radius: 3px;
+        }
+
+        .trending-box .down-content {
+            text-align: center;
+        }
+
+        .trending-box .down-content h4 {
+            margin: 10px 0 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .trending-box .down-content .price {
+            font-size: 14px;
+            color: #3238e4;
+            margin-top: 5px;
+        }
+
+        .trending-box .down-content .btn {
+            font-size: 14px;
+            padding: 5px 10px;
+        }
+
+        /* Footer Styling */
+        .footer {
             background-color: #141414;
             color: #f1f1f1;
             padding: 40px 0;
@@ -141,8 +229,74 @@
             margin-top: 20px;
         }
 
-    </style>
+        /* Responsive Styling */
+        @media (max-width: 768px)  {
+            body {
+                font-size: 14px;
+            }
 
+            h4 {
+                font-size: 16px;
+            }
+
+            .success-message {
+                width: 90%;
+            }
+
+            .trending-box .trending-items .item {
+                margin: 10px 0;
+            }
+
+            .trending-box .thumb img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .trending-filter {
+                flex-wrap: wrap;
+                text-align: center;
+            }
+
+            .pagination {
+                justify-content: center;
+            }
+        }
+
+        .trending-box .down-content .price {
+    font-size: 14px; /* Default font size */
+}
+
+/* Media Query for Small Screens */
+@media (max-width: 576px) {
+    .trending-box .down-content .price {
+        font-size: 10px; /* Smaller font size for mobile screens */
+    }
+}
+@media (max-width: 768px) {
+  .features .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .features .col-lg-3, 
+  .features .col-md-6 {
+    flex: 1 1 calc(50% - 10px); /* Adjust for 2 columns with spacing */
+    max-width: calc(50% - 10px); /* Ensure columns take up 50% of the row */
+    margin: 5px; /* Add some spacing between items */
+  }
+
+
+}
+
+
+
+
+    
+
+
+
+</style>
 
    
 <!--
@@ -203,41 +357,41 @@ https://templatemo.com/tm-589-lugx-gaming
       @endif
       <!-- Dynamic Product Items -->
       @foreach ($newProducts as $product)
-      <div class="col-lg-3 col-md-6">
-          <div class="item">
-              <div class="thumb">
-                  <a href="{{ $product->stock > 0 ? route('products.show', $product->id) : '#' }}">
-                      <img src="{{ asset('products/' . $product->image) }}" alt="{{ $product->name }}" >
-                  </a>
-                  @if ($product->stock <= 0)
-                      <span class="badge badge-danger out-of-stock" style="position: absolute; top: 10px; right: 10px;color: black;">Out of Stock</span>
-                  @else
-                      <span class="price">
-                          @if ($product->discount > 0)
-                              <em>${{ $product->price }}</em> 
-                              ${{ $product->price - ($product->price * $product->discount / 100) }}
-                          @else
-                              ${{ $product->price }}
-                          @endif
-                      </span>
-                  @endif
-              </div>
-              <div class="down-content">
-                  <span class="category">{{ $product->category->name }}</span>
-                  <h4>{{ $product->name }}</h4>
-                  @if ($product->stock > 0)
-                  <form action="{{ route('cart.add') }}" method="POST">
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="item">
+            <div class="thumb">
+                <a href="{{ route('products.show', $product->id) }}">
+                    <img src="{{ asset('products/' . $product->image) }}" alt="{{ $product->name }}">
+                </a>
+                
+            </div>
+            <div class="down-content">
+                @if ($product->stock <= 0)
+                <span class="price">Out of Stock</span>
+                @else
+                <p class="price" style="font-family: 'Kantumruy', sans-serif; font-weight: bold; font-size: 20px;">
+                    @if ($product->discount > 0)
+                        <em style="text-decoration: line-through; color: #888;">${{ $product->price }}</em>
+                        ${{ $product->price - ($product->price * $product->discount / 100) }}
+                    @else
+                        ${{ $product->price }}
+                    @endif
+                </p>
+                
+                
+                @endif
+                <span class="category">{{ $product->category->name }}</span>
+                <h4>{{ $product->name }}</h4>
+                @if ($product->stock > 0)
+                <form action="{{ route('cart.add') }}" method="POST">
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <button type="submit" class="btn btn-primary mt-2">Add to Cart</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-shopping-bag"></i></button>
                 </form>
-                
-                  @else
-                      <span class="text-muted">Unavailable</span>
-                  @endif
-              </div>
-          </div>
-      </div>
+                @endif
+            </div>
+        </div>
+    </div>
       @endforeach
   </div>
   
@@ -262,41 +416,41 @@ https://templatemo.com/tm-589-lugx-gaming
       <!-- Succuess Message -->
       <!-- Dynamic Product Items -->
       @foreach ($secondHandProducts as $product)
-      <div class="col-lg-3 col-md-6">
-          <div class="item">
-              <div class="thumb">
-                  <a href="{{ $product->stock > 0 ? route('products.show', $product->id) : '#' }}">
-                      <img src="{{ asset('products/' . $product->image) }}" alt="{{ $product->name }}" >
-                  </a>
-                  @if ($product->stock <= 0)
-                      <span class="badge badge-danger out-of-stock" style="position: absolute; top: 10px; right: 10px;color: black;">Out of Stock</span>
-                  @else
-                      <span class="price">
-                          @if ($product->discount > 0)
-                              <em>${{ $product->price }}</em> 
-                              ${{ $product->price - ($product->price * $product->discount / 100) }}
-                          @else
-                              ${{ $product->price }}
-                          @endif
-                      </span>
-                  @endif
-              </div>
-              <div class="down-content">
-                  <span class="category">{{ $product->category->name }}</span>
-                  <h4>{{ $product->name }}</h4>
-                  @if ($product->stock > 0)
-                  <form action="{{ route('cart.add') }}" method="POST">
+      <div class="col-6 col-md-4 col-lg-3">
+        <div class="item">
+            <div class="thumb">
+                <a href="{{ route('products.show', $product->id) }}">
+                    <img src="{{ asset('products/' . $product->image) }}" alt="{{ $product->name }}">
+                </a>
+                
+            </div>
+            <div class="down-content">
+                @if ($product->stock <= 0)
+                <span class="price">Out of Stock</span>
+                @else
+                <p class="price" style="font-family: 'Kantumruy', sans-serif; font-weight: bold; font-size: 20px;">
+                    @if ($product->discount > 0)
+                        <em style="text-decoration: line-through; color: #888;">${{ $product->price }}</em>
+                        ${{ $product->price - ($product->price * $product->discount / 100) }}
+                    @else
+                        ${{ $product->price }}
+                    @endif
+                </p>
+                
+                
+                @endif
+                <span class="category">{{ $product->category->name }}</span>
+                <h4>{{ $product->name }}</h4>
+                @if ($product->stock > 0)
+                <form action="{{ route('cart.add') }}" method="POST">
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <button type="submit" class="btn btn-primary mt-2">Add to Cart</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-shopping-bag"></i></button>
                 </form>
-                
-                  @else
-                      <span class="text-muted">Unavailable</span>
-                  @endif
-              </div>
-          </div>
-      </div>
+                @endif
+            </div>
+        </div>
+    </div>
       @endforeach
   </div>
   
@@ -312,46 +466,16 @@ https://templatemo.com/tm-589-lugx-gaming
             <h2>Top Categories</h2>
           </div>
         </div>
+        @foreach($categories as $category)
         <div class="col-lg col-sm-6 col-xs-12">
           <div class="item">
-            <h4>Action</h4>
+            <h4>{{$category->name}}</h4>
             <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/categories-01.jpg" alt=""></a>
+              <a href="product-details.html"><img src="{{ asset('categories/' . $category->image) }}" alt="" style="max-width: 100px;"></a>
             </div>
           </div>
         </div>
-        <div class="col-lg col-sm-6 col-xs-12">
-          <div class="item">
-            <h4>Action</h4>
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/categories-05.jpg" alt=""></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg col-sm-6 col-xs-12">
-          <div class="item">
-            <h4>Action</h4>
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/categories-03.jpg" alt=""></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg col-sm-6 col-xs-12">
-          <div class="item">
-            <h4>Action</h4>
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/categories-04.jpg" alt=""></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg col-sm-6 col-xs-12">
-          <div class="item">
-            <h4>Action</h4>
-            <div class="thumb">
-              <a href="product-details.html"><img src="homes/assets/images/categories-05.jpg" alt=""></a>
-            </div>
-          </div>
-        </div>
+       @endforeach
       </div>
     </div>
   </div>

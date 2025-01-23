@@ -35,12 +35,19 @@ class ProductController extends Controller
         $product->discount = $request->discount;
 
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('products'), $imageName);
-            $product->image = $imageName;
-        }
+            // Delete the old image if it exists
+            if ($product->image && file_exists(public_path('products/' . $product->image))) {
+                unlink(public_path('products/' . $product->image));
+            }
 
+            // Save the new image
+            $image = $request->image;
+            $imagename = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('products'), $imagename);
+
+            // Update the category's image path
+            $product->image = $imagename;
+        }
         $product->save();
 
         return redirect()->back()->with('success', 'Product updated successfully!');
@@ -80,7 +87,7 @@ class ProductController extends Controller
 
         if ($selectedCategory) {
             // Corrected the method chain and placement of paginate
-            $products = Product::where('category_id', $selectedCategory->id)->paginate(5);
+            $products = Product::where('category_id', $selectedCategory->id)->paginate(4);
         } else {
             $products = collect(); // Empty collection
         }
@@ -105,7 +112,7 @@ class ProductController extends Controller
         } else {
             // If no category is selected, display all products
             $categoryFilter = null;
-            $products = Product::paginate(10);
+            $products = Product::paginate(4);
         }
 
         return view('home.viewproduct', compact('products', 'categories', 'categoryFilter'));

@@ -281,9 +281,19 @@
 
 
     <div class="row m-0" style="height: 30vh; display: flex; justify-content: center; align-items: center;">
-       @foreach($order as $orders)
-        <h5 class="text-center"><strong>Order Number:</strong>{{$orders->order_number}}</h5>
-        @endforeach
+        @php
+    $displayedOrderNumbers = [];
+@endphp
+
+@foreach($order as $orders)
+    @if(!in_array($orders->order_number, $displayedOrderNumbers))
+        <h5 class="text-center"><strong>Order Number:</strong> {{ $orders->order_number }}</h5>
+        @php
+            $displayedOrderNumbers[] = $orders->order_number;
+        @endphp
+    @endif
+@endforeach
+
         <div class="col-12 mb-4 p-0 text-center">
             <h3>Check Out Now</h3>
             <img src="{{ asset('pic/khqr.png') }}" alt="Checkout" id="checkout" style="cursor: pointer; max-width: 20%; height: auto;">

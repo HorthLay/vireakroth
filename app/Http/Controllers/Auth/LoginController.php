@@ -23,15 +23,25 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
         $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
+        $remember = $request->has('remember');
+
+        if (Auth::attempt($credentials, $remember)) {
             return redirect()->route('home'); // Adjust the route as needed
         }
 
         return back()->withErrors([
             'email' => 'The email or password is incorrect.',
-        ]);
+            'password' => 'The email or password is incorrect.',
+        ])->onlyInput('email', 'password'); // Retain the email field value
     }
+
 
     public function logout(Request $request)
     {

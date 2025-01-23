@@ -54,6 +54,66 @@
         color: #ffffff;
     }
 
+
+
+    /* General styling for smaller screens */
+@media (max-width: 768px) {
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    table.table {
+        border-collapse: separate;
+        border-spacing: 0 10px;
+    }
+
+    table.table thead {
+        display: none; /* Hide table header for mobile */
+    }
+
+    table.table tbody tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    table.table tbody td {
+        display: block;
+        text-align: left;
+        font-size: 14px;
+        padding: 5px 0;
+    }
+
+    table.table tbody td img {
+        margin-bottom: 10px;
+    }
+
+    table.table tbody td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #333;
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    table.table tfoot tr {
+        display: block;
+        text-align: center;
+    }
+
+    .text-end {
+        text-align: center !important;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+}
+
+
     </style>
 </head>
 
@@ -73,7 +133,64 @@
     <!-- ***** Preloader End ***** -->
 
     <!-- ***** Header Area Start ***** -->
-    @include('home.header')
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="{{url('/')}}" class="logo">
+                            <img src="{{asset ('homes/assets/images/logo.png')}}" alt="" style="width: 158px;">
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li><a href="{{ url('/') }}" class="active">Home</a></li>
+                            <li><a href="{{ route('products.index') }}">Our Shop</a></li>
+                            <li><a href="{{url('/contact-us')}}">Contact Us</a></li>
+                        
+    
+    
+    
+                            
+    
+    
+                          
+                            
+                            
+                        
+                            @auth
+                            <li>
+                                <a href="{{ route('orders.index') }}" id="cart-icon">My Orders</a>
+                            </li>
+                                <li>
+                                    <span style="color: rgb(0, 0, 0);font-family: 'Kantumruy', sans-serif;">Welcome, {{ auth()->user()->name }}!</span>
+                                </li>
+                                <li>
+                                    <!-- Logout link -->
+                                    <a href="#" 
+                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                       Log out
+                                    </a>
+                                    <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </li>
+                            @else
+                                <li><a href="{{ route('login') }}">Sign In</a></li>
+                            @endauth
+                        </ul>
+                        
+                        
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+      </header>
     <!-- ***** Header Area End ***** -->
 
     <!-- Page Heading -->
@@ -96,81 +213,84 @@
       </div>
       @endif
 
-   <!-- Cart Section -->
-    <div class="container mt-5">
+      <div class="container mt-5">
         @if($cartItems && count($cartItems) > 0)
         <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
+            <table class="table table-borderless">
+                <thead class="text-primary">
                     <tr>
                         <th>Product</th>
-                        <th>Quantity</th>
                         <th>Price</th>
+                        <th>Quantity</th>
                         <th>Discount</th>
-                        <th>Total</th>
-                        <th>Delete</th>
+                        <th>Subtotal</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($cartItems as $item)
-                        <tr>
-                            <td>
-                                @if(Auth::check())
-                                    {{ $item['product']->name }}
-                                @else
-                                    {{ $item['product']->name }}
-                                @endif
-                            </td>
-                            <td>
-                                @if(Auth::check())
-                                <form action="{{ route('cart.update', $item['product_id']) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <input 
-                                        type="number" 
-                                        name="quantity" 
-                                        value="{{ $item['quantity'] }}" 
-                                        min="1" 
-                                        max="10" 
-                                        class="form-control" 
-                                        onchange="this.form.submit()" 
-                                    />
-                                </form>
-                                @else
-                                    {{ $item['quantity'] }}
-                                @endif
-                            </td>
-                            <td>
-                                {{ number_format($item['product']->price, 2) }}
-                            </td>
-                            <td>
-                                {{ number_format($item['product']->discount, 2) }}
-                            </td>
-                            <td>
-                                {{ number_format($item['product']->price * $item['quantity'], 2) }}
-                            </td>
-                            <td>
-                                <form action="{{ route('cart.delete', $item['product_id']) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
+                    <tr style="border-bottom: 2px solid blue;">
+                        <!-- Product Column -->
+                        <td data-label="Product" class="d-flex align-items-center">
+                            <img src="{{ 'products/' . $item['product']->image }}" alt="{{ $item['product']->name }}" class="img-thumbnail me-3" style="width: 60px; height: 60px; border: 1px solid blue;">
+                            <span>{{ $item['product']->name }}</span>
+                        </td>
+                        <td data-label="Price">${{ number_format($item['product']->price, 2) }}</td>
+                        <td data-label="Quantity">
+                            <form action="{{ route('cart.update', $item['product_id']) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <input 
+                                    type="number" 
+                                    name="quantity" 
+                                    value="{{ $item['quantity'] }}" 
+                                    min="1" 
+                                    max="10" 
+                                    class="form-control text-center border border-primary" 
+                                    style="width: 80px;" 
+                                    onchange="this.form.submit()">
+                            </form>
+                        </td>
+                        <td data-label="Discount">{{ number_format($item['product']->discount, 2) }}</td>
+                        <td data-label="Subtotal">
+                            ${{ number_format($item['product']->price * $item['quantity'] * (1 - ($item['product']->discount / 100)), 2) }}
+                        </td>
+                        <td data-label="Action">
+                            <form action="{{ route('cart.delete', $item['product_id']) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger btn-sm">×</button>
+                            </form>
+                        </td>
+                        
+                    </tr>
                     @endforeach
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-end">
+                            <h5 class="text-primary">Grand Total:</h5>
+                        </td>
+                        <td colspan="2">
+                            <h5 class="text-primary">${{ number_format($total, 2) }}</h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" class="text-end">
+                            <a href="{{ route('order.page') }}" class="btn btn-primary mt-3">Proceed to Order</a>
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
-            <h4 class="text-right">Grand Total: ${{ number_format($total, 2) }}</h4>
-            <a href="{{ route('order.page') }}" class="btn btn-primary mt-3">Proceed to Order</a>
         </div>
-    @else
-    
-            <div class="text-center">
-                <h4>Your cart is empty.</h4>
-                <a href="{{ route('products.index') }}" class="btn btn-primary mt-3">Shop Now</a>
-            </div>
+        @else
+        <div class="text-center">
+            <h4>Your cart is empty.</h4>
+            <a href="{{ route('products.index') }}" class="btn btn-primary mt-3">Shop Now</a>
+        </div>
         @endif
     </div>
+    
 
 
     <!-- Footer -->

@@ -82,12 +82,58 @@
 	<link rel="stylesheet" type="text/css" href="form/css/util.css">
 	<link rel="stylesheet" type="text/css" href="form/css/main.css">
 <!--===============================================================================================-->
+<style>
+        /* Success Message Styling */
+        .success-message {
+        background-color: #f73838;
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 300px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        font-size: 16px;
+        z-index: 1000;
+        opacity: 0;
+        transform: translateX(100%);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .success-message.show {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .success-message .close-btn {
+        color: white;
+        font-size: 20px;
+        background: transparent;
+        border: none;
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+    .success-message .close-btn:hover {
+        color: #ffffff;
+    }
+
+</style>
 </head>
 <body>
 	
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('form/images/bg-01.jpg');">
 			<div class="wrap-login100 p-l-110 p-r-110 p-t-62 p-b-33">
+                @if(session('error'))
+                <div class="success-message show">
+                    <p style="color: red;">{{ session('error') }}</p>
+                    <button class="close-btn" onclick="document.querySelector('.success-message').classList.remove('show')">×</button>
+                </div>
+                @endif
 				<form method="POST" action="{{ route('forget.password.post') }}" class="login100-form validate-form flex-sb flex-w">
                     @csrf
                     <span class="login100-form-title p-b-53">
@@ -108,9 +154,7 @@
 						</button>
 					</div>
 					</div>  
-                    @error('email')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
+                
 				</form>
 			</div>
 		</div>

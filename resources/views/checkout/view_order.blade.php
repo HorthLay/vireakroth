@@ -241,17 +241,27 @@
             </div>
         @endif
 
-        @foreach($orders as $order)
-        @if($order->status == 'canceled')
-            <div class="col-lg-12">
-                <p style="color: red;">This order has been cancelled.</p>
-            </div>
-        @else
-            <a class="btn btn-danger" onClick="cancelConfirmation(event)" style="padding: 5px 10px; font-size: 14px;" href="{{ url('/order_cancel', $order->order_number) }}">
-                Cancel Order
-            </a>
+        @php
+        $displayedOrderNumbers = [];
+    @endphp
+    
+    @foreach($orders as $order)
+        @if(!in_array($order->order_number, $displayedOrderNumbers))
+            @if($order->status == 'canceled')
+                <div class="col-lg-12">
+                    <p style="color: red;">This order has been cancelled.</p>
+                </div>
+            @else
+                <a class="btn btn-danger" onClick="cancelConfirmation(event)" style="padding: 5px 10px; font-size: 14px;" href="{{ url('/order_cancel', $order->order_number) }}">
+                    Cancel Order
+                </a>
+            @endif
+            @php
+                $displayedOrderNumbers[] = $order->order_number;
+            @endphp
         @endif
     @endforeach
+    
     
     </div>
 </div>

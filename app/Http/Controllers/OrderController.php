@@ -151,10 +151,15 @@ class OrderController extends Controller
         $message .= "🚚 *Delivery Method:* {$request->delivery}\n\n";
         $message .= "✅ *Thank you for your purchase!*";
 
+        // Specify the image to be sent (can be a URL or file path)
+        $imageUrl = 'https://cdn.vectorstock.com/i/500p/25/50/order-now-modern-web-banner-with-package-icon-vector-31212550.jpg'; // Replace with your image URL or local file path
+
         try {
-            Http::withOptions(['verify' => false])->post("https://api.telegram.org/bot{$telegramToken}/sendMessage", [
+            // Send the message and photo
+            Http::withOptions(['verify' => false])->post("https://api.telegram.org/bot{$telegramToken}/sendPhoto", [
                 'chat_id' => $telegramChatId,
-                'text' => $message,
+                'photo' => $imageUrl,  // The image to send
+                'caption' => $message, // The message caption (text)
                 'parse_mode' => 'Markdown',
             ]);
         } catch (\Exception $e) {
@@ -169,20 +174,25 @@ class OrderController extends Controller
 
     public function callordernumber(Request $request, $order_number)
     {
-        $order = Order::where('order_number', $order_number)->first();
+        // Retrieve all orders with the given order_number
+        $orders = Order::where('order_number', $order_number)->get();
 
-        if (!$order) {
+        if ($orders->isEmpty()) {
             return redirect('/ordersView')->with('error', 'Order not found!');
         }
 
-        $order->status = 'canceled';
-        $order->save();
+        // Update the status of all matching orders
+        foreach ($orders as $order) {
+            $order->status = 'canceled';
+            $order->save();
+        }
 
         $telegramChatId = 1081724526; // Your Telegram chat ID
         $telegramToken = '8124975670:AAGjJGP4ULkfEuRhNdTIk2REF_YIffcBSic'; // Your Telegram bot token
 
         $customerName = $order->name ?? 'N/A'; // Use the name field directly
         $telegramNumber = $order->telegram_number ?? 'N/A';
+
 
         $message = "🚨 *Order Canceled Alert* 🚨\n\n";
         $message .= "🆔 *Order ID:* {$order_number}\n";
@@ -196,6 +206,7 @@ class OrderController extends Controller
             Http::withOptions(['verify' => false])->post("https://api.telegram.org/bot{$telegramToken}/sendMessage", [
                 'chat_id' => $telegramChatId,
                 'text' => $message,
+
                 'parse_mode' => 'Markdown',
             ]);
         } catch (\Exception $e) {
@@ -215,10 +226,10 @@ class OrderController extends Controller
     {
         if (Auth::check()) {
             // For authenticated users, delete from the database
-            $cartItem = Cart::where('user_id', Auth::id())->where('id', $id)->first();
+            $cartItem = Cart::where('user_id', Auth::id())->where('product_id', $id)->first();
 
             if ($cartItem) {
-                $cartItem->delete();
+                $cartItem->delete(); // Delete the cart item
                 return redirect('/cart')->with('success', 'Item removed from cart.');
             } else {
                 return redirect('/cart')->with('error', 'Item not found.');

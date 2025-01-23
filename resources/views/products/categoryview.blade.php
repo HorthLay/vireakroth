@@ -15,6 +15,205 @@
     <link rel="stylesheet" href="{{ asset('homes/assets/css/owl.css') }}">
     <link rel="stylesheet" href="{{ asset('homes/assets/css/animate.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css">
+    <style>
+        /* General Styling */
+        body {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        h4 {
+            font-size: 18px;
+        }
+
+        /* Success Message Styling */
+        .success-message {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            font-size: 16px;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .success-message.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .success-message .close-btn {
+            color: white;
+            font-size: 20px;
+            background: transparent;
+            border: none;
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .success-message .close-btn:hover {
+            color: #ffffff;
+        }
+
+        /* Product Item Styling */
+        .trending-box .trending-items .item {
+            padding: 10px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        .trending-box .thumb img {
+            width: 100%;
+            border-radius: 3px;
+        }
+
+        .trending-box .down-content {
+            text-align: center;
+        }
+
+        .trending-box .down-content h4 {
+            margin: 10px 0 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .trending-box .down-content .price {
+            font-size: 14px;
+            color: #ff6600;
+            margin-top: 5px;
+        }
+
+        .trending-box .down-content .btn {
+            font-size: 14px;
+            padding: 5px 10px;
+        }
+
+        /* Footer Styling */
+        .footer {
+            background-color: #141414;
+            color: #f1f1f1;
+            padding: 40px 0;
+            font-size: 14px;
+        }
+
+        .footer h5 {
+            color: #000000;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .footer p, .footer li {
+            font-size: 14px;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .footer a {
+            color: #fff700;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: #ff3300;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links li a {
+            display: inline-block;
+        }
+
+        .footer .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .footer .social-icon {
+            width: 40px;
+            height: 40px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 50%;
+            background: #312aff;
+            padding: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer .social-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .footer .row {
+            margin-bottom: 30px;
+        }
+
+        .footer .text-center {
+            border-top: 1px solid #444;
+            padding-top: 15px;
+            margin-top: 20px;
+        }
+
+        /* Responsive Styling */
+        @media (max-width: 768px)  {
+            body {
+                font-size: 14px;
+            }
+
+            h4 {
+                font-size: 16px;
+            }
+
+            .success-message {
+                width: 90%;
+            }
+
+            .trending-box .trending-items .item {
+                margin: 10px 0;
+            }
+
+            .trending-box .thumb img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .trending-filter {
+                flex-wrap: wrap;
+                text-align: center;
+            }
+
+            .pagination {
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -54,8 +253,15 @@
             </div>
         </div>
     </div>
-    
-    <div class="section trending">
+
+    {{-- success message --}}
+    @if(session('success'))
+      <div class="success-message show">
+          <p style="color: white;">{{ session('success') }}</p>
+          <button class="close-btn" onclick="document.querySelector('.success-message').classList.remove('show')">×</button>
+      </div>
+      @endif
+    {{-- <div class="section trending">
         <ul class="trending-filter">
             <li>
                 <a href="{{ route('products.index') }}">Show</a>
@@ -72,79 +278,80 @@
                 <li>No categories available.</li>
             @endif
         </ul>
-    </div>
+    </div> --}}
     
 
-    <div class="container">
-        <div class="row trending-box">
-            @if ($products->isEmpty())
+    @if(session('success'))
+    <div class="success-message show">
+        <p style="color: white;">{{ session('success') }}</p>
+        <button class="close-btn" onclick="document.querySelector('.success-message').classList.remove('show')">×</button>
+    </div>
+    @endif
+
+    <!-- Trending Section -->
+    <div class="section trending">
+        <ul class="trending-filter">
+            <li><a href="{{ route('products.index') }}">Show</a></li>
+            @foreach($categories as $category)
+            <li><a href="{{ route('category.show', $category->name) }}">{{ $category->name }}</a></li>
+            @endforeach
+        </ul>
+        <div class="container">
+            <div class="row trending-box">
+                @if ($products->isEmpty())
                 <div class="col-12 text-center">
                     <p class="alert alert-warning">No products available.</p>
                 </div>
-            @else
+                @else
                 @foreach ($products as $product)
-                <div class="col-lg-3 col-md-6 align-self-stretch mb-30 trending-items">
+                <div class="col-lg-3 col-md-6 col-12 align-self-center mb-30 trending-items">
                     <div class="item">
                         <div class="thumb">
-                            <a href="{{route('products.show', $product->id)}}">
-                                <img src="{{ asset('products/' . $product->image) }}" alt="{{ $product->name }}" >
+                            <a href="{{ route('products.show', $product->id) }}">
+                                <img src="{{ asset('products/' . $product->image) }}" alt="{{ $product->name }}">
                             </a>
                             @if ($product->stock <= 0)
-                                <span class="badge bg-danger out-of-stock">Out of Stock</span>
+                            <span class="price">Out of Stock</span>
                             @else
-                                <span class="price">
-                                    @if ($product->discount > 0)
-                                        <em>${{ $product->price }}</em>
-                                        ${{ $product->price - ($product->price * $product->discount / 100) }}
-                                       
-                                    @else
-                                        ${{ $product->price }}
-                                    @endif
-                                </span>
+                            <span class="price">
+                                @if ($product->discount > 0)
+                                <em>${{ $product->price }}</em>
+                                ${{ $product->price - ($product->price * $product->discount / 100) }}
+                                @else
+                                ${{ $product->price }}
+                                @endif
+                            </span>
                             @endif
                         </div>
                         <div class="down-content">
-                            <span class="category">{{ $product->category->name }}</span><br>
-                            @if ($product->status == 'new')
-                            <img src="{{ asset('pic/new.png') }}" alt="" style="max-width: 50px;">
-                            @elseif ($product->status == 'second_hand')
-                            <img src="{{ asset('pic/second.png') }}" alt="" style="max-width: 50px;">
-                            @endif
+                            <span class="category">{{ $product->category->name }}</span>
                             <h4>{{ $product->name }}</h4>
                             @if ($product->stock > 0)
-                                <form action="{{ route('cart.add') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <button type="submit" class="btn btn-primary mt-2">Add to Cart</button>
-                                </form>
+                            <form action="{{ route('cart.add') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <button type="submit" class="btn btn-primary mt-2"><i class="fa fa-shopping-bag"></i></button>
+                            </form>
                             @else
-                                <span class="text-muted">Unavailable</span>
+                            <span class="text-muted">Unavailable</span>
                             @endif
                         </div>
                     </div>
                 </div>
-                
                 @endforeach
-            @endif
-        </div>
-
-        <div class="row">
-            <div class="col-lg-12">
-                <ul class="pagination">
-                    {{ $products->links() }}
-                </ul>
+                @endif
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="pagination">
+                        {{ $products->links() }}
+                    </ul>
+                </div>
             </div>
         </div>
+    </div>
 
-    <footer>
-        <div class="container">
-            <div class="col-lg-12">
-                <p>Copyright © 2048 LUGX Gaming Company. All rights reserved. &nbsp;&nbsp;
-                    <a rel="nofollow" href="https://templatemo.com" target="_blank">Design: TemplateMo</a>
-                </p>
-            </div>
-        </div>
-    </footer>
+        @include('home.footer')
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

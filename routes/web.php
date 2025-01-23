@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ForgetPasswordManager;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LocaleController;
@@ -86,9 +87,10 @@ Route::get('/adsy', [AdminController::class, 'ads'])->name('ads');
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
-Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->middleware(['auth', 'signed'])->name('verification.verify');
 Route::post('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 // Forgot Password
+
 Route::get('/forgot-password', [ForgetPasswordManager::class, 'forgotPassword'])->name('forget.password');
 Route::post('/forgot-password', [ForgetPasswordManager::class, 'forgotPasswordPost'])->name('forget.password.post');
 Route::get('/reset-password/{token}', [ForgetPasswordManager::class, 'resetPassword'])->name('reset.password');
@@ -101,7 +103,9 @@ Auth::routes(['verify' => true]);
 
 Route::get('auth/google', [GoogleController::class, 'redirect'])->name('google-auth');
 Route::get('auth/google/call-back', [GoogleController::class, 'callback']);
+// contact us
 
+Route::get('/contact-us', [ContactController::class, 'index'])->name('contact');
 
 // order
 Route::get('/ordersView', [OrderController::class, 'OrderView'])->name('orders.index')->middleware('auth');

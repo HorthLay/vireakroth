@@ -181,7 +181,7 @@
 
                     <form action="{{ route('cart.details') }}" method="POST">
                         @csrf
-                        <input type="number" name="quantity" class="form-control" placeholder="1" required>
+                        <input type="number" name="quantity" class="form-control" value="1" required>
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <button type="submit" class="btn btn-primary mt-2">Add to Cart</button>
                     </form>

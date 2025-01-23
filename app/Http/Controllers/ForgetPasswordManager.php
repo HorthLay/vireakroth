@@ -23,27 +23,47 @@ class ForgetPasswordManager extends Controller
             'email' => 'required|email',
         ]);
 
+        // Check if the email exists in the users table
+        $user = User::where('email', $request->email)->first();
+
+        // If email doesn't exist, return an error message
+        if (!$user) {
+            return redirect()->back()->with('error', 'Email not found in our database!');
+        }
+
+        // Generate a random token for password reset
         $token = Str::random(64);
 
+        // Insert the email and token into the password_resets table
         DB::table('password_resets')->insert([
             'email' => $request->email,
             'token' => $token,
             'created_at' => Carbon::now()
         ]);
 
+        // Send the password reset email with the token
         Mail::send('email.forget-password', ['token' => $token], function ($message) use ($request) {
             $message->to($request->email);
-            $message->subject('Reset Password');
+            $message->subject('Reset Your Password');
         });
 
-        return redirect()->to(route("forget.password"))->with("status", "We have e-mailed your password reset link!");
-        return redirect()->to(route("forget.password"))->with('error', 'Failed to send password reset link.');
+        return redirect()->back()->with('success', 'We have e-mailed your password reset link!');
     }
+
 
     public function resetPassword($token)
     {
-        return view('auth.passwords.news-password', compact('token'));
+        $passwordReset = DB::table('password_resets')->where('token', $token)->first();
+
+        if (!$passwordReset) {
+            return redirect()->route('reset.password')->with('error', 'Invalid or expired token!');
+        }
+
+        $email = $passwordReset->email;
+
+        return view('auth.passwords.news-password', compact('token', 'email'));
     }
+
 
     public function resetPasswordPost(Request $request)
     {

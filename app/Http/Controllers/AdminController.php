@@ -119,20 +119,31 @@ class AdminController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $category = Category::findorFail($id);
+        $category = Category::findOrFail($id);
 
+        // Check if a new image is uploaded
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
+            // Delete the old image if it exists
+            if ($category->image && file_exists(public_path('categories/' . $category->image))) {
+                unlink(public_path('categories/' . $category->image));
+            }
+
+            // Save the new image
+            $image = $request->image;
             $imagename = time() . '.' . $image->getClientOriginalExtension();
-            $request->image->move('categories', $imagename);
+            $image->move(public_path('categories'), $imagename);
+
+            // Update the category's image path
             $category->image = $imagename;
         }
 
+        // Update the category's name
         $category->name = $request->name;
         $category->save();
 
         return redirect()->back()->with('success', 'Category updated successfully!');
     }
+
 
     public function prosuctstore(Request $request)
     {

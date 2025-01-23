@@ -44,12 +44,20 @@ class VerificationController extends Controller
 
     public function resend(Request $request)
     {
-        if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->route('home');
+        try {
+            // Check if the user's email is already verified
+            if ($request->user()->hasVerifiedEmail()) {
+                return redirect()->route('home')->with('success', 'Your email is already verified!');
+            }
+
+            // Attempt to send the verification email
+            $request->user()->sendEmailVerificationNotification();
+
+            // Return with a success message if email is sent
+            return view('auth.success');
+        } catch (\Exception $e) {
+            // Handle any exception and return back with an error message
+            return back()->with('error', 'Failed to send verification link. Please try again later.');
         }
-
-        $request->user()->sendEmailVerificationNotification();
-
-        return back()->with('message', 'Verification link sent!');
     }
 }

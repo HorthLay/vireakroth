@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ad;
 use App\Models\Cart;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Reminder;
 use App\Models\User;
@@ -29,21 +30,23 @@ class HomeController extends Controller
             $user = User::all();
             $newProducts = Product::where('status', 'new')->take(4)->get();
             $secondHandProducts = Product::where('status', 'second_hand')->take(4)->get();
-
+            $categories = Category::all()->take(5);
             $products = Product::all();
             $ads = Ad::all();
             $cart = Cart::all();
-            return view('home.index', compact('user', 'newProducts', 'products', 'cart', 'ads', 'secondHandProducts'));
+            return view('home.index', compact('user', 'newProducts', 'products', 'cart', 'ads', 'secondHandProducts', 'categories'));
         }
     }
 
     public function home()
     {
+        $categories = Category::all()->take(5);
+
         $newProducts = Product::where('status', 'new')->take(4)->get();
         $secondHandProducts = Product::where('status', 'second_hand')->take(4)->get();
         $products = Product::all();
         $ads = Ad::all();
         $cart = Cart::all();
-        return view('home.index', compact('newProducts', 'products', 'ads', 'cart', 'secondHandProducts'));
+        return view('home.index', compact('newProducts', 'products', 'ads', 'cart', 'secondHandProducts', 'categories'));
     }
 }
