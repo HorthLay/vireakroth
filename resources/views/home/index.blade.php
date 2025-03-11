@@ -97,8 +97,8 @@
 /* Cart count styling (small red circle) */
 .cart-count {
     position: absolute;
-    top: -5px;
-    right: -5px;
+    top: 10px;
+    right: 5px;
     background-color: red;
     color: white;
     font-size: 12px;
@@ -147,6 +147,27 @@
             font-size: 14px;
             padding: 5px 10px;
         }
+
+        .view-all-link {
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px 20px;
+      
+      border-radius: 5px;
+      color: #007bff;
+      background-color: #fff;
+      transition: all 0.3s ease;
+  }
+
+  .view-all-link:hover {
+      background-color: #007bff;
+      color: #fff;
+  }
+
+  /* Make the button bigger on hover */
+  .view-all-link:hover {
+      transform: scale(1.1);
+  }
 
         /* Footer Styling */
         .footer {
@@ -278,6 +299,7 @@
     flex-wrap: wrap;
     justify-content: space-between;
   }
+  
 
   .features .col-lg-3, 
   .features .col-md-6 {
@@ -335,205 +357,206 @@ https://templatemo.com/tm-589-lugx-gaming
 
 
  <div class="section trending">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6">
-          <div class="section-heading">
-              <h6>New</h6>
-              <h2>New Phone</h2>
-          </div>
-      </div>
-      <div class="col-lg-6">
-          <div class="main-button">
-              <a href="{{ route('products.index') }}">View All</a>
-          </div>
-      </div>
-      <!-- Succuess Message -->
-      @if(session('success'))
-      <div class="success-message show">
-          <p style="color: white;">{{ session('success') }}</p>
-          <button class="close-btn" onclick="document.querySelector('.success-message').classList.remove('show')">×</button>
-      </div>
-      @endif
-      <!-- Dynamic Product Items -->
-      @foreach ($newProducts as $product)
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="item">
-            <div class="thumb">
-                <a href="{{ route('products.show', $product->id) }}">
-                    <img src="{{ asset('products/' . $product->image) }}" alt="{{ $product->name }}">
-                </a>
-                
-            </div>
-            <div class="down-content">
-                @if ($product->stock <= 0)
-                <span class="price">Out of Stock</span>
-                @else
-                <p class="price" style="font-family: 'Kantumruy', sans-serif; font-weight: bold; font-size: 20px;">
-                    @if ($product->discount > 0)
-                        <em style="text-decoration: line-through; color: #888;">${{ $product->price }}</em>
-                        ${{ $product->price - ($product->price * $product->discount / 100) }}
-                    @else
-                        ${{ $product->price }}
-                    @endif
-                </p>
-                
-                
-                @endif
-                <span class="category">{{ $product->category->name }}</span>
-                <h4>{{ $product->name }}</h4>
-                @if ($product->stock > 0)
-                <form action="{{ route('cart.add') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-shopping-bag"></i></button>
-                </form>
-                @endif
-            </div>
-        </div>
-    </div>
-      @endforeach
-  </div>
-  
-  </div>
-</div>
-
-
-<div class="section trending">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6">
-          <div class="section-heading">
-              <h6>SecondHand</h6>
-              <h2>SecondHand Phone</h2>
-          </div>
-      </div>
-      <div class="col-lg-6">
-          <div class="main-button">
-              <a href="{{ route('products.index') }}">View All</a>
-          </div>
-      </div>
-      <!-- Succuess Message -->
-      <!-- Dynamic Product Items -->
-      @foreach ($secondHandProducts as $product)
-      <div class="col-6 col-md-4 col-lg-3">
-        <div class="item">
-            <div class="thumb">
-                <a href="{{ route('products.show', $product->id) }}">
-                    <img src="{{ asset('products/' . $product->image) }}" alt="{{ $product->name }}">
-                </a>
-                
-            </div>
-            <div class="down-content">
-                @if ($product->stock <= 0)
-                <span class="price">Out of Stock</span>
-                @else
-                <p class="price" style="font-family: 'Kantumruy', sans-serif; font-weight: bold; font-size: 20px;">
-                    @if ($product->discount > 0)
-                        <em style="text-decoration: line-through; color: #888;">${{ $product->price }}</em>
-                        ${{ $product->price - ($product->price * $product->discount / 100) }}
-                    @else
-                        ${{ $product->price }}
-                    @endif
-                </p>
-                
-                
-                @endif
-                <span class="category">{{ $product->category->name }}</span>
-                <h4>{{ $product->name }}</h4>
-                @if ($product->stock > 0)
-                <form action="{{ route('cart.add') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-shopping-bag"></i></button>
-                </form>
-                @endif
-            </div>
-        </div>
-    </div>
-      @endforeach
-  </div>
-  
-  </div>
-</div>
-
-  <div class="section categories">
     <div class="container">
       <div class="row">
-        <div class="col-lg-12 text-center">
+        <div class="col-lg-6">
           <div class="section-heading">
-            <h6>Categories</h6>
-            <h2>Top Categories</h2>
+            <h6>New</h6>
+            <h2>New Phone</h2>
           </div>
         </div>
-        @foreach($categories as $category)
-        <div class="col-lg col-sm-6 col-xs-12">
-          <div class="item">
-            <h4>{{$category->name}}</h4>
-            <div class="thumb">
-              <a href="product-details.html"><img src="{{ asset('categories/' . $category->image) }}" alt="" style="max-width: 100px;"></a>
+      </div>
+  
+      <!-- Dynamic Product Items -->
+      <div class="container px-1">
+        <div class="row g-3">
+            @foreach ($newProducts as $product)
+            <div class="col-6 col-md-4 col-lg-3 mb-4">
+                <div class="card h-90 d-flex flex-column px-2 py-3">
+                    <div class="card-img-container" style="aspect-ratio: 4/4; overflow: hidden;border-radius: 10%;border: 5px solid #2768ff;">
+                        <a href="{{ route('products.show', $product->id) }}">
+                            <img class="card-img-top img-fluid"
+                                 style="object-fit: contain; width: 100%; max-height: 100%;" 
+                                 src="{{ asset('products/' . $product->image) }}" 
+                                 alt="{{ $product->name }}">
+                        </a>
+                    </div>
+                    <div class="card-body text-center d-align flex-column justify-content-between p-4">
+                        <div class="text-center">
+                            @if ($product->stock <= 0)
+                                <p class="text-danger font-weight-bold">Out of Stock</p>
+                                <p class="price" style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
+                                    @if ($product->discount > 0)
+                                        <span class="text-muted text-decoration-line-through">${{ $product->price }}</span>
+                                        <span class="text-primary">${{ $product->price - ($product->price * $product->discount / 100) }}</span>
+                                    @else
+                                        <span>${{ $product->price }}</span>
+                                    @endif
+                                </p>
+                            @else
+                                <p class="text-success font-weight-bold">In Stock</p>
+                                <p class="price" style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
+                                    @if ($product->discount > 0)
+                                        <span class="text-muted text-decoration-line-through">${{ $product->price }}</span>
+                                        <span class="text-primary">${{ $product->price - ($product->price * $product->discount / 100) }}</span>
+                                    @else
+                                        <span>${{ $product->price }}</span>
+                                    @endif
+                                </p>
+                            @endif
+                            <span class="category text-muted">{{ $product->category->name }}</span>
+                            <h5 class="card-title mt-2" style="font-size: 15px">{{ $product->name }}</h5>
+                        </div>
+                        @if ($product->stock > 0)
+                            <form action="{{ route('cart.add') }}" method="POST" class="mt-3 text-center">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <button type="submit" class="btn btn-primary btn-sm mt-auto"><i class="fa fa-shopping-bag"></i> Cart</button>
+                            </form>
+                        @else
+                            <button type="button" class="btn btn-danger btn-sm mt-auto" disabled>
+                                <i class="fa fa-times"></i> Unavailable
+                            </button>
+                        @endif
+                    </div>
+                </div>
             </div>
+            @endforeach
+        </div>
+    </div>
+  
+      <!-- View All Button centered below items -->
+      <div class="row">
+        <div class="col-12 text-center mt-4">
+          <div class="main-button">
+            <a href="{{ route('products.index') }}" class="view-all-link">View All</a>
           </div>
         </div>
-       @endforeach
       </div>
     </div>
   </div>
   
-  {{-- <div class="ad-section" style="background-color: #fef7ec; padding: 50px 0; border: 3px solid #3db5ff; border-radius: 10px; margin: 20px; text-align: center;">
+
+  <div class="section trending">
     <div class="container">
-      <div class="row align-items-center">
-        <!-- Ad Content -->
+      <div class="row">
         <div class="col-lg-6">
-          <div class="ad-content">
-            <h6 style="color: #3daeff; font-size: 16px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">
-              Limited-Time Offer!
-            </h6>
-            <h2 style="font-size: 32px; font-weight: bold; margin: 10px 0;">
-              Pre-Order Now & Get <em style="color: #3daeff;">Exclusive Discounts</em>
-            </h2>
-            <p style="font-size: 16px; color: #555; margin: 20px 0;">
-              Don't miss out on unbeatable prices for top-quality products. Subscribe to stay updated on our latest deals!
-            </p>
-            <div class="cta-button" style="margin-top: 20px;">
-              <a href="shop.html" style="padding: 10px 25px; background-color: #3daeff; color: #fff; text-decoration: none; font-size: 16px; border-radius: 5px;">
-                Shop Now
-              </a>
+            <div class="section-heading">
+                <h6>Second Hand</h6>
+                <h2>Second Phone</h2>
             </div>
-          </div>
         </div>
+      </div>
+      
+      <!-- Dynamic Product Items -->
+      <div class="container px-1">
+        <div class="row g-3">
+            @foreach ($secondHandProducts as $product)
+            <div class="col-6 col-md-4 col-lg-3 mb-4">
+                <div class="card h-90 d-flex flex-column px-2 py-3">
+                    <div class="card-img-container" style="aspect-ratio: 4/4; overflow: hidden;border-radius: 10%;border: 5px solid #2768ff;">
+                        <a href="{{ route('products.show', $product->id) }}">
+                            <img class="card-img-top img-fluid"
+                                 style="object-fit: contain; width: 100%; max-height: 100%;" 
+                                 src="{{ asset('products/' . $product->image) }}" 
+                                 alt="{{ $product->name }}">
+                        </a>
+                    </div>
+                    <div class="card-body text-center d-align flex-column justify-content-between p-4">
+                        <div class="text-center">
+                            @if ($product->stock <= 0)
+                                <p class="text-danger font-weight-bold">Out of Stock</p>
+                                <p class="price" style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
+                                    @if ($product->discount > 0)
+                                        <span class="text-muted text-decoration-line-through">${{ $product->price }}</span>
+                                        <span class="text-primary">${{ $product->price - ($product->price * $product->discount / 100) }}</span>
+                                    @else
+                                        <span>${{ $product->price }}</span>
+                                    @endif
+                                </p>
+                            @else
+                                <p class="text-success font-weight-bold">In Stock</p>
+                                <p class="price" style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
+                                    @if ($product->discount > 0)
+                                        <span class="text-muted text-decoration-line-through">${{ $product->price }}</span>
+                                        <span class="text-primary">${{ $product->price - ($product->price * $product->discount / 100) }}</span>
+                                    @else
+                                        <span>${{ $product->price }}</span>
+                                    @endif
+                                </p>
+                            @endif
+                            <span class="category text-muted">{{ $product->category->name }}</span>
+                            <h5 class="card-title mt-2" style="font-size: 15px">{{ $product->name }}</h5>
+                        </div>
+                        @if ($product->stock > 0)
+                            <form action="{{ route('cart.add') }}" method="POST" class="mt-3 text-center">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <button type="submit" class="btn btn-primary btn-sm mt-auto"><i class="fa fa-shopping-bag"></i> Cart</button>
+                            </form>
+                        @else
+                            <button type="button" class="btn btn-danger btn-sm mt-auto" disabled>
+                                <i class="fa fa-times"></i> Unavailable
+                            </button>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
   
-        <!-- Ad Image and Subscription -->
-        <div class="col-lg-6">
-          <div class="ad-image" style="margin-bottom: 20px;">
-            <img src="homes/assets/images/trending-04.jpg" alt="Ad Product" style="max-width: 100%; border-radius: 10px;">
-          </div>
-          <div class="ad-subscription" style="margin-top: 20px;">
-            <h6 style="color: #3daeff; font-size: 16px; font-weight: bold; text-transform: uppercase;">Subscribe Now</h6>
-            <p style="font-size: 14px; color: #777; margin-bottom: 10px;">Sign up for our newsletter and enjoy up to $100 off on your first purchase!</p>
-            <form id="subscribe" action="#" method="POST" style="display: flex; gap: 10px; justify-content: center;">
-              <input type="email" class="form-control" placeholder="Your email..." 
-                     style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; max-width: 300px;">
-              <button type="submit" 
-                      style="padding: 10px 20px; background-color: #3daeff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
-                Subscribe
-              </button>
-            </form>
-          </div>
+      <!-- View All Button centered below items -->
+      <div class="row">
+        <div class="col-12 text-center mt-4">
+            <div class="main-button">
+                <a href="{{ route('products.index') }}" class="view-all-link">View All</a>
+            </div>
         </div>
       </div>
     </div>
-  </div> --}}
+  </div>
+
+<div class="section categories">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center mb-5">
+                <div class="section-heading">
+                    <h6>Categories</h6>
+                    <h2>Top Categories</h2>
+                </div>
+            </div>
+            @foreach($categories as $category)
+            <div class="col-6 col-sm-4 col-md-3 mb-4">
+                <div class="item text-center">
+                    <h4 class="mb-3">{{ $category->name }}</h4>
+                    <div class="thumb mb-3" style="height: 120px; overflow: hidden;">
+                        <a href="{{ route('category.show', $category->name) }}">
+                            <img src="{{ asset('categories/' . $category->image) }}" 
+                                 alt="{{ $category->name }}" 
+                                 class="img-fluid" 
+                                 style="width: 80%; height: 80%; object-fit: contain;">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</div>
+
+
+
+
+  
+  {{--  --}}
   
 
 
 
   <div class="container my-4">
     <!-- Welcome Section -->
-    <div class="text-center mb-5">
-        <h1>Welcome to Our Platform</h1>
-        <p>Discover the best deals and offers curated just for you!</p>
-    </div>
+
 
     <!-- Ads Section -->
     <div class="ads-section">

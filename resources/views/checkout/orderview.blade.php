@@ -19,6 +19,43 @@
     text-align: center;
     vertical-align: middle; /* Optional */
 }
+  /* Floating cart button */
+  .popup-cart-btn {
+position: fixed;
+bottom: 20px; /* Distance from the bottom of the screen */
+right: 20px; /* Distance from the right side of the screen */
+background-color: #007bff; /* Button background color */
+color: white; /* Text color */
+padding: 15px 20px;
+border-radius: 50%; /* Round button */
+font-size: 24px;
+border: none;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+cursor: pointer;
+z-index: 1000; /* Ensure it stays on top */
+transition: all 0.3s ease-in-out;
+}
+
+/* Hover effect */
+.popup-cart-btn:hover {
+background-color: #0056b3;
+}
+
+/* Cart count styling (small red circle) */
+.cart-count {
+position: absolute;
+top: 10px;
+right: 5px;
+background-color: red;
+color: white;
+font-size: 12px;
+width: 18px;
+height: 18px;
+border-radius: 50%;
+text-align: center;
+line-height: 18px; /* Centers the number vertically */
+font-weight: bold;
+}
         /* Footer Styling */
         .footer {
             background-color: #141414;
@@ -134,55 +171,49 @@
     <div class="container mt-5">
         <h3>Your Orders</h3>
         @if($orders->isEmpty())
-
         <div class="alert alert-info text-center mt-5">
             <p style="font-size: 20px;font-weight: bold;font-family: 'Poppins', sans-serif;">You have no orders.</p>
         </div>
-
         @else
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Order Number</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php
-                    $displayedOrderNumbers = [];
-                @endphp
-                @foreach($orders as $order)
-                    @if(!in_array($order->order_number, $displayedOrderNumbers))
-                        <tr>
-                            <td>{{ $order->order_number }}</td>
-                            <td>
+        <div class="row">
+            @php
+                $displayedOrderNumbers = [];
+            @endphp
+            @foreach($orders as $order)
+                @if(!in_array($order->order_number, $displayedOrderNumbers))
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">🧾{{ $order->order_number }}</h5>
+                            <p class="card-text">
+                                <strong>📋Quantity: </strong>
+                                <span>{{ $order->quantity }}</span>
+                                <strong>💰Total Price: </strong>
+                                <span>${{ number_format($order->total_price, 2) }}</span><br>
+                                <strong>📊Status: </strong>
                                 @if($order->status == 'pending')
-                                    <span style="color: rgb(255, 145, 0);">{{ $order->status }}</span>
-                                @elseif($order->status == 'paid')
-                                    <span style="color: green;">{{ $order->status }}</span>
+                                    <span style="color: rgb(255, 145, 0);">⏳{{ $order->status }}</span>
+                                @elseif($order->status == 'success')
+                                    <span style="color: green;">✅{{ $order->status }}</span>
                                 @elseif($order->status == 'canceled')
-                                    <span style="color: red;">{{ $order->status }}</span>
+                                    <span style="color: red;">❌{{ $order->status }}</span>
                                 @else
                                     <span>{{ $order->status }}</span>
                                 @endif
-                            </td>
-                            
-                            <td>
-                                <a href="{{ route('order.number', $order->order_number) }}" class="btn btn-primary">
-                                    View Order
-                                </a>
-                            </td>
-                        </tr>
-                        @php
-                            $displayedOrderNumbers[] = $order->order_number;
-                        @endphp
-                    @endif
-                @endforeach
-            </tbody>
-        </table>
+                            </p>
+                            <a href="{{ route('order.number', $order->order_number) }}" class="btn btn-primary">View Order</a>
+                        </div>
+                    </div>
+                </div>
+                @php
+                    $displayedOrderNumbers[] = $order->order_number;
+                @endphp
+                @endif
+            @endforeach
+        </div>
         @endif
     </div>
+    
     
 
     @include('home.footer')

@@ -159,7 +159,7 @@ body {
 
 .main-button a {
   display: inline-block;
-  background-color: #ee626b;
+  background-color: #3866ff;
   text-transform: uppercase;
   color: #fff;
   font-size: 14px;
@@ -820,7 +820,7 @@ Trending Style
 
 .trending .main-button {
   margin-top: 32px;
-  text-align: right;
+  text-align: center;
 }
 
 .trending .item  {
@@ -1626,7 +1626,7 @@ body {
   .cta::after,
   .most-played .main-button,
   .related-games .main-button {
-    display: none;
+    text-align: center;
   }
   .most-played .section-heading {
     text-align: center;

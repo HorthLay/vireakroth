@@ -182,7 +182,7 @@
             height: 40px;
             transition: transform 0.3s, box-shadow 0.3s;
             border-radius: 50%;
-            background: #ff2a91;
+            background: #2a4aff;
             padding: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }

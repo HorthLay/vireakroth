@@ -65,6 +65,43 @@
         .btn-close:hover {
             cursor: pointer;
         }
+          /* Floating cart button */
+.popup-cart-btn {
+position: fixed;
+bottom: 20px; /* Distance from the bottom of the screen */
+right: 20px; /* Distance from the right side of the screen */
+background-color: #007bff; /* Button background color */
+color: white; /* Text color */
+padding: 15px 20px;
+border-radius: 50%; /* Round button */
+font-size: 24px;
+border: none;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+cursor: pointer;
+z-index: 1000; /* Ensure it stays on top */
+transition: all 0.3s ease-in-out;
+}
+
+/* Hover effect */
+.popup-cart-btn:hover {
+background-color: #0056b3;
+}
+
+/* Cart count styling (small red circle) */
+.cart-count {
+position: absolute;
+top: 10px;
+right: 5px;
+background-color: red;
+color: white;
+font-size: 12px;
+width: 18px;
+height: 18px;
+border-radius: 50%;
+text-align: center;
+line-height: 18px; /* Centers the number vertically */
+font-weight: bold;
+}
         /* Footer Styling */
         .footer {
             background-color: #141414;
@@ -199,7 +236,7 @@
                         <p><strong>📊Status:</strong> 
                             @if($orders[0]->status == 'pending')
                                 <span style="color: orange;">{{ $orders[0]->status }}⏳</span>
-                            @elseif($orders[0]->status == 'paid')
+                            @elseif($orders[0]->status == 'success')
                                 <span style="color: green;">{{ $orders[0]->status }}✅</span>
                             @elseif($orders[0]->status == 'canceled')
                                 <span style="color: red;">{{ $orders[0]->status }}❌</span>
@@ -212,28 +249,42 @@
                 </div>
 
                 <h4>📦Items in Your Order</h4>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($orders as $order)
-                                <tr>
-                                    <td>{{ $order->product->name }}</td>
-                                    <td>${{ number_format($order->product->price, 2) }}</td>
-                                    <td>{{ $order->quantity }}</td>
-                                    <td>${{ number_format($order->total_price, 2) }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                <div class="row">
+                    @foreach($orders as $order)
+                    @php
+                    $product = $order->product;
+                    $priceAfterDiscount = $product->price;
+                    $discountAmount = 0;
+                    if ($product->discount > 0) {
+                        $discountAmount = $product->price * ($product->discount / 100);
+                        $priceAfterDiscount = $product->price - $discountAmount;
+                    }
+                @endphp
+                    <div class="col-md-6 mb-4">
+                        <div class="card border-primary">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ asset('products/' . $order->product->image) }}" alt="{{ $order->product->name }}" class="img-thumbnail me-3" style="width: 100px; height: auto;">
+                                    <div>
+                                        <h5 class="card-title mb-1">{{ $order->product->name }}</h5>
+                                        <p class="mb-1"><strong>Quantity:</strong> {{ $order->quantity }}</p>
+                                        <p class="mb-1"><strong>Price:</strong> ${{ number_format($order->product->price, 2) }}</p>
+                                        <p class="mb-1"><strong>Total:</strong> ${{ number_format($order->total_price, 2) }}</p>
+                                        @if($discountAmount > 0)
+                                        <p class="mb-0 text-danger"><strong>Discount:</strong> - ${{ number_format($discountAmount, 2) }}</p>
+                                        @else
+                                        <p class="mb-0 text-muted">No Discount</p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
                 </div>
+
+
+                
             </div>
         @else
             <div class="col-lg-12">
@@ -251,10 +302,38 @@
                 <div class="col-lg-12">
                     <p style="color: red;">This order has been cancelled.</p>
                 </div>
+
+            @elseif($order->status == 'success')
+                <div class="col-lg-12"></div>
+                    <p style="color: green;">This order has been Pay.</p>
+                </div>
             @else
                 <a class="btn btn-danger" onClick="cancelConfirmation(event)" style="padding: 5px 10px; font-size: 14px;" href="{{ url('/order_cancel', $order->order_number) }}">
                     Cancel Order
                 </a>
+                @if($order->status == 'pending')
+                <div class="text-center mt-4">
+                    <p style="color: red;"><strong>Scan QR Code</strong>:{{ $order->status }}</p>
+                    <form action="{{ route('order.checkoutpage', ['order_number' => $order->order_number])}}" method="GET">
+                        @csrf
+                        <p>checkout</p>
+                        <button type="submit" style="border: none; background: none; padding: 0;">
+                            <img src="{{ asset('pic/khqr.png') }}" alt="Checkout" style="max-width: 200px;">
+                        </button>
+                    </form>
+
+                </div>
+                @else
+                <h4>Payment Information</h4>
+                <div class="card">
+                    <div class="card-body">
+                        <strong>Payment Status:</strong> <p class="text-success">{{ $order->status}}</p>
+                        <div style="padding: 10px;color: rgb(36, 25, 245);background-color: #2181ff;border-radius: 5px" >
+                            <p style="color: rgb(255, 255, 255);">Thank For Everything for Your Order and Have a Nice Day :)🥰🙏</p>
+                        </div>
+                    </div>
+                </div>
+                @endif
             @endif
             @php
                 $displayedOrderNumbers[] = $order->order_number;

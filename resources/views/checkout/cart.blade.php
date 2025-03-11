@@ -140,7 +140,7 @@
                     <nav class="main-nav">
                         <!-- ***** Logo Start ***** -->
                         <a href="{{url('/')}}" class="logo">
-                            <img src="{{asset ('homes/assets/images/logo.png')}}" alt="" style="width: 158px;">
+                            <img src="{{asset ('pic/vireakroth.png')}}" alt="" style="width: 50px;">
                         </a>
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->

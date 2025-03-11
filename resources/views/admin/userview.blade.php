@@ -102,9 +102,13 @@
                         <h3>Total User</h3>
                         <h1 align="center">{{ $users->count() }}</h1>
                     </div>
-                    <div class="progresss">
-                        <img src="{{ asset('pic/default.png') }}" alt="">
-                    </div>
+                    <lord-icon
+    src="https://cdn.lordicon.com/hroklero.json"
+    trigger="in"
+    delay="100"
+    colors="primary:#30c9e8,secondary:#ffc738"
+    style="width:80px;height:80px">
+</lord-icon>
                 </div>
             </div>
         </div>
@@ -178,7 +182,7 @@
 
         <div class="user-profile">
             <div class="logo">
-                <img style="margin-left:20%;" src="admin/images/logo.png">
+                <img style="margin-left:20%;" src="{{ asset('pic/vireakroth.png') }}">
                 <h2>VireakRoth <br> PhoneShop</h2>
                 <p>address: Phum 2 Songkat 3 SihanoukVille Province</p>
             </div>
@@ -239,7 +243,7 @@
         }
     };
 </script>
-
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script src="{{ asset('admin/orders.js') }}"></script>
 <script src="{{ asset('admin/index.js') }}"></script>

@@ -6,8 +6,7 @@
             <div class="col-lg-4 col-md-6">
                 <h5>About Us</h5>
                 <p>
-                    LUGX Gaming Company is a premier platform for gaming enthusiasts. 
-                    We bring the latest games, updates, and gaming news to your fingertips.
+                    Best Shop in Cambodia - VireakRoth Phone Shop is a leading online shopping platform that offers a wide selection of high-quality products at competitive prices.
                 </p>
             </div>
             <!-- Quick Links -->
@@ -32,8 +31,8 @@
         </div>
         <div class="text-center mt-4">
             <p>
-                &copy; 2048 LUGX Gaming Company. All rights reserved. 
-                <a href="https://templatemo.com" target="_blank" rel="nofollow">Design: TemplateMo</a>
+                &copy; Holix developer Website. 
+                <a href="https://t.me/Horth_lay" target="_blank" rel="nofollow">Developer: Holix</a>
             </p>
         </div>
     </div>

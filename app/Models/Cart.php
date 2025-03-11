@@ -9,9 +9,10 @@ class Cart extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id', // Allow mass assignment for customer_id
+        'user_id',
         'product_id',
         'quantity',
+        'discount',
         'total_price',
     ];
 

@@ -165,6 +165,26 @@ class CartController extends Controller
 
 
 
+    public function getCart()
+    {
+        $cart = session()->get('cart', []);
+        return response()->json(['cart' => $cart], 200);
+    }
+
+
+    public function removeFromCart($id)
+    {
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+            session()->put('cart', $cart);
+        }
+
+        return response()->json(['message' => 'Product removed from cart', 'cart' => $cart], 200);
+    }
+
+
     public function update(Request $request, $id)
     {
         if (Auth::check()) {

@@ -103,6 +103,40 @@
         height: 100px;
     }
 
+    .search-box {
+        max-width: 400px;
+        margin: 20px auto;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-box .input-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .search-box .form-control {
+        border-radius: 20px 0 0 20px;
+        border: 1px solid #ced4da;
+        padding: 17px 15px;
+        font-size: 16px;
+    }
+
+    .search-box .btn {
+        border-radius: 0 20px 20px 0;
+        background: #007bff;
+        color: white;
+        padding: 10px 20px 10px 15px;
+        border: none;
+        transition: background 0.3s ease-in-out;
+    }
+
+    .search-box .btn:hover {
+        background: #0056b3;
+    }
+
     /* Pagination Styling */
     .pagination {
             display: flex;

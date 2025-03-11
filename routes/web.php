@@ -13,7 +13,9 @@ use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Models\Cart;
+use App\Models\Order;
 use App\Models\Product;
+use App\Models\Reminder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -66,12 +68,26 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/category', [AdminController::class, 'category'])->name('category');
     Route::post('/addcategory', [AdminController::class, 'categoryadd'])->name('categories.store');
     Route::get('/category_delete/{id}', [AdminController::class, 'categorydelete'])->name('category.delete');
-    Route::put('/category_update/{id}', [AdminController::class, 'update'])->name('categories.update');
+    // categoryupdate
+    Route::get('/category_update/{id}', [AdminController::class, 'update'])->name('categories.view');
+    Route::post('/update_category/{id}', [AdminController::class, 'update_category'])->name('categories.update');
+    // product
     Route::get('/product', [ProductController::class, 'product'])->name('product');
     Route::post('/product_store', [AdminController::class, 'prosuctstore'])->name('products.store');
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
-    Route::get('/product_delete/{id}', [ProductController::class, 'productdelete'])->name('category.delete');
+    Route::get('/product_delete/{id}', [ProductController::class, 'productdelete'])->name('product.delete');
     Route::post('/addads', [AdminController::class, 'adsadd'])->name('ads.store');
+    Route::get('/product_edit/{id}', [ProductController::class, 'edit'])->name('products.edit');
+    Route::post('/product_update/{id}', [ProductController::class, 'productupdate'])->name('products.update');
+    Route::get('/orderadmin', [AdminController::class, 'OrderView'])->name('orders.index');
+    Route::get('/orders/search', [OrderController::class, 'search'])->name('orders.search');
+
+    // order view
+    Route::get('/order_details/{order_number}', function ($order_number) {
+        $reminders = Reminder::where('status', true)->get();
+        $orders = Order::where('order_number', $order_number)->paginate(5);
+        return view('admin.order_details', compact('orders', 'reminders', 'order_number'));
+    });
 });
 
 
@@ -108,7 +124,7 @@ Route::get('auth/google/call-back', [GoogleController::class, 'callback']);
 Route::get('/contact-us', [ContactController::class, 'index'])->name('contact');
 
 // order
-Route::get('/ordersView', [OrderController::class, 'OrderView'])->name('orders.index')->middleware('auth');
+Route::get('/ordersView', [OrderController::class, 'OrderView'])->name('orders.view')->middleware('auth');
 Route::get('/order/{order_number}', [OrderController::class, 'showOrderByNumber'])->name('order.number');
 Route::get('/order_cancel/{order_number}', [OrderController::class, 'callordernumber'])->name('order.cancel');
 Route::post('/order/checkout/{order_number}', [OrderController::class, 'checkout'])->name('order.checkout');
@@ -116,4 +132,11 @@ Route::post('/order/checkout/{order_number}', [OrderController::class, 'checkout
 Route::get('order/checkout/{order_number}', [OrderController::class, 'checkoutpage'])->name('order.checkoutpage');
 // checkout
 Route::post('/update-order-status', [OrderController::class, 'updateStatus'])->name('updateOrderStatus');
+// Home
 Route::get('/success/{order_number}', [OrderController::class, 'success'])->name('order.success');
+Route::post('/statushome/{order_number}', [OrderController::class, 'Statushome'])->name('statushome');
+
+
+// admin
+Route::put('/update_order_status/{id}', [AdminController::class, 'updateStatus']);
+Route::post('/update-order-status/{order_number}', [OrderController::class, 'Status'])->name('update-status');

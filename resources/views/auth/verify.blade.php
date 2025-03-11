@@ -122,7 +122,7 @@ text-decoration: none
 </xml>
 <![endif]-->
 </head>
-<body id="body" class="t49" style="min-width:100%;Margin:0px;padding:0px;background-color:#FFFFFF;"><div class="t48" style="background-color:#FFFFFF;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" align="center"><tr><td class="t47" style="font-size:0;line-height:0;mso-line-height-rule:exactly;background-color:#FFFFFF;" valign="top" align="center">
+<body id="body" cxt49" style="min-width:100%;Margin:0px;padding:0px;background-color:#FFFFFF;"><div class="t48" style="background-color:#FFFFFF;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" align="center"><tr><td class="t47" style="font-size:0;line-height:0;mso-line-height-rule:exactly;background-color:#FFFFFF;" valign="top" align="center">
 <!--[if mso]>
 <v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false">
 <v:fill color="#FFFFFF"/>
@@ -148,7 +148,9 @@ text-decoration: none
 <td class="t3" style="width:42px;">
 <!--<![endif]-->
 <table class="t2" role="presentation" cellpadding="0" cellspacing="0" width="100%" style="width:100%;"><tr>
-<td class="t1"><div style="font-size:0px;"><img class="t0" style="display:block;border:0;height:auto;width:100%;Margin:0;max-width:100%;" width="42" height="42" alt="" src="https://1c4277f9-5d74-4ea5-8639-179415792f5a.b-cdn.net/e/ebbe3c3f-19b4-4df0-b79e-a57b340c8b80/b2b23cca-5817-4b96-a5d0-fcfcb34aa517.png"/></div></td>
+<td class="t1"><div style="font-size:0px;">
+    <img src="{{ asset('pic/vireakroth.png')}}" alt="Image" width="50" height="50">
+</div></td>
 </tr></table>
 </td>
 </tr></table>
@@ -176,7 +178,7 @@ text-decoration: none
 <td class="t15" style="width:514px;">
 <!--<![endif]-->
 <table class="t14" role="presentation" cellpadding="0" cellspacing="0" width="100%" style="width:100%;"><tr>
-<td class="t13"><p class="t12" style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:25px;font-weight:400;font-style:normal;font-size:15px;text-decoration:none;text-transform:none;letter-spacing:-0.1px;direction:ltr;color:#141414;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;">Please click the button below to confirm your email address and finish setting up your account. This link is valid for 48 hours.</p></td>
+<td class="t13"><p class="t12" style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:25px;font-weight:400;font-style:normal;font-size:15px;text-decoration:none;text-transform:none;letter-spacing:-0.1px;direction:ltr;color:#141414;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;">Please click the button below to confirm your email address and finish setting up your account.</p></td>
 </tr></table>
 </td>
 </tr></table>
@@ -242,11 +244,10 @@ text-decoration: none
 <td class="t37" style="padding:24px 0 0 0;"><div class="t35" style="width:100%;text-align:left;"><div class="t34" style="display:inline-block;"><table class="t33" role="presentation" cellpadding="0" cellspacing="0" align="left" valign="top">
 <tr class="t32"><td></td><td class="t27" valign="top">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="t26" style="width:auto;"><tr>
-<td class="t24" style="background-color:#FFFFFF;text-align:center;line-height:20px;mso-line-height-rule:exactly;mso-text-raise:2px;"><span class="t23" style="display:block;margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:20px;font-weight:600;font-style:normal;font-size:14px;text-decoration:none;direction:ltr;color:#222222;text-align:center;mso-line-height-rule:exactly;mso-text-raise:2px;">Stroopwafel</span></td><td class="t25" style="width:20px;" width="20"></td>
+<td class="t24" style="background-color:#FFFFFF;text-align:center;line-height:20px;mso-line-height-rule:exactly;mso-text-raise:2px;"><span class="t23" style="display:block;margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:20px;font-weight:600;font-style:normal;font-size:14px;text-decoration:none;direction:ltr;color:#222222;text-align:center;mso-line-height-rule:exactly;mso-text-raise:2px;">Vireakroth</span></td><td class="t25" style="width:20px;" width="20"></td>
 </tr></table>
 </td><td class="t31" valign="top">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="t30" style="width:auto;"><tr>
-<td class="t29" style="background-color:#FFFFFF;text-align:center;line-height:20px;mso-line-height-rule:exactly;mso-text-raise:2px;"><span class="t28" style="display:block;margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:20px;font-weight:500;font-style:normal;font-size:14px;text-decoration:none;direction:ltr;color:#B4BECC;text-align:center;mso-line-height-rule:exactly;mso-text-raise:2px;">Unsubscribe from these emails</span></td>
 </tr></table>
 </td>
 <td></td></tr>

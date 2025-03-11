@@ -112,7 +112,7 @@ button:hover {
 
             <div class="user-profile">
                 <div class="logo">
-                    <img style="margin-left:20%;" src="admin/images/logo.png">
+                    <img style="margin-left:20%;" src="{{ asset('pic/vireakroth.png') }}">
                     <h2>VireakRoth <br> PhoneShop</h2>
                     <p>address: Phum 2 Songkat 3 SihanoukVille Province</p>
                 </div>

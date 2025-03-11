@@ -1,198 +1,119 @@
-{{-- <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Funime</title>
-    @include('auth.css')
-</head>
-<body>
-    @if (session('status'))
-        <div id="status-message" data-message="{{ session('status') }}"></div>
-    @endif
-
-    @if (session('error'))
-        <div id="error-message" data-message="{{ session('error') }}"></div>
-    @endif
-
-    <div class="wrapper">
-        <form method="POST" action="{{ route('forget.password.post') }}">
-            @csrf
-            <div class="input-field">
-                <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus>
-                <label for="email">Email Address</label>
-            </div>
-
-            @error('email')
-                <p style="color: red;">{{ $message }}</p>
-            @enderror
-
-            <div>
-                <button type="submit">
-                    Send Password Reset Link
-                </button>
-            </div>
-        </form>
-    </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const statusMessage = document.getElementById('status-message');
-            const errorMessage = document.getElementById('error-message');
-
-            if (statusMessage) {
-                alert(statusMessage.getAttribute('data-message'));
-            }
-
-            if (errorMessage) {
-                alert(errorMessage.getAttribute('data-message'));
-            }
-        });
-    </script>
-</body>
-</html> --}}
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Login V5</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
-	<link rel="icon" type="form/image/png" href="form/images/icons/favicon.ico"/>
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="form/vendor/bootstrap/css/bootstrap.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="form/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="form/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="form/vendor/animate/animate.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="form/vendor/css-hamburgers/hamburgers.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="form/vendor/animsition/css/animsition.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="form/vendor/daterangepicker/daterangepicker.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="form/css/util.css">
-	<link rel="stylesheet" type="text/css" href="form/css/main.css">
-<!--===============================================================================================-->
-<style>
-        /* Success Message Styling */
-        .success-message {
-        background-color: #f73838;
-        color: white;
-        padding: 15px;
-        border-radius: 5px;
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        width: 300px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-        font-size: 16px;
-        z-index: 1000;
-        opacity: 0;
-        transform: translateX(100%);
-        transition: all 0.3s ease-in-out;
-    }
+    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="logins/images/icons/favicon.ico"/>
 
-    .success-message.show {
-        opacity: 1;
-        transform: translateX(0);
-    }
-
-    .success-message .close-btn {
-        color: white;
-        font-size: 20px;
-        background: transparent;
-        border: none;
-        position: absolute;
-        top: 5px;
-        right: 10px;
-        cursor: pointer;
-    }
-
-    .success-message .close-btn:hover {
-        color: #ffffff;
-    }
-
-</style>
+    <!-- Bootstrap & Styles -->
+    <link rel="stylesheet" type="text/css" href="logins/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="logins/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="logins/vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="logins/vendor/css-hamburgers/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css" href="logins/vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="logins/css/util.css">
+    <link rel="stylesheet" type="text/css" href="logins/css/main.css">
 </head>
 <body>
-	
-	<div class="limiter">
-		<div class="container-login100" style="background-image: url('form/images/bg-01.jpg');">
-			<div class="wrap-login100 p-l-110 p-r-110 p-t-62 p-b-33">
-                @if(session('error'))
-                <div class="success-message show">
-                    <p style="color: red;">{{ session('error') }}</p>
-                    <button class="close-btn" onclick="document.querySelector('.success-message').classList.remove('show')">×</button>
+    
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-pic js-tilt" data-tilt>
+                    <img src="logins/images/img-01.png" alt="IMG">
                 </div>
-                @endif
-				<form method="POST" action="{{ route('forget.password.post') }}" class="login100-form validate-form flex-sb flex-w">
+
+                <form method="POST" action="{{ route('forget.password.post') }}" class="login100-form validate-form">
                     @csrf
-                    <span class="login100-form-title p-b-53">
-						Forgot Password
-					</span>
-					<div class="p-t-31 p-b-9">
-						<span class="txt1">
-							Email
-						</span>
-					</div>
-					<div class="wrap-input100 validate-input" data-validate = "Email is required">
-						<input class="input100" type="email" name="email" required autofocus>
-						<span class="focus-input100"></span>
-					</div>
-                    <div class="container-login100-form-btn m-t-17">
-						<button class="login100-form-btn">
-						   Send Password Reset Link
-						</button>
-					</div>
-					</div>  
-                
-				</form>
-			</div>
-		</div>
-	</div>
-	
 
-	<div id="dropDownSelect1"></div>
+                    <!-- Success and Error Messages -->
+                   
+
+                    <span class="login100-form-title">
+                        Reset Password
+                    </span>
+
+                    <!-- Email Field -->
+                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: example@example.com">
+                        <input 
+                            class="input100" 
+                            type="text" 
+                            name="email" 
+                            placeholder="Email" 
+                            value="{{ old('email') }}"
+                        >
+                        <span class="focus-input100"></span>
+                        <span class="symbol-input100">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </span>
+                    </div>
+
+                    @if (session('success'))
+    <p class="text-success" style="margin-top: 5px;">{{ session('success') }}</p>
+@endif
+
+@if (session('error'))
+    <p class="text-danger" style="margin-top: 5px;">{{ session('error') }}</p>
+@endif
+
+@error('password')
+    <p class="text-danger" style="margin-top: 5px;">{{ $message }}</p>
+@enderror
+
+
+                    @error('email')
+                        <p class="text-danger" style="margin-top: 5px;">{{ $message }}</p>
+                    @enderror
+
+                    <!-- Submit Button -->
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn">
+                            Reset Password
+                        </button>
+                    </div>
+
+                    <!-- Create Account Link -->
+                    <div class="text-center p-t-136">
+                        <a class="txt2" href="{{ route('login') }}">
+                            Already have an account?
+                            <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="logins/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="logins/vendor/bootstrap/js/popper.js"></script>
+    <script src="logins/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="logins/vendor/select2/select2.min.js"></script>
+    <script src="logins/vendor/tilt/tilt.jquery.min.js"></script>
+
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const statusMessage = document.getElementById('status-message');
-            const errorMessage = document.getElementById('error-message');
-
-            if (statusMessage) {
-                alert(statusMessage.getAttribute('data-message'));
-            }
-
-            if (errorMessage) {
-                alert(errorMessage.getAttribute('data-message'));
-            }
+        $('.js-tilt').tilt({
+            scale: 1.1
         });
+
+        document.addEventListener("DOMContentLoaded", function() {
+        let resetBtn = document.querySelector('.login100-form-btn');
+        let errorMsg = document.querySelector('.alert-danger');
+
+        if (errorMsg && errorMsg.innerText.includes("Please wait")) {
+            resetBtn.disabled = true;
+            setTimeout(() => {
+                resetBtn.disabled = false;
+            }, 300000); // 5 minutes
+        }
+    });
     </script>
-<!--===============================================================================================-->
-	<script src="form/vendor/jquery/jquery-3.2.1.min.js"></script>
-<!--===============================================================================================-->
-	<script src="form/vendor/animsition/js/animsition.min.js"></script>
-<!--===============================================================================================-->
-	<script src="form/vendor/bootstrap/js/popper.js"></script>
-	<script src="form/vendor/bootstrap/js/bootstrap.min.js"></script>
-<!--===============================================================================================-->
-	<script src="form/vendor/select2/select2.min.js"></script>
-<!--===============================================================================================-->
-	<script src="form/vendor/daterangepicker/moment.min.js"></script>
-	<script src="form/vendor/daterangepicker/daterangepicker.js"></script>
-<!--===============================================================================================-->
-	<script src="form/vendor/countdowntime/countdowntime.js"></script>
-<!--===============================================================================================-->
-	<script src="form/js/main.js"></script>
+
+    <script src="logins/js/main.js"></script>
 
 </body>
 </html>
-

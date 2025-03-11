@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <title>Lugx Gaming - Product Detail</title>
+    <title>VireakRoth - Product Detail</title>
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('homes/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Additional CSS Files -->
@@ -14,102 +14,7 @@
     <link rel="stylesheet" href="{{ asset('homes/assets/css/owl.css') }}">
     <link rel="stylesheet" href="{{ asset('homes/assets/css/animate.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
-    <style>
-
-
-             /* Success Message Styling */
-    .success-message {
-        background-color: #4CAF50;
-        color: white;
-        padding: 15px;
-        border-radius: 5px;
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        width: 300px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        font-size: 16px;
-        z-index: 1000;
-        opacity: 0;
-        transform: translateX(100%);
-        transition: all 0.3s ease-in-out;
-    }
-
-    .success-message.show {
-        opacity: 1;
-        transform: translateX(0);
-    }
-
-    .success-message .close-btn {
-        color: white;
-        font-size: 20px;
-        background: transparent;
-        border: none;
-        position: absolute;
-        top: 5px;
-        right: 10px;
-        cursor: pointer;
-    }
-
-    .success-message .close-btn:hover {
-        color: #ffffff;
-    }
-    
-        .left-image img,
-        .related-games .thumb img {
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            max-width: 100%;
-            height: auto;
-        }
-
-        .left-image img:hover,
-        .related-games .thumb img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .related-games .thumb {
-            overflow: hidden;
-            margin: 10px 0;
-        }
-
-        .related-games .item {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .related-games .item h4 {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 10px 0 5px;
-        }
-
-        .related-games .thumb img {
-            max-width: 200px;
-            height: auto;
-            margin: 0 auto;
-        }
-
-        .related-games .thumb a::after {
-            content: "Quick View";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 10px 15px;
-            border-radius: 5px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .related-games .thumb a:hover::after {
-            opacity: 1;
-        }
-    </style>
+    @include('home.css')
 </head>
 
 <body>
@@ -128,7 +33,86 @@
     <!-- ***** Preloader End ***** -->
 
     <!-- ***** Header Area Start ***** -->
-    @include('home.header')
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="{{url('/')}}" class="logo">
+                            <img src="{{asset ('pic/vireakroth.png')}}" alt="" style="width: 50px;">
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li><a href="{{ url('/') }}" class="active">Home</a></li>
+                            <li><a href="{{ route('products.index') }}">Our Shop</a></li>
+                            <li><a href="{{url('/contact-us')}}">Contact Us</a></li>
+                            
+     
+    
+    
+    
+    
+                            
+    
+    
+                          
+                            
+                            
+                        
+                            @auth
+                            <li>
+                                <a href="{{ route('orders.index') }}" id="cart-icon">My Orders</a>
+                            </li>
+                                <li>
+                                    <span style="color: rgb(0, 0, 0);font-family: 'Kantumruy', sans-serif;">Welcome, {{ auth()->user()->name }}!</span>
+                                </li>
+                                <li>
+                                    <!-- Logout link -->
+                                    <a href="#" 
+                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                       Log out
+                                    </a>
+                                    <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </li>
+                            @else
+                                <li><a href="{{ route('login') }}">Sign In</a></li>
+                            @endauth
+                        </ul>
+                        
+                        
+                       
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                                         <!-- Cart button, shown when there is at least one item -->
+                                         @if (Auth::check())
+                                         @php
+                                             $cartCount = \App\Models\Cart::where('user_id', Auth::id())->count();
+                                         @endphp
+                                         @if ($cartCount > 0)
+                                             <button class="popup-cart-btn" onclick="window.location.href='{{ route('cart.view') }}'">
+                                                 <i class="fa fa-shopping-cart"></i>
+                                                 <span class="cart-count">{{ $cartCount }}</span>
+                                             </button>
+                                         @endif
+                                         @else
+                                         @php
+                                             $guestCartCount = count(session()->get('guest_cart', []));
+                                         @endphp
+                                         @if ($guestCartCount > 0)
+                                             <button class="popup-cart-btn" onclick="window.location.href='{{ route('cart.view') }}'">
+                                                 <i class="fa fa-shopping-cart"></i>
+                                                 <span class="cart-count">{{ $guestCartCount }}</span>
+                                             </button>
+                                         @endif
+                                         @endif
+                </div>
+            </div>
+        </div>
+      </header>
     <!-- ***** Header Area End ***** -->
 
 
@@ -179,14 +163,17 @@
 
                     <!-- Add to Cart Form -->
 
+                    
+                    @if ($product->stock <= 0)
+                    <p class="text-danger font-weight-bold">Out of Stock</p>
+                    @else
                     <form action="{{ route('cart.details') }}" method="POST">
                         @csrf
                         <input type="number" name="quantity" class="form-control" value="1" required>
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <button type="submit" class="btn btn-primary mt-2">Add to Cart</button>
                     </form>
-                    
-
+                    @endif
                     <!-- Additional Information -->
                     <ul>
                         <li><span>Category:</span> {{ $product->category->name }}</li>

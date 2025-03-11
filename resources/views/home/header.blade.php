@@ -5,7 +5,7 @@
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
                     <a href="{{url('/')}}" class="logo">
-                        <img src="{{asset ('homes/assets/images/logo.png')}}" alt="" style="width: 158px;">
+                        <img src="{{asset ('pic/vireakroth.png')}}" alt="" style="width: 50px;">
                     </a>
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
@@ -28,7 +28,7 @@
                     
                         @auth
                         <li>
-                            <a href="{{ route('orders.index') }}" id="cart-icon">My Orders</a>
+                            <a href="{{ route('orders.view') }}" id="cart-icon">My Orders</a>
                         </li>
                             <li>
                                 <span style="color: rgb(0, 0, 0);font-family: 'Kantumruy', sans-serif;">Welcome, {{ auth()->user()->name }}!</span>
@@ -55,27 +55,28 @@
                     <!-- ***** Menu End ***** -->
                 </nav>
                                      <!-- Cart button, shown when there is at least one item -->
-@if (Auth::check())
-@php
-    $cartCount = \App\Models\Cart::where('user_id', Auth::id())->count();
-@endphp
-@if ($cartCount > 0)
-    <button class="popup-cart-btn" onclick="window.location.href='{{ route('cart.view') }}'">
-        <i class="fa fa-shopping-cart"></i>
-        <span class="cart-count">{{ $cartCount }}</span>
-    </button>
-@endif
-@else
-@php
-    $guestCartCount = count(session()->get('guest_cart', []));
-@endphp
-@if ($guestCartCount > 0)
-    <button class="popup-cart-btn" onclick="window.location.href='{{ route('cart.view') }}'">
-        <i class="fa fa-shopping-cart"></i>
-        <span class="cart-count">{{ $guestCartCount }}</span>
-    </button>
-@endif
-@endif
+                                     @if (Auth::check())
+                                     @php
+                                         $cartCount = \App\Models\Cart::where('user_id', Auth::id())->count();
+                                     @endphp
+                                     @if ($cartCount > 0)
+                                         <button class="popup-cart-btn" onclick="window.location.href='{{ route('cart.view') }}'">
+                                             <i class="fa fa-shopping-cart"></i>
+                                             <span class="cart-count">{{ $cartCount }}</span>
+                                         </button>
+                                     @endif
+                                     @else
+                                     @php
+                                         $guestCartCount = count(session()->get('guest_cart', []));
+                                     @endphp
+                                     @if ($guestCartCount > 0)
+                                         <button class="popup-cart-btn" onclick="window.location.href='{{ route('cart.view') }}'">
+                                             <i class="fa fa-shopping-cart"></i>
+                                             <span class="cart-count">{{ $guestCartCount }}</span>
+                                         </button>
+                                     @endif
+                                     @endif
+                                     
             </div>
         </div>
     </div>

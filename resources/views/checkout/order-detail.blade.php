@@ -202,7 +202,7 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">Order Number: <strong>{{ $orders[0]->order_number }}</strong></h5>
-                        <p><strong>Name:</strong> {{ $orders[0]->name }}</p>
+                        <strong>Name:</strong><p style="font-family:'Khmer OS Battambang', Courier, monospace"> {{ $orders[0]->name }}</p>
                         <p><strong>Telegram Number:</strong> {{ $orders[0]->telegram_number }}</p>
                         <p><strong>Address:</strong> {{ $orders[0]->address }}</p>
                         <p><strong>Province:</strong> {{ $orders[0]->province }}</p>
@@ -213,33 +213,42 @@
 
                 <!-- Items in the Order -->
                 <h4>Items in Your Order</h4>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @foreach($orders as $order)
-                            <tr>
-                                <td>{{ $order->product->name }}</td>
-                                <td>${{ number_format($order->product->price, 2) }}</td>
-                                <td>{{ $order->quantity }}</td>
-                                <td>
-                                   ${{$order->total_price,2}}
-                                </td>
-                                
-                            </tr>
-                            @endforeach
-
-                        </tbody>
-                    </table>
+<div class="row">
+    @foreach($orders as $order)
+    @php
+    $product = $order->product;
+    $priceAfterDiscount = $product->price;
+    $discountAmount = 0;
+    if ($product->discount > 0) {
+        $discountAmount = $product->price * ($product->discount / 100);
+        $priceAfterDiscount = $product->price - $discountAmount;
+    }
+@endphp
+    <div class="col-md-6 mb-4">
+        <div class="card border-primary">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <img src="{{ asset('products/' . $order->product->image) }}" alt="{{ $order->product->name }}" class="img-thumbnail me-3" style="width: 100px; height: auto;">
+                    <div>
+                        <h5 class="card-title mb-1">{{ $order->product->name }}</h5>
+                        <p class="mb-1"><strong>Quantity:</strong> {{ $order->quantity }}</p>
+                        <p class="mb-1"><strong>Price:</strong> ${{ number_format($order->product->price, 2) }}</p>
+                        <p class="mb-1"><strong>Total:</strong> ${{ number_format($order->total_price, 2) }}</p>
+                        @if($discountAmount > 0)
+                        <p class="mb-0 text-danger"><strong>Discount:</strong> - ${{ number_format($discountAmount, 2) }}</p>
+                        @else
+                        <p class="mb-0 text-muted">No Discount</p>
+                        @endif
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    @endforeach
+</div>
+<hr class="my-4">
+
+                
             </div>
 
             <!-- Customer and Delivery Information -->
@@ -247,7 +256,7 @@
                 <h4>Customer Information</h4>
                 <div class="card mb-4">
                     <div class="card-body">
-                        <p><strong>Name:</strong> {{ $order->name }}</p>
+                        <strong>Name:</strong><p style="font-family: 'khmer os battambang';">{{ $order->name }}</p>
                         <p><strong>Telegram:</strong> {{ $order->telegram_number }}</p>
                         <p><strong>Province:</strong> {{ $order->province }}</p>
                     </div>

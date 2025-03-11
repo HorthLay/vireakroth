@@ -26,7 +26,7 @@
                 <div class="status">
                     <div class="info">
                         <h3>Total Category</h3>
-                        <h1 align="center">{{ $categories->count() }}</h1>
+                        <h1 align="center">{{ $categorycount->count() }}</h1>
                     </div>
                     <div class="progresss">
                         <img src="{{ asset('pic/category.png') }}" alt="">
@@ -38,9 +38,15 @@
                     <div class="info">
                         <a id="createCategoryBtn" class="btn btn-primary" style="text-decoration: none;background-color: #007bff;padding: 10px 20px;border-radius: 5px;color: #fff;">Add Category</a>
                     </div>
-                    <div class="progresss">
-                        <img src="{{ asset('pic/add.png') }}" alt="">
-                    </div>
+                    <lord-icon
+                    src="https://cdn.lordicon.com/sbnjyzil.json"
+                    trigger="in"
+                    delay="100"
+                    state="in-reveal"
+                    stroke="bold"
+                    colors="primary:#30c9e8,secondary:#242424"
+                    style="width:80px;height:80px">
+                </lord-icon>
                 </div>
             </div>
         </div>
@@ -48,10 +54,20 @@
         <!-- Success Message -->
         @if(session('success'))
         <div class="success-message show">
-            <p>{{ session('success') }}</p>
+            <p style="color: white;">{{ session('success') }}</p>
             <button class="close-btn" onclick="document.querySelector('.success-message').classList.remove('show')">×</button>
         </div>
         @endif
+
+        <!-- Error Message --->
+        @if(session('error'))
+        <div class="error-message show">
+            <p style="color: white;">{{ session('error') }}</p>
+            <button class="close-btn" onclick="document.querySelector('.error-message').classList.remove('show')">×</button>
+        </div>
+    @endif
+    
+
 
         <!-- Recent Categories Table -->
         <div class="recent-orders">
@@ -78,8 +94,11 @@
                             <a class="btn btn-danger" onClick="confirmation(event)" href="{{ url('/category_delete', $category->id) }}">Delete</a>
                         </td>
                         <td>
-                            <button class="btn btn-primary" onclick="openEditModal({{ $category->id }}, '{{ $category->name }}', '{{ asset('categories/'.$category->image) }}')">Edit</button>
-                        </td>
+                            <a class="btn btn-primary text-white" href="{{ route('categories.view', $category->id) }}" style="text-decoration: none;">
+                              Edit
+                            </a>
+                          </td>
+
                     </tr>
                     @endforeach
                 </tbody>
@@ -110,7 +129,6 @@
         <!-- Add Category Modal -->
       @include('action.categoryModal')
         <!-- Edit Category Modal -->
-        @include('action.editCategoryModal')
         
     </main>
 
@@ -120,7 +138,7 @@
 
         <div class="user-profile">
             <div class="logo">
-                <img style="margin-left:20%;" src="admin/images/logo.png">
+                <img style="margin-left:20%;" src="{{ asset('pic/vireakroth.png') }}">
                 <h2>VireakRoth <br> PhoneShop</h2>
                 <p>address: Phum 2 Songkat 3 SihanoukVille Province</p>
             </div>
@@ -130,7 +148,7 @@
     </div>
 </div>
 @include('action.javacategory')
-
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <script src="{{ asset('admin/orders.js') }}"></script>
 <script src="{{ asset('admin/index.js') }}"></script>

@@ -4,13 +4,13 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Welcome to Test Company</title>
+        <title>Welcome to Vireak Roth</title>
     </head>
 
     <body>
         <header>
-            <img src="{{ asset('pic/khqr.png') }}" alt="Test Company Logo" width="150" height="50">
-            <h1>Test Company</h1>
+            <img src="https://www.dropbox.com/s/0tv4284b6m95386/vireakroth.png?raw=1" alt="Image" width="50" height="50">
+            <h1>Vireak Roth</h1>
         </header>
 
         <body>

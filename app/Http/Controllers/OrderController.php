@@ -10,6 +10,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Reminder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -353,5 +354,75 @@ class OrderController extends Controller
 
 
         return view('home.success', compact('orders'));
+    }
+
+
+    public function Status(Request $request, $order_number)
+    {
+        // Validate the status input if needed
+        $request->validate([
+            'status' => 'required|string|in:success,pending,canceled', // Adjust to your status options
+        ]);
+
+        $status = $request->input('status');
+
+        // Find all orders with the same order_number
+        $orders = Order::where('order_number', $order_number)->get();
+
+        // If there are any orders, update their status
+        foreach ($orders as $order) {
+            $order->status = $status;
+            $order->save();
+        }
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Order status updated successfully!');
+    }
+
+    public function search(Request $request)
+    {
+        $searchKeyword = $request->input('searchKeyword');
+
+        // Paginate the orders based on the search keyword
+        $orders = Order::where('name', 'LIKE', '%' . $searchKeyword . '%')
+            ->orWhere('order_number', 'LIKE', '%' . $searchKeyword . '%')
+            ->paginate(10); // You can adjust the number (10) to control how many results per page
+
+        $reminders = Reminder::where('status', true)->get();
+
+        return view('admin.ordersearch', compact('orders', 'searchKeyword', 'reminders'));
+    }
+
+    public function Statushome(Request $request, $order_number)
+    {
+        // Find all orders with the same order number
+        $orders = Order::where('order_number', $order_number)->get();
+
+        foreach ($orders as $order) {
+            // Check if the order status is already "success"
+            if ($order->status !== 'success') {
+                // Update the order status to "success"
+                $order->status = 'success';
+                $order->save();
+
+                // Assuming the order has a relationship with the Product model
+                $product = $order->product; // Adjust based on your actual relationship
+
+                if ($product) {
+                    // Reduce stock by the quantity ordered
+                    if ($product->stock >= $order->quantity) {
+                        $product->stock -= $order->quantity;
+                    } else {
+                        $product->stock = 0; // Prevent negative stock
+                    }
+
+                    // Increase the quantity sold
+                    $product->quantity_sold += $order->quantity;
+                    $product->save();
+                }
+            }
+        }
+
+        return redirect('/')->with('success', 'Order status updated to success, stock adjusted, and quantity sold updated.');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\File;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Reminder;
@@ -56,7 +57,17 @@ class ProductController extends Controller
     public function productdelete($id)
     {
         $product = Product::find($id);
-        $product->delete();
+        if ($product) {
+            // Delete the image file if it exists
+            if (File::exists(public_path('products/' . $product->image))) {
+                File::delete(public_path('products/' . $product->image));
+            }
+
+            // Delete the category
+            $product->delete();
+
+            return redirect()->back()->with('success', 'Category deleted successfully.');
+        }
 
         return redirect()->back()->with('success', 'Product deleted successfully!');
     }
@@ -127,5 +138,32 @@ class ProductController extends Controller
             ->take(5) // Limit to 5 related items
             ->get();
         return view('home.productdetails', compact('product', 'relatedItems'));
+    }
+
+
+
+
+
+
+    public function edit($id)
+    {
+        $reminders = Reminder::where('status', true)->get();
+        $product = Product::findOrFail($id);
+        $categories = Category::all();
+        return view('editoption.product_edit', compact('product', 'categories', 'reminders'));
+    }
+
+    public function productupdate(Request $request, $id)
+    {
+        $product = Product::findOrFail($id);
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->stock = $request->stock;
+        $product->price = $request->price;
+        $product->category_id = $request->category_id;
+        $product->status = $request->status;
+        $product->discount = $request->discount;
+        $product->save();
+        return redirect('/product')->with('success', 'Product updated successfully!');
     }
 }

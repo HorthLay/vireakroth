@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ad;
 use App\Models\Cart;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Reminder;
 use App\Models\User;
@@ -25,7 +26,12 @@ class HomeController extends Controller
             $previousVisits = 25000;  // Example static value (or you can store the previous value in the DB)
             // Calculate the percentage change
             $percentageChange = $previousVisits ? round((($currentVisits - $previousVisits) / $previousVisits) * 100) : 0;
-            return view('admin.index', compact('users', 'currentVisits', 'percentageChange', 'previousVisits', 'reminders'));
+            \App\Models\Order::where('viewed', false)->update(['viewed' => true]);
+
+            // Fetch orders
+            $orders = \App\Models\Order::latest()->get();
+            $recentorders = Order::latest()->take(3)->get();
+            return view('admin.index', compact('users', 'currentVisits', 'percentageChange', 'previousVisits', 'reminders', 'orders', 'recentorders'));
         } else {
             $user = User::all();
             $newProducts = Product::where('status', 'new')->take(4)->get();
@@ -42,8 +48,8 @@ class HomeController extends Controller
     {
         $categories = Category::all()->take(5);
 
-        $newProducts = Product::where('status', 'new')->take(4)->get();
-        $secondHandProducts = Product::where('status', 'second_hand')->take(4)->get();
+        $newProducts = Product::where('status', 'new')->take(8)->get();
+        $secondHandProducts = Product::where('status', 'second_hand')->take(8)->get();
         $products = Product::all();
         $ads = Ad::all();
         $cart = Cart::all();

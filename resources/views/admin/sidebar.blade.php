@@ -1,7 +1,7 @@
 <aside>
     <div class="toggle">
         <div class="logo">
-            <img src="{{ asset('/admin/images/logo.png') }}">
+            <img src="{{ asset('pic/vireakroth.png') }}">
             <h2><span class="danger">PhoneShop</span></h2>
         </div>
         <div class="close" id="close-btn">
@@ -22,11 +22,18 @@
             <span class="material-icons-sharp">insights</span>
             <h3>Dashboard</h3>
         </a>
-        <a href="#" class="{{ Request::is('order') ? 'active' : '' }}">
-            <span class="material-icons-sharp">mail_outline</span>
-            <h3>Order</h3>
-            <span class="message-count">27</span>
-        </a>
+        @php
+        $newOrdersCount = \App\Models\Order::where('viewed', false)->count();
+    @endphp
+    
+    <a href="{{ url('/orderadmin') }}" class="{{ Request::is('orderadmin') ? 'active' : '' }}">
+        <span class="material-icons-sharp">mail_outline</span>
+        <h3>Order</h3>
+        @if($newOrdersCount > 0)
+            <span class="message-count" style="color: white">{{ $newOrdersCount }}</span>
+        @endif
+    </a>
+    
         <a href="{{ url('/product') }}" class="{{ Request::is('product') ? 'active' : '' }}">
             <span class="material-icons-sharp">inventory</span>
             <h3>Product</h3>

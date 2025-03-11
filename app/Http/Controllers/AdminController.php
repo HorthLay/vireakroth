@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Ad;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Reminder;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class AdminController extends Controller
 {
@@ -49,10 +51,11 @@ class AdminController extends Controller
 
     public function category()
     {
+        $categorycount = Category::all();
         $categories = Category::paginate(4);
         $reminders = Reminder::where('status', true)->get();
 
-        return view('admin.category', compact('categories', 'reminders'));
+        return view('admin.category', compact('categories', 'reminders', 'categorycount'));
     }
 
     // add Ads
@@ -90,36 +93,69 @@ class AdminController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        // Check if a category with the same name already exists
+        $existingCategory = Category::where('name', $request->name)->first();
+
+        if ($existingCategory) {
+            return redirect()->back()->with('error', 'Category already exists.');
+        }
+
         $data = new Category();
         $data->name = $request->name;
         $image = $request->image;
+
         if ($image) {
             $imagename = time() . '.' . $image->getClientOriginalExtension();
             $request->image->move('categories', $imagename);
             $data->image = $imagename;
         }
 
-        $data->save();
-
-        return redirect()->back()->with('success', 'Category created successfully!');
+        if ($data->save()) {
+            return redirect()->back()->with('success', 'Category created successfully!');
+        } else {
+            return redirect()->back()->with('error', 'Failed to create category. Please try again.');
+        }
     }
+
+
 
     public function categorydelete($id)
     {
         $category = Category::find($id);
-        $category->delete();
 
-        return redirect()->back()->with('success', 'Category deleted successfully.');
+        if ($category) {
+            // Delete the image file if it exists
+            if (File::exists(public_path('categories/' . $category->image))) {
+                File::delete(public_path('categories/' . $category->image));
+            }
+
+            // Delete the category
+            $category->delete();
+
+            return redirect()->back()->with('success', 'Category deleted successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Category not found.');
     }
 
-    public function update(Request $request, $id)
+    public function update_category(Request $request, $id)
     {
+        // Validate the request
         $request->validate([
             'name' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $category = Category::findOrFail($id);
+        // Find the category by ID
+        $category = Category::find($id);
+
+        // Check if the category exists
+        if (!$category) {
+            return redirect()->route('categories.index')->with('error', 'Category not found');
+        }
+
+        // Update the category's name
+        $category->name = $request->name;
 
         // Check if a new image is uploaded
         if ($request->hasFile('image')) {
@@ -137,11 +173,19 @@ class AdminController extends Controller
             $category->image = $imagename;
         }
 
-        // Update the category's name
-        $category->name = $request->name;
+        // Save the updated category
         $category->save();
 
-        return redirect()->back()->with('success', 'Category updated successfully!');
+        // Redirect with success message
+        return redirect('/category')->with('success', 'Category updated successfully!');
+    }
+
+
+    public function update($id)
+    {
+        $category = Category::find($id);
+        $reminders = Reminder::where('status', true)->get();
+        return view('editoption.updatecategory', compact('category', 'reminders'));
     }
 
 
@@ -171,11 +215,59 @@ class AdminController extends Controller
     }
 
 
+    public function OrderView()
+    {
+        $reminders = Reminder::where('status', true)->get();
+        $orders = Order::paginate(5);
+        $countorders = Order::all();
+        $uniqueOrderCount = \App\Models\Order::whereDate('created_at', today())
+            ->groupBy('order_number')
+            ->selectRaw('count(*) as count')
+            ->get()
+            ->count();
+
+        return view('admin.order', compact('reminders', 'orders', 'countorders', 'uniqueOrderCount'));
+    }
 
     public function ads()
     {
         $ads = Ad::all();
         $reminders = Reminder::where('status', true)->get();
         return view('admin.ads', compact('ads', 'reminders'));
+    }
+
+
+
+    public function updateStatus(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+        $previousStatus = $order->status;
+        $order->status = $request->status;
+        $order->save();
+
+        // Assuming you have a Product model and a relationship with Order
+        $product = $order->product; // Adjust based on your actual relationship
+
+        if ($product) {
+            if ($request->status == 'success' && $previousStatus != 'success') {
+                // Reduce stock by 1 and increase quantity_sold
+                if ($product->stock > 0) {
+                    $product->stock -= 1;
+                }
+                $product->quantity_sold += 1;
+            } elseif ($request->status == 'canceled' && $previousStatus == 'success') {
+                // Restore stock by 1 and decrease quantity_sold
+                $product->stock += 1;
+
+                // Ensure quantity_sold doesn't go negative
+                if ($product->quantity_sold > 0) {
+                    $product->quantity_sold -= 1;
+                }
+            }
+
+            $product->save();
+        }
+
+        return redirect()->back()->with('success', 'Order status updated successfully.');
     }
 }
