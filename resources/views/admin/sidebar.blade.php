@@ -38,7 +38,7 @@
             <span class="material-icons-sharp">inventory</span>
             <h3>Product</h3>
         </a>
-        <a href="#" class="{{ Request::is('report') ? 'active' : '' }}">
+        <a href="{{url('/report')}}" class="{{ Request::is('report') ? 'active' : '' }}">
             <span class="material-icons-sharp">report_gmailerrorred</span>
             <h3>Reports</h3>
         </a>
@@ -48,7 +48,7 @@
         </a>
 
 
-        <a href="/adsy" class="{{ Request::is('ads') ? 'active' : '' }}">
+        <a href="/adsy" class="{{ Request::is('adsy') ? 'active' : '' }}">
             <span class="material-icons-sharp">add</span>
             <h3>Ads</h3>
         </a>

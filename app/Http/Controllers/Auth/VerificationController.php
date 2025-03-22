@@ -39,19 +39,37 @@ class VerificationController extends Controller
 
     public function show()
     {
-        return view('auth.verify'); // Ensure you have a `verify` view in the `auth` folder.
+        // Check if the user is authenticated
+        if (auth()->check()) {
+            return view('auth.verify'); // Ensure you have a `verify` view in the `auth` folder.
+        }
+
+        // Redirect to home if the user is not authenticated
+        return redirect()->route('home');
     }
+
 
     public function resend(Request $request)
     {
         try {
+            $user = $request->user();
+
             // Check if the user's email is already verified
-            if ($request->user()->hasVerifiedEmail()) {
+            if ($user->hasVerifiedEmail()) {
                 return redirect()->route('home')->with('success', 'Your email is already verified!');
             }
 
+            // Check if 5 minutes have passed since the last verification email was sent
+            if ($user->email_verification_sent_at && now()->diffInMinutes($user->email_verification_sent_at) < 5) {
+                return view('auth.failed')->with('error', 'Please wait 5 minutes before requesting a new verification email.');
+            }
+
             // Attempt to send the verification email
-            $request->user()->sendEmailVerificationNotification();
+            $user->sendEmailVerificationNotification();
+
+            // Update the timestamp when the verification email was sent
+            $user->email_verification_sent_at = now();
+            $user->save();
 
             // Return with a success message if email is sent
             return view('auth.success');

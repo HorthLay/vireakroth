@@ -232,6 +232,7 @@ font-weight: bold;
                         <p><strong>🏠Address:</strong> {{ $orders[0]->address }}</p>
                         <p><strong>🌐Province:</strong> {{ $orders[0]->province }}</p>
                         <p><strong>🚚Delivery:</strong> {{ $orders[0]->delivery }}</p>
+                        <p><strong>💵Payment Method:</strong> {{ $orders[0]->payment_method }}</p>
                         <p><strong>💵Total Price:</strong> ${{ number_format($orders->sum('total_price'), 2) }}</p>
                         <p><strong>📊Status:</strong> 
                             @if($orders[0]->status == 'pending')
@@ -307,6 +308,9 @@ font-weight: bold;
                 <div class="col-lg-12"></div>
                     <p style="color: green;">This order has been Pay.</p>
                 </div>
+                <a class="btn btn-success"  style="padding: 5px 10px; font-size: 14px;" href="{{ url('/invoice', $order->order_number) }}">
+                    View Invoice
+                </a>
             @else
                 <a class="btn btn-danger" onClick="cancelConfirmation(event)" style="padding: 5px 10px; font-size: 14px;" href="{{ url('/order_cancel', $order->order_number) }}">
                     Cancel Order

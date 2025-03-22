@@ -178,6 +178,7 @@
                     <ul>
                         <li><span>Category:</span> {{ $product->category->name }}</li>
                         <li><span>Status:</span> {{ ucfirst($product->status) }}</li>
+                        <li><span>Availability:</span> {{ $product->stock > 0 ? 'In Stock' : 'Out of Stock' }}</li>
                     </ul>
                 </div>
 
@@ -192,43 +193,48 @@
     <!-- Related Games Section -->
     <div class="section categories related-games">
         <div class="container">
-            <div class="row">
+            <div class="row align-items-center mb-4">
                 <div class="col-lg-6">
                     <div class="section-heading">
-                        <h6>Action</h6>
-                        <h2>Related Games</h2>
+                        <h6>Best</h6>
+                        <h2>Related Item</h2>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 text-lg-right">
                     <div class="main-button">
-                        <a href="{{ route('products.index') }}">View All</a>
+                        <a href="{{ route('products.index') }}" class="btn btn-primary btn-view-all">View All</a>
                     </div>
                 </div>
+            </div>
+            <div class="row">
                 @foreach ($relatedItems as $item)
-                    <div class="col-md-4 col-sm-6 col-12" style="padding: 10px 0px 10px 0px;">
-                        <div class="item">
-                            <h4>{{ $item->name }}</h4>
-                            <div class="thumb">
-                                <a href="{{route('products.show',$item->id)}}">
-                                    <img src="{{ asset('products/' . $item->image) }}" alt="{{ $item->name }}">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
+                        <div class="item border rounded p-3 text-center">
+                            <div class="thumb mb-3 position-relative">
+                                <a href="{{ route('products.show', $item->id) }}">
+                                    <img src="{{ asset('products/' . $item->image) }}" alt="{{ $item->name }}" class="img-fluid">
                                 </a>
+                              
                             </div>
+                            <h4 class="mb-0">{{ $item->name }}</h4>
+                            <h4 class="price d-block mt-2">
+                                @if (!is_null($item->discount) && $item->discount > 0)
+                                    <em style="text-decoration: line-through;color: #ffea00;">${{ $item->price }}</em>
+                                    ${{ number_format($item->price - ($item->price * $item->discount / 100), 2) }}
+                                @else
+                                    ${{ $item->price }}
+                                @endif
+                            </h4>
+                            
                         </div>
                     </div>
                 @endforeach
             </div>
         </div>
     </div>
+    
 
-    <footer>
-        <div class="container">
-            <div class="col-lg-12">
-                <p>Copyright © 2048 LUGX Gaming Company. All rights reserved. &nbsp;&nbsp;
-                    <a rel="nofollow" href="https://templatemo.com" target="_blank">Design: TemplateMo</a>
-                </p>
-            </div>
-        </div>
-    </footer>
+    @include('home.footer')
 
     <!-- Scripts -->
     <script src="{{ asset('homes/vendor/jquery/jquery.min.js') }}"></script>

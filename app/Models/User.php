@@ -23,6 +23,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'phone',
         'google_id',
+        'email_verification_sent_at',
     ];
 
     /**
@@ -42,6 +43,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+
     ];
 
     public function hasVerifiedEmail()

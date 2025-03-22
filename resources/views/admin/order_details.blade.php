@@ -63,6 +63,7 @@
                     <div class="info">
                         <h3>Customer</h3>
                         <h1 align="center">{{ $group->first()->name }}</h1>
+                        <p align="center">{{ $group->first()->payment_method }}</p>
                     </div>
                     <div class="progresss">
                         <img src="{{ asset('pic/default.png') }}" alt="">
@@ -174,7 +175,7 @@
         <span class="close-btn" style="color: white;" onclick="closePopup()">&times;</span>
         <h2>Order Status Details</h2>
         <p id="popupText"></p>
-        <form action="{{ route('update-status', $order_number) }}" method="POST">
+        <form action="{{ route('update-statusadmin', $order_number) }}" method="POST">
             @csrf  <!-- CSRF protection -->
             <div class="button-container">
                 <button type="submit" name="status" value="success" style="background-color: green; margin-right: 10px;">Success</button>
@@ -212,7 +213,7 @@
 
     // Store the order number in the form action
     const form = document.querySelector('form');
-    form.action = `/update-order-status/${orderNumber}`;
+    form.action = `/update-status/${orderNumber}`;
 }
 
 // Function to close the popup

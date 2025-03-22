@@ -17,13 +17,22 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // Delete unverified users every 5 minutes
+        $schedule->call(function () {
+            DB::table('users')
+                ->whereNull('email_verified_at') // User is not verified
+                ->where('email_verification_sent_at', '<', Carbon::now()->subMinutes(5)) // Sent over 5 min ago
+                ->delete();
+        })->everyFiveMinutes();
+
+        // Delete expired password reset tokens every 5 minutes
         $schedule->call(function () {
             DB::table('password_resets')
                 ->where('created_at', '<', Carbon::now()->subMinutes(5))
                 ->delete();
         })->everyFiveMinutes();
     }
+
 
     /**
      * Register the commands for the application.

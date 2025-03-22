@@ -84,6 +84,8 @@ class OrderController extends Controller
             'telegram_number' => 'required|string|max:255',
             'address' => 'required|string|max:1000',
             'province' => 'required|string|max:255',
+            'payment_method' => 'nullable|string'
+
         ]);
 
         // Get the current authenticated user
@@ -91,6 +93,7 @@ class OrderController extends Controller
         $totalPrice = 0;
         $orderNumber = uniqid();
         $cart = [];
+        $paymentMethod = $request->input('payment_method', 'Booking');
 
         foreach ($request->product_ids as $index => $productId) {
             $product = Product::find($productId);
@@ -126,6 +129,7 @@ class OrderController extends Controller
             $order->delivery = $request->delivery;
             $order->total_price = $productTotalPrice;
             $order->province = $request->province;
+            $order->payment_method = $paymentMethod;
             $order->save();
         }
 
@@ -357,27 +361,54 @@ class OrderController extends Controller
     }
 
 
+    /**
+     * Update the status of all orders with the same order number.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $order_number
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function Status(Request $request, $order_number)
     {
-        // Validate the status input if needed
+        // Validate the status and payment method inputs
         $request->validate([
-            'status' => 'required|string|in:success,pending,canceled', // Adjust to your status options
+            'status' => 'required|string|in:success,pending,canceled',
+            'payment_method' => 'nullable|string' // Ensure payment method is optional
         ]);
 
         $status = $request->input('status');
+        $paymentMethod = $request->input('payment_method', 'KHQR'); // Default to KHQR if not provided
 
         // Find all orders with the same order_number
         $orders = Order::where('order_number', $order_number)->get();
 
-        // If there are any orders, update their status
         foreach ($orders as $order) {
+            // Get the associated product
+            $product = Product::find($order->product_id);
+
+            if ($product) {
+                if ($status == 'success' && $order->status != 'success') {
+                    // Reduce stock only if the order was not already 'success'
+                    $product->stock -= $order->quantity;
+                    $product->quantity_sold += $order->quantity;
+                } elseif ($status == 'canceled' && $order->status == 'success') {
+                    // Restore stock if changing from 'success' to 'canceled'
+                    $product->stock += $order->quantity;
+                    $product->quantity_sold -= $order->quantity;
+                }
+                $product->save();
+            }
+
+            // Update order status and payment method
             $order->status = $status;
+            $order->payment_method = $paymentMethod;
             $order->save();
         }
 
-        // Redirect back with a success message
-        return redirect()->back()->with('success', 'Order status updated successfully!');
+        return response()->json(['message' => 'Order status and payment method updated successfully!']);
     }
+
+
 
     public function search(Request $request)
     {
@@ -424,5 +455,40 @@ class OrderController extends Controller
         }
 
         return redirect('/')->with('success', 'Order status updated to success, stock adjusted, and quantity sold updated.');
+    }
+
+    public function invoice($order_number)
+    {
+        $orders = Order::where('order_number', $order_number)->get();
+        return view('checkout.invoice', compact('orders'));
+    }
+
+    /**
+     * Update the status of an order.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+
+    public function updateOrderStatus(Request $request)
+    {
+        // Validate the request data
+        $validatedData = $request->validate([
+            'orderNumber' => 'required|string',
+            'status' => 'required|string',
+        ]);
+
+        // Assuming you have an Order model
+        $order = \App\Models\Order::where('order_number', $validatedData['orderNumber'])->first();
+
+        if (!$order) {
+            return response()->json(['error' => 'Order not found.'], 404);
+        }
+
+        // Update the order status to "success"
+        $order->status = $validatedData['status'];
+        $order->save();
+
+        return response()->json(['message' => 'Order status updated to success.', 'order' => $order]);
     }
 }

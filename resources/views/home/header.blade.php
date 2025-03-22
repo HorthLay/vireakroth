@@ -76,6 +76,18 @@
                                          </button>
                                      @endif
                                      @endif
+                       
+                                     {{-- <!-- Overlay -->
+                                     <div id="overlay"></div>
+
+                                     <!-- Ad Popup -->
+                                     <div id="adPopup" style="display: none;">
+                                         <span class="close-btn" onclick="closeAd()">×</span>
+                                         <h3 id="adTitle">Special Offer!</h3>
+                                         <img id="adImage" src="https://via.placeholder.com/250" alt="Ad Image" style="width:100%; border-radius:5px;">
+                                         <p id="adDescription">Get 20% off on your first purchase.</p>
+                                         <a id="adLink" href="https://example.com" target="_blank">Shop Now</a>
+                                     </div> --}}
                                      
             </div>
         </div>

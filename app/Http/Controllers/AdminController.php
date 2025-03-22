@@ -8,7 +8,9 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Reminder;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class AdminController extends Controller
@@ -83,6 +85,32 @@ class AdminController extends Controller
         $data->save();
 
         return redirect()->back()->with('success', 'Ad created successfully!');
+    }
+
+
+    public function adsupdate(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'cta_url' => 'required|string',
+        ]);
+
+        $data = Ad::find($id);
+        $data->title = $request->title;
+        $data->description = $request->description;
+        $image = $request->image;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imagename = time() . '.' . $image->getClientOriginalExtension();
+            $image->move('ads', $imagename);
+            $data->image = $imagename;
+        }
+        $data->cta_url = $request->cta_url;
+        $data->save();
+
+        return redirect('/adsy')->with('success', 'Ad updated successfully!');
     }
 
 
@@ -231,9 +259,18 @@ class AdminController extends Controller
 
     public function ads()
     {
-        $ads = Ad::all();
+        $ads = Ad::paginate(5);
         $reminders = Reminder::where('status', true)->get();
         return view('admin.ads', compact('ads', 'reminders'));
+    }
+
+
+
+    public function adsedit($id)
+    {
+        $reminders = Reminder::where('status', true)->get();
+        $ads = Ad::findOrFail($id);
+        return view('editoption.editads', compact('ads', 'reminders'));
     }
 
 
@@ -266,6 +303,121 @@ class AdminController extends Controller
             }
 
             $product->save();
+        }
+
+        return redirect()->back()->with('success', 'Order status updated successfully.');
+    }
+
+
+    public function report(Request $request)
+    {
+        // Fetch orders grouped by date with distinct order_number count and total price
+        $orders = Order::select(
+            DB::raw('DATE(created_at) as order_date'),
+            DB::raw('sale_type'),
+            DB::raw('COUNT(DISTINCT order_number) as total_orders'), // Count distinct order_number
+            DB::raw('SUM(total_price) as total_sales') // Summing the total price
+        )
+
+            ->when($request->start_date, function ($query) use ($request) {
+                return $query->whereDate('created_at', '>=', $request->start_date);
+            })
+            ->when($request->end_date, function ($query) use ($request) {
+                return $query->whereDate('created_at', '<=', $request->end_date);
+            })
+            ->groupBy('order_date', 'sale_type')
+            ->orderBy('order_date', 'desc')
+            ->paginate(5);
+
+        $reminders = Reminder::where('status', true)->get();
+
+        return view('admin.report', compact('reminders', 'orders'));
+    }
+
+
+
+
+
+    public function downloadPdf(Request $request)
+    {
+        $orders = Order::select(
+            DB::raw('DATE(created_at) as order_date'),
+            DB::raw('sale_type'),
+            DB::raw('COUNT(DISTINCT order_number) as unique_orders'),
+            DB::raw('SUM(total_price) as total_sales'),
+            DB::raw('SUM(quantity) as total_items') // Include total items
+        )
+            ->where('status', 'success') // Filter by status
+            ->when($request->start_date, function ($query) use ($request) {
+                return $query->whereDate('created_at', '>=', $request->start_date);
+            })
+            ->when($request->end_date, function ($query) use ($request) {
+                return $query->whereDate('created_at', '<=', $request->end_date);
+            })
+            ->groupBy('order_date', 'sale_type')
+            ->orderBy('order_date', 'desc')
+            ->get();
+
+        $grandTotalSales = $orders->sum('total_sales');
+        // Uncomment these lines to generate the PDF
+        // $pdf = Pdf::loadView('admin.order_report', compact('orders'));
+        // return $pdf->download('order-report.pdf');
+
+        return view('admin.order_report', compact('orders', 'grandTotalSales'));
+    }
+
+
+    public function orderDetails(Request $request)
+    {
+        $order_date = $request->input('order_date');
+
+        if (!$order_date) {
+            return redirect()->route('order.reports')->with('error', 'Order date is required.');
+        }
+
+        // Retrieve orders for the selected date
+        $orders = Order::whereDate('created_at', $order_date)->with('items.product')->get();  // Ensure related items and products are loaded
+
+        if ($orders->isEmpty()) {
+            $orders = collect();  // Make sure $orders is an empty collection
+        }
+
+        return view('admin.orderviewdetails', compact('orders', 'order_date'));
+    }
+
+
+    public function Statusorders(Request $request, $order_number)
+    {
+        // Validate the status input
+        $request->validate([
+            'status' => 'required|string|in:success,pending,canceled',
+        ]);
+
+        $status = $request->input('status');
+
+        // Find all orders with the same order_number
+        $orders = Order::where('order_number', $order_number)->get();
+
+        foreach ($orders as $order) {
+            // Get the associated product
+            $product = Product::find($order->product_id);
+
+            if ($product) {
+                if ($status == 'success' && $order->status != 'success') {
+                    // Reduce stock only if the order was not already 'success'
+                    $product->stock -= $order->quantity;
+                    $product->quantity_sold += $order->quantity;
+                } elseif ($status == 'canceled' && $order->status == 'success') {
+                    // Restore stock if changing from 'success' to 'canceled'
+                    $product->stock += $order->quantity;
+                    $product->quantity_sold -= $order->quantity;
+                }
+                $product->save();
+            }
+
+            // Update order status
+            $order->status = $status;
+            $order->save();
         }
 
         return redirect()->back()->with('success', 'Order status updated successfully.');

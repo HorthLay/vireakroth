@@ -101,10 +101,7 @@
         @foreach ($groupedOrders as $orderNumber => $group)
             <p>Your order has been successfully placed. Order Number: {{ $orderNumber }}</p>
             
-            <form action="{{ route('statushome', ['order_number' => $orderNumber]) }}" method="POST">
-                @csrf
-                <button type="submit">OK</button>
-            </form>
+            <a href="{{url('/')}}">Ok</a>
         @endforeach
     </div>
 </body>

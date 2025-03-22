@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>VireakRoth PhoneShop - Checkout💵</title>
     <link href="{{ asset('homes/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('homes/assets/css/fontawesome.css') }}">
@@ -249,34 +250,36 @@
     <!-- QR Code Modal -->
     <div class="modal fade" id="qrCodeModal" tabindex="-1" aria-labelledby="qrCodeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm"> <!-- Centered and small modal for mobile -->
-            <div class="modal-content">
-                <div id="countdownTimer" style="font-size: 1.5rem; font-weight: bold; color: black; margin-bottom: 10px;margin-left: 38%;">
+            <div class="modal-content" style="position: relative;">
+                <button type="button" class="close-button" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 1.5rem; font-weight: bold; cursor: pointer;">
+                    X
+                </button>
+    
+                <div id="countdownTimer" style="font-size: 1.5rem; font-weight: bold; color: black; margin-bottom: 10px; text-align: center;">
                     02:00
                 </div>
-                
+    
                 <!-- Modal Header -->
-                <div class="modal-header" style="padding: 10px;">
+                <div class="modal-header" style="padding: 10px; position: relative;">
                     <h5 class="modal-title" id="qrCodeModalLabel" style="margin: 0 auto;">
-                        <img src="{{ asset('pic/khqr.png') }}" alt="QR Logo" style="max-width: 100px; height: auto;margin-left: 33%;">
+                        <img src="{{ asset('pic/khqr.png') }}" alt="QR Logo" style="max-width: 100px; height: auto;">
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+    
                 <!-- Modal Body -->
                 <div class="modal-body text-center" style="padding: 15px;">
                     <h3 style="color: #000000; font-size: 1.5rem; margin-bottom: 10px;">${{ number_format($totalPrice, 2) }}</h3>
-
+    
                     <h4 style="font-size: 1.2rem; margin-bottom: 20px;">SOUNG LAY HORTH</h4>
                     <!-- Canvas for QR Code Rendering -->
                     <p>-----------------------------</p>
                     <canvas id="qrCodeCanvas" style="max-width: 100%; height: auto; border: 1px solid #ccc; padding: 10px;"></canvas>
                 </div>
-                <!-- Modal Footer -->
-                <div class="modal-footer" style="justify-content: center; padding: 10px;">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="width: 100%;">Close</button>
-                </div>
             </div>
         </div>
     </div>
+    
+    
     
 
 
@@ -295,8 +298,8 @@
 @endforeach
 
         <div class="col-12 mb-4 p-0 text-center">
-            <h3>Check Out Now</h3>
-            <img src="{{ asset('pic/khqr.png') }}" alt="Checkout" id="checkout" style="cursor: pointer; max-width: 20%; height: auto;">
+            <img src="{{ asset('pic/khqr.png') }}" style="cursor: pointer; max-width: 20%; height: auto;"><br>
+            <button class="btn btn-primary" style="margin-top:10px;" alt="Checkout" id="checkout">Check Out</button>
         </div>
     </div>
     

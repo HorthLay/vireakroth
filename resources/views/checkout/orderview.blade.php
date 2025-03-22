@@ -181,15 +181,20 @@ font-weight: bold;
             @endphp
             @foreach($orders as $order)
                 @if(!in_array($order->order_number, $displayedOrderNumbers))
+                @php
+                    // Sum total_price for the same order_number
+                    $totalSum = $orders->where('order_number', $order->order_number)->sum('total_price');
+                    $totalQuantity = $orders->where('order_number', $order->order_number)->sum('quantity');
+                @endphp
                 <div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
                         <div class="card-body text-center">
                             <h5 class="card-title">🧾{{ $order->order_number }}</h5>
                             <p class="card-text">
                                 <strong>📋Quantity: </strong>
-                                <span>{{ $order->quantity }}</span>
+                                <span>{{ $totalQuantity }}</span>
                                 <strong>💰Total Price: </strong>
-                                <span>${{ number_format($order->total_price, 2) }}</span><br>
+                                <span>${{ number_format($totalSum, 2) }}</span><br>  <!-- Updated here -->
                                 <strong>📊Status: </strong>
                                 @if($order->status == 'pending')
                                     <span style="color: rgb(255, 145, 0);">⏳{{ $order->status }}</span>
@@ -211,6 +216,7 @@ font-weight: bold;
                 @endif
             @endforeach
         </div>
+        
         @endif
     </div>
     

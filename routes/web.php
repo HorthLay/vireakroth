@@ -39,7 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
 Route::get('/', [HomeController::class, 'home'])->middleware('redirectToHome');
-Route::get('/search', [ProductController::class, 'search'])->name('products.search');
+Route::get('/searchproduct', [ProductController::class, 'search'])->name('item.search');
 
 
 Route::put('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
@@ -76,18 +76,37 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::post('/product_store', [AdminController::class, 'prosuctstore'])->name('products.store');
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
     Route::get('/product_delete/{id}', [ProductController::class, 'productdelete'])->name('product.delete');
+
+    // ads
     Route::post('/addads', [AdminController::class, 'adsadd'])->name('ads.store');
+    Route::post('/ads_update/{id}', [AdminController::class, 'adsupdate'])->name('ads.update');
+
+
+
     Route::get('/product_edit/{id}', [ProductController::class, 'edit'])->name('products.edit');
     Route::post('/product_update/{id}', [ProductController::class, 'productupdate'])->name('products.update');
     Route::get('/orderadmin', [AdminController::class, 'OrderView'])->name('orders.index');
     Route::get('/orders/search', [OrderController::class, 'search'])->name('orders.search');
+    // product search
 
+    Route::get('/product/search', [ProductController::class, 'searchproduct'])->name('products.search');
     // order view
     Route::get('/order_details/{order_number}', function ($order_number) {
         $reminders = Reminder::where('status', true)->get();
         $orders = Order::where('order_number', $order_number)->paginate(5);
         return view('admin.order_details', compact('orders', 'reminders', 'order_number'));
-    });
+    })->name('order.showdetails');
+
+    Route::get('/ads_edit/{id}', [AdminController::class, 'adsedit'])->name('ads.edit');
+    Route::get('/report/download-pdf', [AdminController::class, 'downloadPdf'])->name('order.report.pdf');
+    Route::get('/report', [AdminController::class, 'report'])->name('report');
+    Route::get('/order/reports', [AdminController::class, 'orderDetails'])->name('order.view.report');
+    Route::get('/adsy', [AdminController::class, 'ads'])->name('ads');
+
+
+    // adminorder change status 
+    Route::put('/update_order_status/{id}', [AdminController::class, 'updateStatus']);
+    Route::post('/update-status/{order_number}', [AdminController::class, 'Statusorders'])->name('update-statusadmin');
 });
 
 
@@ -97,8 +116,6 @@ Route::post('/register', [RegisterController::class, 'register'])->middleware('a
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login')->middleware('auth');
 Route::post('/login', [LoginController::class, 'login'])->middleware('auth');
 
-
-Route::get('/adsy', [AdminController::class, 'ads'])->name('ads');
 
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -131,12 +148,12 @@ Route::post('/order/checkout/{order_number}', [OrderController::class, 'checkout
 
 Route::get('order/checkout/{order_number}', [OrderController::class, 'checkoutpage'])->name('order.checkoutpage');
 // checkout
-Route::post('/update-order-status', [OrderController::class, 'updateStatus'])->name('updateOrderStatus');
+// Route::post('/update-order-status', [OrderController::class, 'updateStatus'])->name('updateOrderStatus');
 // Home
 Route::get('/success/{order_number}', [OrderController::class, 'success'])->name('order.success');
 Route::post('/statushome/{order_number}', [OrderController::class, 'Statushome'])->name('statushome');
+Route::get('/invoice/{order_number}', [OrderController::class, 'invoice'])->name('order.invoice');
+// Route::post('/update-order-status', [OrderController::class, 'updateOrderStatus']);
 
-
-// admin
-Route::put('/update_order_status/{id}', [AdminController::class, 'updateStatus']);
+// khqrpost
 Route::post('/update-order-status/{order_number}', [OrderController::class, 'Status'])->name('update-status');

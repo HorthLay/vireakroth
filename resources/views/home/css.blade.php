@@ -131,4 +131,88 @@ font-weight: bold;
 .related-games .thumb a:hover::after {
    opacity: 1;
 }
+
+
+
+
+  /* Footer Styling */
+  .footer {
+            background-color: #141414;
+            color: #f1f1f1;
+            padding: 40px 0;
+            font-size: 14px;
+        }
+
+        .footer h5 {
+            color: #000000;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .footer p, .footer li {
+            font-size: 14px;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .footer a {
+            color: #fff700;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: #ff3300;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links li a {
+            display: inline-block;
+        }
+
+        .footer .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .footer .social-icon {
+            width: 40px;
+            height: 40px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 50%;
+            background: #312aff;
+            padding: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer .social-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .footer .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .footer .row {
+            margin-bottom: 30px;
+        }
+
+        .footer .text-center {
+            border-top: 1px solid #444;
+            padding-top: 15px;
+            margin-top: 20px;
+        }
 </style>

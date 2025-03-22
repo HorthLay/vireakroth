@@ -54,6 +54,162 @@
         color: #ffffff;
     }
 
+    border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+
+    .trending-box .thumb img {
+        width: 100%;
+        border-radius: 3px;
+    }
+
+    .trending-box .down-content {
+        text-align: center;
+    }
+
+    .trending-box .down-content h4 {
+        margin: 10px 0 5px;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .trending-box .down-content .price {
+        font-size: 14px;
+        color: #3238e4;
+        margin-top: 5px;
+    }
+
+    .trending-box .down-content .btn {
+        font-size: 14px;
+        padding: 5px 10px;
+    }
+
+    /* Footer Styling */
+    .footer {
+        background-color: #141414;
+        color: #f1f1f1;
+        padding: 40px 0;
+        font-size: 14px;
+    }
+
+    .footer h5 {
+        color: #000000;
+        margin-bottom: 20px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .footer p, .footer li {
+        font-size: 14px;
+        margin-bottom: 10px;
+        line-height: 1.6;
+    }
+
+    .footer a {
+        color: #fff700;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .footer a:hover {
+        color: #ff3300;
+    }
+
+    .footer-links {
+        list-style: none;
+        padding: 0;
+    }
+
+    .footer-links li {
+        margin-bottom: 8px;
+    }
+
+    .footer-links li a {
+        display: inline-block;
+    }
+
+    .footer .social-icons {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    .footer .social-icon {
+        width: 40px;
+        height: 40px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        border-radius: 50%;
+        background: #312aff;
+        padding: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .footer .social-icon:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .footer .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    .footer .row {
+        margin-bottom: 30px;
+    }
+
+    .footer .text-center {
+        border-top: 1px solid #444;
+        padding-top: 15px;
+        margin-top: 20px;
+    }
+
+    /* Responsive Styling */
+    @media (max-width: 768px)  {
+        body {
+            font-size: 14px;
+        }
+
+        h4 {
+            font-size: 16px;
+        }
+
+        .success-message {
+            width: 90%;
+        }
+
+        .trending-box .trending-items .item {
+            margin: 10px 0;
+        }
+
+        .trending-box .thumb img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .trending-filter {
+            flex-wrap: wrap;
+            text-align: center;
+        }
+
+        .pagination {
+            justify-content: center;
+        }
+    }
+
+    .trending-box .down-content .price {
+font-size: 14px; /* Default font size */
+}
+
+/* Media Query for Small Screens */
+@media (max-width: 576px) {
+.trending-box .down-content .price {
+    font-size: 10px; /* Smaller font size for mobile screens */
+}
+}
 
 
     /* General styling for smaller screens */
@@ -161,7 +317,7 @@
                         
                             @auth
                             <li>
-                                <a href="{{ route('orders.index') }}" id="cart-icon">My Orders</a>
+                                <a href="{{ route('orders.view') }}" id="cart-icon">My Orders</a>
                             </li>
                                 <li>
                                     <span style="color: rgb(0, 0, 0);font-family: 'Kantumruy', sans-serif;">Welcome, {{ auth()->user()->name }}!</span>
@@ -240,15 +396,17 @@
                             <form action="{{ route('cart.update', $item['product_id']) }}" method="POST">
                                 @csrf
                                 @method('PUT')
-                                <input 
-                                    type="number" 
-                                    name="quantity" 
-                                    value="{{ $item['quantity'] }}" 
-                                    min="1" 
-                                    max="10" 
-                                    class="form-control text-center border border-primary" 
-                                    style="width: 80px;" 
-                                    onchange="this.form.submit()">
+                                <div class="input-group" style="width: 120px;">
+                                    <button type="button" class="btn btn-outline-primary" onclick="changeQuantity(-1, this)">-</button>
+                                    <input
+                                        type="text"
+                                        name="quantity"
+                                        value="{{ $item['quantity'] }}"
+                                        class="form-control text-center border border-primary"
+                                        style="width: 40px; text-align: center;"
+                                        readonly>
+                                    <button type="button" class="btn btn-outline-primary" onclick="changeQuantity(1, this)">+</button>
+                                </div>
                             </form>
                         </td>
                         <td data-label="Discount">{{ number_format($item['product']->discount, 2) }}</td>
@@ -294,17 +452,29 @@
 
 
     <!-- Footer -->
-    <footer class="mt-5">
-        <div class="container">
-            <div class="col-lg-12 text-center">
-                <p>Copyright © 2048 LUGX Gaming Company. All rights reserved.
-                    <a rel="nofollow" href="https://templatemo.com" target="_blank">Design: TemplateMo</a>
-                </p>
-            </div>
-        </div>
-    </footer>
+@include('home.footer')
+
 
     <!-- Scripts -->
+    <script>
+         function changeQuantity(change, button) {
+        const input = button.closest('.input-group').querySelector('input[name="quantity"]');
+        let currentValue = parseInt(input.value);
+        const min = 1;
+        const max = 10;
+
+        currentValue += change;
+
+        if (currentValue < min) {
+            currentValue = min;
+        } else if (currentValue > max) {
+            currentValue = max;
+        }
+
+        input.value = currentValue;
+        input.form.submit();
+    }
+    </script>
     <script src="{{ asset('homes/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('homes/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('homes/assets/js/isotope.min.js') }}"></script>

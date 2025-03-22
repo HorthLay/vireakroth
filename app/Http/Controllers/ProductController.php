@@ -81,11 +81,12 @@ class ProductController extends Controller
         // Search products based on the keyword (adjust query as needed)
         $products = Product::where('name', 'LIKE', '%' . $searchKeyword . '%')
             ->orWhere('description', 'LIKE', '%' . $searchKeyword . '%')
-            ->get();
+            ->paginate(4);
 
         // Return the search results to a view
         return view('home.search-results', compact('products', 'searchKeyword'));
     }
+
 
 
 
@@ -165,5 +166,25 @@ class ProductController extends Controller
         $product->discount = $request->discount;
         $product->save();
         return redirect('/product')->with('success', 'Product updated successfully!');
+    }
+
+
+
+
+
+    // product search
+
+    public function searchproduct(Request $request)
+    {
+        $searchKeyword = $request->input('searchKeyword');
+
+        // Paginate the orders based on the search keyword
+        // $orders = Order::where('name', 'LIKE', '%' . $searchKeyword . '%')
+        //     ->orWhere('order_number', 'LIKE', '%' . $searchKeyword . '%')
+        //     ->paginate(10); // You can adjust the number (10) to control how many results per page
+        $products = Product::where('name', 'LIKE', '%' . $searchKeyword . '%')->paginate(10);
+        $reminders = Reminder::where('status', true)->get();
+        $categories = Category::all();
+        return view('admin.productsearch', compact('products', 'searchKeyword', 'categories', 'reminders'));
     }
 }

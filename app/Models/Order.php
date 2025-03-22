@@ -16,7 +16,8 @@ class Order extends Model
         'total_price',  // Add product_id if needed
         'details', // Add this field
         'status',
-        'order_booking_date' // Include status if it's relevant
+        'order_booking_date',
+        'payment_method' // Include status if it's relevant
         // Add any other fields you want to be mass assignable
     ];
 

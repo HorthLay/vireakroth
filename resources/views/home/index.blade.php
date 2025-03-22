@@ -111,6 +111,53 @@
 }
 
 
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+    display: none; /* Hidden by default */
+    z-index: 999;
+}
+
+/* Popup Ad */
+#adPopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    max-width: 400px;
+    width: 90%;
+    display: none;
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #000;
+}
+
+/* Link Style */
+#adLink {
+    display: block;
+    margin-top: 10px;
+    text-align: center;
+    color: #007bff;
+    text-decoration: none;
+}
+
+
 
         /* Product Item Styling */
         .trending-box .trending-items .item {
@@ -588,7 +635,54 @@ https://templatemo.com/tm-589-lugx-gaming
 
   <!-- Scripts -->
   <!-- Bootstrap core JavaScript -->
+  {{-- <script>
+     document.addEventListener("DOMContentLoaded", function () {
+    let ads = @json($ads); // Get ads from Laravel Blade
+    let index = 0;
+    let adPopup = document.getElementById("adPopup");
+    let isClosed = false; // Flag to check if the user closed the ad manually
 
+    function showAd() {
+        if (ads.length > 0 && index < ads.length && !isClosed) {
+            // Update ad content dynamically
+            document.getElementById("adTitle").innerText = ads[index].title;
+            document.getElementById("adImage").src = "{{ asset('ads/') }}/" + ads[index].image;
+            document.getElementById("adDescription").innerText = ads[index].description;
+            document.getElementById("adLink").href = ads[index].cta_url;
+
+            // Show ad popup
+            adPopup.style.display = "block";
+
+            // Hide after 5 seconds unless the user closes it
+            setTimeout(() => {
+                if (!isClosed) {
+                    adPopup.style.display = "none";
+                    index++;
+                    setTimeout(showAd, 2000); // Show next ad after 2 seconds
+                }
+            }, 5000);
+        }
+    }
+
+    // Function to manually close the ad
+    function closeAd() {
+        adPopup.style.display = "none";
+        isClosed = true; // Stop showing ads after closing manually
+    }
+
+    // Attach closeAd function to the close button
+    document.querySelector(".close-btn").addEventListener("click", closeAd);
+
+    setTimeout(showAd, 1000); // Start showing ads after 1 second
+});
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        setTimeout(function() {
+            document.getElementById('js-preloader').style.display = 'none';
+        }, 100); // Adjust the timeout if needed
+    });
+</script> --}}
   
   <script src="homes/vendor/jquery/jquery.min.js"></script>
   <script src="homes/vendor/bootstrap/js/bootstrap.min.js"></script>

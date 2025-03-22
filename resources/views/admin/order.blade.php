@@ -74,6 +74,7 @@
                         <th>Address</th>
                         <th>Province</th>
                         <th>quantity</th>
+                        <th>Sale Type</th>
                         <th>Telegram</th>
                         <th>Status</th>
 
@@ -92,9 +93,14 @@
                     <td>{{ $order_number }}</td>
                     <td>${{ number_format($group->sum('total_price'), 2) }}</td> 
                     <td>{{ $group->first()->delivery }}</td>
+                   
                     <td>{{ $group->first()->address }}</td>
                     <td>{{ $group->first()->province }}</td>
                     <td>{{ $group->sum('quantity') }}</td>
+                    <td style="color: {{ $group->first()->sale_type == 'online' ? 'green' : 'orange' }};">
+                        {{ ucfirst($group->first()->sale_type) }}
+                    </td>
+                    
                     <td>{{ $group->first()->telegram_number }}</td>
                     <td style="color: 
                         {{ $group->first()->status == 'success' ? 'green' : 

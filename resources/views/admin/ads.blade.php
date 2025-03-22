@@ -72,33 +72,33 @@
                             <a class="btn btn-danger" onClick="confirmation(event)" href="{{ url('/category_delete', $ad->id) }}">Delete</a>
                         </td>
                         <td>
-                            <button class="btn btn-primary" onclick="openEditModal({{ $ad->id }}, '{{ $ad->title }}', '{{ asset('categories/'.$ad->image) }}')">Edit</button>
+                            <a class="btn btn-primary" href="{{ url('/ads_edit', $ad->id) }}">Edit</a>
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
 
-            {{-- <div class="pagination">
-                @if ($categories->onFirstPage())
+            <div class="pagination">
+                @if ($ads->onFirstPage())
                     <button class="pagination-btn disabled">Previous</button>
                 @else
-                    <button class="pagination-btn" onclick="window.location='{{ $categories->previousPageUrl() }}'">Previous</button>
+                    <button class="pagination-btn" onclick="window.location='{{ $ads->previousPageUrl() }}'">Previous</button>
                 @endif
 
-                @foreach ($categories->getUrlRange(1, $categories->lastPage()) as $page => $url)
-                    <button class="pagination-btn {{ $page == $categories->currentPage() ? 'active' : '' }}"
+                @foreach ($ads->getUrlRange(1, $ads->lastPage()) as $page => $url)
+                    <button class="pagination-btn {{ $page == $ads->currentPage() ? 'active' : '' }}"
                             onclick="window.location='{{ $url }}'">
                         {{ $page }}
                     </button>
                 @endforeach
 
-                @if ($categories->hasMorePages())
-                    <button class="pagination-btn" onclick="window.location='{{ $categories->nextPageUrl() }}'">Next</button>
+                @if ($ads->hasMorePages())
+                    <button class="pagination-btn" onclick="window.location='{{ $ads->nextPageUrl() }}'">Next</button>
                 @else
                     <button class="pagination-btn disabled">Next</button>
                 @endif
-            </div> --}}
+            </div>
         </div>
 
          <!-- Add Product Modal -->

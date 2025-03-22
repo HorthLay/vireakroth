@@ -57,7 +57,7 @@
 
 
             <div class="search-box mt-4">
-                <form action="{{ route('products.search') }}" method="GET">
+                <form action="" method="GET">
                     <div class="input-group">
                         <input type="text" name="searchKeyword" class="form-control" placeholder="Search Orders..." required>
                         <div class="input-group-append">
