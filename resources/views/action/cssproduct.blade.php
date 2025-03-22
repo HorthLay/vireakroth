@@ -103,63 +103,6 @@
         height: 100px;
     }
 
-
-    .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .modal-content {
-            background-color: #fff;
-            margin: 10% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 400px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
-
-        .modal .close-btn {
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-            position: absolute;
-            top: 10px;
-            right: 25px;
-            cursor: pointer;
-        }
-
-        .modal .close-btn:hover,
-        .modal .close-btn:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .modal input, .modal button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        .modal button {
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-        }
-
-        .modal button:hover {
-            background-color: #0056b3;
-        }
-
     .search-box {
         max-width: 400px;
         margin: 20px auto;
