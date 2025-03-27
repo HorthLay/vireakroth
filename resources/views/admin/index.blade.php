@@ -231,7 +231,7 @@ button:hover {
         }
     }
     </script>
-    
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <script src="{{asset('admin/orders.js')}}"></script>
     <script src="{{asset("admin/index.js")}}"></script>
 </body>

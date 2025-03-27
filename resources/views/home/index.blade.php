@@ -435,7 +435,7 @@ https://templatemo.com/tm-589-lugx-gaming
                                 <p class="price" style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
                                     @if ($product->discount > 0)
                                         <span class="text-muted text-decoration-line-through">${{ $product->price }}</span>
-                                        <span class="text-primary">${{ $product->price - ($product->price * $product->discount / 100) }}</span>
+                                        <span class="text-primary">${{ number_format($product->price - ($product->price * $product->discount / 100), 2) }}</span>
                                     @else
                                         <span>${{ $product->price }}</span>
                                     @endif
@@ -444,10 +444,11 @@ https://templatemo.com/tm-589-lugx-gaming
                                 <p class="text-success font-weight-bold">In Stock</p>
                                 <p class="price" style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
                                     @if ($product->discount > 0)
-                                        <span class="text-muted text-decoration-line-through">${{ $product->price }}</span>
-                                        <span class="text-primary">${{ $product->price - ($product->price * $product->discount / 100) }}</span>
+                                        <span class="text-muted text-decoration-line-through">{{ number_format($product->price, 2) }}</span>
+                                        <span class="text-primary">${{ number_format($product->price - ($product->price * $product->discount / 100), 2) }}
+                                        </span>
                                     @else
-                                        <span>${{ $product->price }}</span>
+                                        <span>$ {{ number_format($product->price, 2) }}</span>
                                     @endif
                                 </p>
                             @endif
@@ -515,10 +516,11 @@ https://templatemo.com/tm-589-lugx-gaming
                                 <p class="text-danger font-weight-bold">Out of Stock</p>
                                 <p class="price" style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
                                     @if ($product->discount > 0)
-                                        <span class="text-muted text-decoration-line-through">${{ $product->price }}</span>
-                                        <span class="text-primary">${{ $product->price - ($product->price * $product->discount / 100) }}</span>
+                                        <span class="text-muted text-decoration-line-through">$ {{ number_format($product->price, 2) }}$</span>
+                                        <span class="text-primary">${{ number_format($product->price - ($product->price * $product->discount / 100), 2) }}
+                                        </span>
                                     @else
-                                        <span>${{ $product->price }}</span>
+                                        <span>$ {{ number_format($product->price, 2) }}</span>
                                     @endif
                                 </p>
                             @else
@@ -526,9 +528,10 @@ https://templatemo.com/tm-589-lugx-gaming
                                 <p class="price" style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
                                     @if ($product->discount > 0)
                                         <span class="text-muted text-decoration-line-through">${{ $product->price }}</span>
-                                        <span class="text-primary">${{ $product->price - ($product->price * $product->discount / 100) }}</span>
+                                        <span class="text-primary">${{ number_format($product->price - ($product->price * $product->discount / 100), 2) }}
+                                        </span>
                                     @else
-                                        <span>${{ $product->price }}</span>
+                                        <span>${{ number_format($product->price, 2) }}</span>
                                     @endif
                                 </p>
                             @endif

@@ -43,7 +43,9 @@ class OrderController extends Controller
 
     public function OrderView()
     {
-        $orders = Order::where('user_id', auth()->id())->get();
+        $orders = Order::where('user_id', auth()->id())
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('checkout.orderview', compact('orders'));
     }
     public function showOrderPage()
@@ -92,6 +94,7 @@ class OrderController extends Controller
         $user = Auth::user();
         $totalPrice = 0;
         $orderNumber = uniqid();
+        $created_at = now();
         $cart = [];
         $paymentMethod = $request->input('payment_method', 'Booking');
 
@@ -130,6 +133,7 @@ class OrderController extends Controller
             $order->total_price = $productTotalPrice;
             $order->province = $request->province;
             $order->payment_method = $paymentMethod;
+            $order->created_at = now();
             $order->save();
         }
 
@@ -154,6 +158,7 @@ class OrderController extends Controller
         $message .= "🏢 *Delivery Province:* {$request->province}\n";
         $message .= "📱 *Contact Number:* {$request->telegram_number}\n";
         $message .= "🚚 *Delivery Method:* {$request->delivery}\n\n";
+        $message .= "⏰ *Created At:* {$created_at}\n\n";
         $message .= "✅ *Thank you for your purchase!*";
 
         // Specify the image to be sent (can be a URL or file path)
@@ -414,14 +419,22 @@ class OrderController extends Controller
     {
         $searchKeyword = $request->input('searchKeyword');
 
-        // Paginate the orders based on the search keyword
+        // Count the number of orders matching the search criteria
+        $orderCount = Order::where('name', 'LIKE', '%' . $searchKeyword . '%')
+            ->orWhere('order_number', 'LIKE', '%' . $searchKeyword . '%')
+            ->orWhereDate('created_at', 'LIKE', '%' . $searchKeyword . '%') // Search by created_at
+            ->count(); // Count the number of matching orders
+
+
         $orders = Order::where('name', 'LIKE', '%' . $searchKeyword . '%')
             ->orWhere('order_number', 'LIKE', '%' . $searchKeyword . '%')
-            ->paginate(10); // You can adjust the number (10) to control how many results per page
+            ->orWhereDate('created_at', 'LIKE', '%' . $searchKeyword . '%') // Add this line to search by created_at
+            ->paginate(10); // Adjust the number (10) for pagination
+
 
         $reminders = Reminder::where('status', true)->get();
 
-        return view('admin.ordersearch', compact('orders', 'searchKeyword', 'reminders'));
+        return view('admin.ordersearch', compact('orders', 'orderCount', 'searchKeyword', 'reminders'));
     }
 
     public function Statushome(Request $request, $order_number)

@@ -17,7 +17,7 @@ class AdminController extends Controller
 {
     public function userview()
     {
-        $users = User::paginate(5);
+        $users = User::orderBy('created_at', 'desc')->paginate(5);
         $reminders = Reminder::where('status', true)->get();
         return view('admin.userview', compact('users', 'reminders'));
     }
@@ -246,7 +246,7 @@ class AdminController extends Controller
     public function OrderView()
     {
         $reminders = Reminder::where('status', true)->get();
-        $orders = Order::paginate(5);
+        $orders = Order::orderBy('created_at', 'desc')->paginate(5);
         $countorders = Order::all();
         $uniqueOrderCount = \App\Models\Order::whereDate('created_at', today())
             ->groupBy('order_number')
@@ -403,17 +403,27 @@ class AdminController extends Controller
             $product = Product::find($order->product_id);
 
             if ($product) {
-                if ($status == 'success' && $order->status != 'success') {
-                    // Reduce stock only if the order was not already 'success'
+                if ($status == 'success' && $order->status == 'pending') {
+                    // From pending to success: Reduce stock, increase quantity sold
                     $product->stock -= $order->quantity;
                     $product->quantity_sold += $order->quantity;
-                } elseif ($status == 'canceled' && $order->status == 'success') {
-                    // Restore stock if changing from 'success' to 'canceled'
+                } elseif ($status == 'pending' && $order->status == 'success') {
+                    // From success to pending: Restore stock, decrease quantity sold
                     $product->stock += $order->quantity;
                     $product->quantity_sold -= $order->quantity;
+                } elseif ($status == 'canceled' && $order->status == 'success') {
+                    // From success to canceled: Restore stock, decrease quantity sold
+                    $product->stock += $order->quantity;
+                    $product->quantity_sold -= $order->quantity;
+                } elseif ($status == 'success' && $order->status == 'canceled') {
+                    // From canceled to success: Reduce stock, increase quantity sold
+                    $product->stock -= $order->quantity;
+                    $product->quantity_sold += $order->quantity;
                 }
+            
                 $product->save();
             }
+            
 
             // Update order status
             $order->status = $status;

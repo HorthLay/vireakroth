@@ -126,29 +126,34 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>User Type</th>
-                        <th>Action</th>
+                        <th style="text-align: left; padding: 10px 20px;">Name</th>
+                        <th style="text-align: left; padding: 10px 20px;">Email</th>
+                        <th style="padding: 10px 20px;">Phone</th>
+                        <th style="padding: 10px 20px;">User Type</th>
+                        <th style="padding: 10px 20px;">Action</th>
+                        <th style="padding: 10px 20px;">Role</th>
                     </tr>
                 </thead>
-
+        
                 <tbody>
                     @foreach ($users as $user)
                     <tr>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->phone }}</td>
-                        <td>{{ $user->user_type }}</td>
-                        <td>
+                        <td style="text-align: left; padding: 10px 20px;">{{ $user->name }}</td>
+                        <td style="text-align: left; padding: 10px 20px;">{{ $user->email }}</td>
+                        <td style="padding: 10px 20px;">{{ $user->phone }}</td>
+                        <td style="padding: 10px 20px;">{{ $user->user_type }}</td>
+                        <td style="padding: 10px 20px;">
                             <a class="btn btn-danger" onClick="confirmation(event)" href="{{ url('/user_delete', $user->id) }}">Delete</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-danger" href="{{ url('/user_edit', $user->id) }}">Edit</a>
+
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
-
+        
             <!-- Pagination Section -->
             <div class="pagination">
                 @if ($users->onFirstPage())
@@ -156,14 +161,14 @@
                 @else
                     <button class="pagination-btn" onclick="window.location='{{ $users->previousPageUrl() }}'">Previous</button>
                 @endif
-
+        
                 @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
                     <button class="pagination-btn {{ $page == $users->currentPage() ? 'active' : '' }}"
                             onclick="window.location='{{ $url }}'">
                         {{ $page }}
                     </button>
                 @endforeach
-
+        
                 @if ($users->hasMorePages())
                     <button class="pagination-btn" onclick="window.location='{{ $users->nextPageUrl() }}'">Next</button>
                 @else
@@ -171,6 +176,7 @@
                 @endif
             </div>
         </div>
+        
         <!-- End of Recent Orders -->
     </main>
     <!-- End of Main Content -->

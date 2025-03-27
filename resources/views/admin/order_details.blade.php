@@ -127,13 +127,16 @@
                             <form action="{{ url('/update_order_status', $order->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
-                                <select name="status" class="form-control">
-                                    <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                    <option value="success" {{ $order->status == 'success' ? 'selected' : '' }}>Success</option>
-                                    <option value="canceled" {{ $order->status == 'canceled' ? 'selected' : '' }}>Canceled</option>
+                                <select name="status" class="form-control" style="font-weight: bold;">
+                                    <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }} style="color: orange;">🕒 Pending</option>
+                                    <option value="success" {{ $order->status == 'success' ? 'selected' : '' }} style="color: green;">✅ Success</option>
+                                    <option value="canceled" {{ $order->status == 'canceled' ? 'selected' : '' }} style="color: red;">❌ Canceled</option>
                                 </select>
-                                <button type="submit" style="border-radius: 10%;background-color: green;color: white;padding: 5px;cursor: pointer;" class="btn btn-primary btn-sm">Update</button>
+                                <button type="submit" style="border-radius: 10%; background-color: green; color: white; padding: 5px; cursor: pointer;" class="btn btn-primary btn-sm">
+                                    Update
+                                </button>
                             </form>
+                            
                         </td>
                         
 
@@ -172,19 +175,29 @@
 <!-- Modal Structure -->
 <div id="statusPopup" class="modal">
     <div class="modal-content">
-        <span class="close-btn" style="color: white;" onclick="closePopup()">&times;</span>
+        <span class="close-btn" style="color: white; cursor: pointer;" onclick="closePopup()">&times;</span>
         <h2>Order Status Details</h2>
         <p id="popupText"></p>
         <form action="{{ route('update-statusadmin', $order_number) }}" method="POST">
             @csrf  <!-- CSRF protection -->
             <div class="button-container">
-                <button type="submit" name="status" value="success" style="background-color: green; margin-right: 10px;">Success</button>
-                <button type="submit" name="status" value="pending" style="background-color: orange; margin-right: 10px;">Pending</button>
-                <button type="submit" name="status" value="canceled" style="background-color: red; margin-right: 10px;">Cancel</button>
+                <button type="submit" name="status" value="success" 
+                    style="background-color: green; color: white; margin-right: 10px; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer;">
+                    ✅ Success
+                </button>
+                <button type="submit" name="status" value="pending" 
+                    style="background-color: orange; color: white; margin-right: 10px; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer;">
+                    🕒 Pending
+                </button>
+                <button type="submit" name="status" value="canceled" 
+                    style="background-color: red; color: white; margin-right: 10px; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer;">
+                    ❌ Canceled
+                </button>
             </div>
         </form>
     </div>
 </div>
+
 
 
 

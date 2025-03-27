@@ -473,60 +473,65 @@
         </ul>
         <div class="container px-1">
             <div class="row g-3">
-                @foreach ($products as $product)
-                <div class="col-6 col-md-4 col-lg-3 mb-4">
-                    <div class="card h-90 d-flex flex-column px-2 py-3">
-                        <div class="card-img-container" style="aspect-ratio: 4/4; overflow: hidden;border-radius: 10%;border: 5px solid #2768ff;">
-                            <a href="{{ route('products.show', $product->id) }}">
-                                <img class="card-img-top img-fluid"
-                                     style="object-fit: contain; width: 100%; max-height: 100%;" 
-                                     src="{{ asset('products/' . $product->image) }}" 
-                                     alt="{{ $product->name }}">
-                            </a>
-                        </div>
-                        <div class="card-body text-center d-align flex-column justify-content-between p-4">
-                            <div class="text-center">
-                                @if ($product->stock <= 0)
-                                    <p class="text-danger font-weight-bold">Out of Stock</p>
-                                    <p class="price" style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
-                                        @if ($product->discount > 0)
-                                            <span class="text-muted text-decoration-line-through">${{ $product->price }}</span>
-                                            <span class="text-primary">${{ $product->price - ($product->price * $product->discount / 100) }}</span>
-                                        @else
-                                            <span>${{ $product->price }}</span>
-                                        @endif
-                                    </p>
-                                @else
-                                    <p class="text-success font-weight-bold">In Stock</p>
-                                    <p class="price" style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
-                                        @if ($product->discount > 0)
-                                            <span class="text-muted text-decoration-line-through">${{ $product->price }}</span>
-                                            <span class="text-primary">${{ $product->price - ($product->price * $product->discount / 100) }}</span>
-                                        @else
-                                            <span>${{ $product->price }}</span>
-                                        @endif
-                                    </p>
-                                @endif
-                                <span class="category text-muted">{{ $product->category->name }}</span>
-                                <h5 class="card-title mt-2" style="font-size: 15px">{{ $product->name }}</h5>
-                            </div>
-                            @if ($product->stock > 0)
-                                <form action="{{ route('cart.add') }}" method="POST" class="mt-3 text-center">
-                                    @csrf
-                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <button type="submit" class="btn btn-primary btn-sm mt-auto"><i class="fa fa-shopping-bag"></i> Cart</button>
-                                </form>
-                            @else
-                                <button type="button" class="btn btn-danger btn-sm mt-auto" disabled>
-                                    <i class="fa fa-times"></i> Unavailable
-                                </button>
-                            @endif
-                        </div>
+                @if ($products->isEmpty())
+                <div class="col-12 d-flex justify-content-center">
+                    <div class="card p-4 text-center shadow-sm" style="max-width: 400px; border-radius: 10px; background-color: #f8f9fa;">
+                        <i class="fa fa-box-open text-primary mb-3" style="font-size: 40px;"></i>
+                        <p class="text-muted font-weight-bold">No products available</p>
                     </div>
                 </div>
-                @endforeach
+                
+                @else
+                    @foreach ($products as $product)
+                        <div class="col-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card h-90 d-flex flex-column px-2 py-3">
+                                <div class="card-img-container" style="aspect-ratio: 4/4; overflow: hidden;border-radius: 10%;border: 5px solid #2768ff;">
+                                    <a href="{{ route('products.show', $product->id) }}">
+                                        <img class="card-img-top img-fluid"
+                                             style="object-fit: contain; width: 100%; max-height: 100%;" 
+                                             src="{{ asset('products/' . $product->image) }}" 
+                                             alt="{{ $product->name }}">
+                                    </a>
+                                </div>
+                                <div class="card-body text-center d-align flex-column justify-content-between p-4">
+                                    <div class="text-center">
+                                        @if ($product->stock <= 0)
+                                            <p class="text-danger font-weight-bold">Out of Stock</p>
+                                        @else
+                                            <p class="text-success font-weight-bold">In Stock</p>
+                                        @endif
+                                        <p class="price" style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
+                                            @if ($product->discount > 0)
+                                                <span class="text-muted text-decoration-line-through">${{ $product->price }}</span>
+                                                <span class="text-primary">${{ number_format($product->price - ($product->price * $product->discount / 100), 2) }}</span>
+                                            @else
+                                                <span>${{ number_format($product->price, 2) }}</span>
+                                            @endif
+                                        </p>
+                                        <span class="category text-muted">
+                                            {{ $product->category ? $product->category->name : 'Uncategorized' }}
+                                        </span>
+                                        <h5 class="card-title mt-2" style="font-size: 15px">{{ $product->name }}</h5>
+                                    </div>
+                                    @if ($product->stock > 0)
+                                        <form action="{{ route('cart.add') }}" method="POST" class="mt-3 text-center">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <button type="submit" class="btn btn-primary btn-sm mt-auto"><i class="fa fa-shopping-bag"></i> Cart</button>
+                                        </form>
+                                    @else
+                                        <button type="button" class="btn btn-danger btn-sm mt-auto" disabled>
+                                            <i class="fa fa-times"></i> Unavailable
+                                        </button>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
             </div>
         </div>
+        
         
 
         <!-- Pagination -->

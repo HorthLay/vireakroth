@@ -42,10 +42,10 @@
             <span class="material-icons-sharp">report_gmailerrorred</span>
             <h3>Reports</h3>
         </a>
-        <a href="#" class="{{ Request::is('new-login') ? 'active' : '' }}">
+        {{-- <a href="#" class="{{ Request::is('new-login') ? 'active' : '' }}">
             <span class="material-icons-sharp">add</span>
             <h3>New Login</h3>
-        </a>
+        </a> --}}
 
 
         <a href="/adsy" class="{{ Request::is('adsy') ? 'active' : '' }}">

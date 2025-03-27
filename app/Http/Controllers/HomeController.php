@@ -27,11 +27,13 @@ class HomeController extends Controller
             // Calculate the percentage change
             $percentageChange = $previousVisits ? round((($currentVisits - $previousVisits) / $previousVisits) * 100) : 0;
             \App\Models\Order::where('viewed', false)->update(['viewed' => true]);
-
+            $totalOrderSales = Order::sum('total_price');
             // Fetch orders
+            $totalOrders = Order::count();
             $orders = \App\Models\Order::latest()->get();
             $recentorders = Order::latest()->take(3)->get();
-            return view('admin.index', compact('users', 'currentVisits', 'percentageChange', 'previousVisits', 'reminders', 'orders', 'recentorders'));
+
+            return view('admin.index', compact('users', 'totalOrders', 'totalOrderSales', 'currentVisits', 'percentageChange', 'previousVisits', 'reminders', 'orders', 'recentorders'));
         } else {
             $user = User::all();
             $newProducts = Product::where('status', 'new')->take(4)->get();

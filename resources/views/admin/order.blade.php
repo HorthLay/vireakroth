@@ -67,17 +67,16 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Order Number</th>
-                        <th>Total Price</th>
+                        <th align="left">Order Number</th>
+                        <th align="left">Name</th>
+                        <th>Order Date</th>
                         <th>Delivery</th>
                         <th>Address</th>
-                        <th>Province</th>
-                        <th>quantity</th>
                         <th>Sale Type</th>
                         <th>Telegram</th>
+                        <th>Quantity</th>
+                        <th align="right" style="padding-right: 10px;">Total Price</th>
                         <th>Status</th>
-
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -89,19 +88,19 @@
                 
                 @foreach ($groupedOrders as $order_number => $group)
                 <tr style="background-color: {{ $group->first()->viewed ? 'transparent' : '#ffeb3b' }};"> 
-                    <td>{{ $group->first()->name }}</td>
-                    <td>{{ $order_number }}</td>
-                    <td>${{ number_format($group->sum('total_price'), 2) }}</td> 
+                    <td align="left">{{ $order_number }}</td>
+                    <td align="left">{{ $group->first()->name }}</td>
+                    <td>{{  \Carbon\Carbon::parse($group->first()->created_at)->format('d-m-Y') }}</td>
                     <td>{{ $group->first()->delivery }}</td>
-                   
+                    
                     <td>{{ $group->first()->address }}</td>
-                    <td>{{ $group->first()->province }}</td>
-                    <td>{{ $group->sum('quantity') }}</td>
                     <td style="color: {{ $group->first()->sale_type == 'online' ? 'green' : 'orange' }};">
                         {{ ucfirst($group->first()->sale_type) }}
                     </td>
-                    
                     <td>{{ $group->first()->telegram_number }}</td>
+                    <td>{{ $group->sum('quantity') }}</td>
+                    
+                    <td align="right" style="padding-right: 10px;">${{ number_format($group->sum('total_price'), 2) }}</td> 
                     <td style="color: 
                         {{ $group->first()->status == 'success' ? 'green' : 
                            ($group->first()->status == 'pending' ? 'yellow' : 

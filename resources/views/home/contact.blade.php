@@ -59,6 +59,44 @@
         color: #ffffff;
     }
 
+           /* Floating cart button */
+.popup-cart-btn {
+    position: fixed;
+    bottom: 20px; /* Distance from the bottom of the screen */
+    right: 20px; /* Distance from the right side of the screen */
+    background-color: #007bff; /* Button background color */
+    color: white; /* Text color */
+    padding: 15px 20px;
+    border-radius: 50%; /* Round button */
+    font-size: 24px;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    z-index: 1000; /* Ensure it stays on top */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hover effect */
+.popup-cart-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Cart count styling (small red circle) */
+.cart-count {
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 18px; /* Centers the number vertically */
+    font-weight: bold;
+}
+
 
       /* Footer Styling */
       .footer {

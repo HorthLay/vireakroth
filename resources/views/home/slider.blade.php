@@ -37,8 +37,8 @@
       <div class="col-lg-4 offset-lg-2">
           <div class="right-image">
               <img src="{{ asset('products/' . $productWithBiggestDiscount->image) }}" alt="{{ $productWithBiggestDiscount->name }}">
-              <span class="price">${{ $productWithBiggestDiscount->price - ($productWithBiggestDiscount->price * $productWithBiggestDiscount->discount / 100) }}</span>
-              <span class="offer">{{ $productWithBiggestDiscount->discount }}%</span>
+              <span class="price">${{ number_format($productWithBiggestDiscount->price - ($productWithBiggestDiscount->price * $productWithBiggestDiscount->discount / 100), 2) }}</span>
+              <span class="offer">{{ number_format($productWithBiggestDiscount->discount, 0) }}%</span>
               
               @if ($productWithBiggestDiscount->quantity_sold > 100)
                   <span class="badge badge-success">Best Seller</span>

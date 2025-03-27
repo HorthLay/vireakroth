@@ -228,6 +228,7 @@ font-weight: bold;
                     <div class="card-body">
                         <h5 class="card-title">🆔Order Number: <strong>{{ $orders[0]->order_number }}</strong></h5>
                         <p><strong>👤Name:</strong> {{ $orders[0]->name }}</p>
+                        <p><strong>📅Date:</strong> {{ $orders[0]->created_at }}</p>
                         <p><strong>📧Telegram Number:</strong> {{ $orders[0]->telegram_number }}</p>
                         <p><strong>🏠Address:</strong> {{ $orders[0]->address }}</p>
                         <p><strong>🌐Province:</strong> {{ $orders[0]->province }}</p>

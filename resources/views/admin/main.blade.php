@@ -5,16 +5,18 @@
         <div class="sales">
             <div class="status">
                 <div class="info">
-                    <h3>Total Sales</h3>
-                    <h1>$65,024</h1>
+                    <h3>Total OrderSale</h3>
+                    <h1>${{$totalOrderSales}}</h1>
                 </div>
                 <div class="progresss">
-                    <svg>
-                        <circle cx="38" cy="38" r="36"></circle>
-                    </svg>
-                    <div class="percentage">
-                        <p>+81%</p>
-                    </div>
+                    
+                    <lord-icon
+                    src="https://cdn.lordicon.com/ljgptdru.json"
+                    trigger="in"
+                    delay="400"
+                    state="in-reveal"
+                    style="width:80px;height:80px">
+                </lord-icon>
                 </div>
             </div>
         </div>
@@ -25,29 +27,32 @@
                     <h1>{{ number_format($currentVisits) }}</h1>
                 </div>
                 <div class="progresss">
-                    <svg>
-                        <circle cx="38" cy="38" r="36"></circle>
-                        <circle cx="38" cy="38" r="36"></circle>
-                    </svg>
-                    <div class="percentage">
-                        <p>{{ $percentageChange < 0 ? '-' : '+' }}{{ abs($percentageChange) }}%</p>
-                    </div>
+                    
+                    <lord-icon
+                    src="https://cdn.lordicon.com/dznelzdk.json"
+                    trigger="in"
+                    delay="400"
+                    state="in-reveal"
+                    style="width:80px;height:80px">
+                </lord-icon>
+                    
                 </div>
             </div>
         </div>
         <div class="searches">
             <div class="status">
                 <div class="info">
-                    <h3>Searches</h3>
-                    <h1>14,147</h1>
+                    <h3>Total Order</h3>
+                    <h1>{{$totalOrders}}</h1>
                 </div>
                 <div class="progresss">
-                    <svg>
-                        <circle cx="38" cy="38" r="36"></circle>
-                    </svg>
-                    <div class="percentage">
-                        <p>+21%</p>
-                    </div>
+                    <lord-icon
+                    src="https://cdn.lordicon.com/hnqamtrw.json"
+                    trigger="in"
+                    delay="400"
+                    state="in-reveal"
+                    style="width:80px;height:80px">
+                </lord-icon>
                 </div>
             </div>
         </div>
@@ -84,14 +89,14 @@
         <table>
             <thead>
                 <tr>
-                    <th>Name</th>
                     <th>Order Number</th>
-                    <th>Total Price</th>
+                    <th>Name</th>
+                    <th>Order Date</th>
                     <th>Delivery</th>
                     <th>Address</th>
-                    <th>Province</th>
-                    <th>Quantity</th>
                     <th>Telegram</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -104,14 +109,14 @@
     
                 @foreach ($recentOrders as $order_number => $group)
                     <tr style="background-color: {{ $group->first()->viewed ? 'transparent' : '#ffeb3b' }};">
-                        <td>{{ $group->first()->name }}</td>
                         <td>{{ $order_number }}</td>
-                        <td>${{ number_format($group->sum('total_price'), 2) }}</td>
+                        <td>{{ $group->first()->name }}</td>
+                        <td>{{ $group->first()->created_at }}</td>
                         <td>{{ $group->first()->delivery }}</td>
                         <td>{{ $group->first()->address }}</td>
-                        <td>{{ $group->first()->province }}</td>
-                        <td>{{ $group->sum('quantity') }}</td>
                         <td>{{ $group->first()->telegram_number }}</td>
+                        <td>{{ $group->sum('quantity') }}</td>
+                        <td>${{ number_format($group->sum('total_price'), 2) }}</td>
                         <td style="color:
                             {{ $group->first()->status == 'success' ? 'green' :
                                ($group->first()->status == 'pending' ? 'yellow' :

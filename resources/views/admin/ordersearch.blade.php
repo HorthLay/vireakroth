@@ -26,7 +26,7 @@
                 <div class="status">
                     <div class="info">
                         <h3>Total Orders</h3>
-                        <h1 align="center">{{ $searchKeyword  }}</h1>
+                        <h1 align="center">{{ $orderCount  }}</h1>
                     </div>
                     <div class="progresss">
                         <img src="{{ asset('pic/product.png') }}" alt="Orders">
@@ -60,14 +60,15 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Order Number</th>
-                        <th>Total Price</th>
+                        <th align="left">Order Number</th>
+                        <th align="left">Name</th>
+                        <th>Order Date</th>
                         <th>Delivery</th>
                         <th>Address</th>
-                        <th>Province</th>
-                        <th>Quantity</th>
+                        <th>Sale Type</th>
                         <th>Telegram</th>
+                        <th>Quantity</th>
+                        <th align="right" style="padding-right: 10px;">Total Price</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -78,32 +79,39 @@
                         $groupedOrders = $orders->groupBy('order_number'); 
                     @endphp
                 
-                    @foreach ($groupedOrders as $order_number => $group)
-                    <tr style="background-color: {{ $group->first()->viewed ? 'transparent' : '#ffeb3b' }};"> 
-                        <td>{{ $group->first()->name }}</td>
-                        <td>{{ $order_number }}</td>
-                        <td>${{ number_format($group->sum('total_price'), 2) }}</td> 
-                        <td>{{ $group->first()->delivery }}</td>
-                        <td>{{ $group->first()->address }}</td>
-                        <td>{{ $group->first()->province }}</td>
-                        <td>{{ $group->sum('quantity') }}</td>
-                        <td>{{ $group->first()->telegram_number }}</td>
-                        <td style="color: 
-                            {{ $group->first()->status == 'success' ? 'green' : 
-                               ($group->first()->status == 'pending' ? 'yellow' : 
-                               ($group->first()->status == 'canceled' ? 'red' : 'black')) }};">
-                            {{ ucfirst($group->first()->status) }}
-                        </td>
-                        <td>
-                            <a href="{{ url('/order_details', $order_number) }}">Details</a>
-                        </td>
-                    </tr>
-                    @endforeach
+                @foreach ($groupedOrders as $order_number => $group)
+                <tr style="background-color: {{ $group->first()->viewed ? 'transparent' : '#ffeb3b' }};"> 
+                    <td align="left">{{ $order_number }}</td>
+                    <td align="left">{{ $group->first()->name }}</td>
+                    <td>{{  \Carbon\Carbon::parse($group->first()->created_at)->format('d-m-Y') }}</td>
+                    <td>{{ $group->first()->delivery }}</td>
+                    
+                    <td>{{ $group->first()->address }}</td>
+                    <td style="color: {{ $group->first()->sale_type == 'online' ? 'green' : 'orange' }};">
+                        {{ ucfirst($group->first()->sale_type) }}
+                    </td>
+                    <td>{{ $group->first()->telegram_number }}</td>
+                    <td>{{ $group->sum('quantity') }}</td>
+                    
+                    <td align="right" style="padding-right: 10px;">${{ number_format($group->sum('total_price'), 2) }}</td> 
+                    <td style="color: 
+                        {{ $group->first()->status == 'success' ? 'green' : 
+                           ($group->first()->status == 'pending' ? 'yellow' : 
+                           ($group->first()->status == 'canceled' ? 'red' : 'black')) }};">
+                        {{ ucfirst($group->first()->status) }}
+                    </td>
+                    <td>
+                        <a href="{{ url('/order_details', $order_number) }}">Details</a>
+                    </td>
+                </tr>
+            @endforeach
+            
                 </tbody>
+                
             </table>
 
-            <!-- Pagination Section -->
-            <div class="pagination">
+             <!-- Pagination Section -->
+             <div class="pagination">
                 @if ($orders->onFirstPage())
                     <button class="pagination-btn disabled">Previous</button>
                 @else

@@ -16,6 +16,7 @@
 <div class="container">
     <!-- Sidebar Section -->
     @include('admin.sidebar')
+    
     <!-- End of Sidebar Section -->
 
     <!-- Main Content -->

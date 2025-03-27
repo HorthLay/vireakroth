@@ -63,7 +63,7 @@
                         
                             @auth
                             <li>
-                                <a href="{{ route('orders.index') }}" id="cart-icon">My Orders</a>
+                                <a href="{{ route('orders.view') }}" id="cart-icon">My Orders</a>
                             </li>
                                 <li>
                                     <span style="color: rgb(0, 0, 0);font-family: 'Kantumruy', sans-serif;">Welcome, {{ auth()->user()->name }}!</span>

@@ -61,7 +61,7 @@ Route::post('/cart/add/details', [CartController::class, 'CartAddDetail'])->name
 Route::get('/cart', [CartController::class, 'viewcart'])->name('cart.view');
 
 Route::middleware(['auth', 'verified', 'admin'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+
     Route::get('/user', [AdminController::class, 'userview'])->name('users.index');
     Route::get('/user_delete/{id}', [AdminController::class, 'deleteUser'])->name('user.delete');
     Route::post('/reminders', [AdminController::class, 'store'])->name('reminders.store');

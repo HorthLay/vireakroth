@@ -23,17 +23,20 @@
             <div class="sales">
                 <div class="status">
                     <div class="info">
-                        <a id="openModalBtn" class="btn btn-primary" style="text-decoration: none;background-color: #007bff;padding: 10px 20px;border-radius: 5px;color: #fff;">Filter</a>
+                        <a id="openFilterBtn" class="btn btn-primary" 
+                           style="text-decoration: none; background-color: #007bff; padding: 10px 20px; border-radius: 5px; color: #fff; cursor: pointer;">
+                            Filter
+                        </a>
                     </div>
                     <lord-icon
-                    src="https://cdn.lordicon.com/sbnjyzil.json"
-                    trigger="in"
-                    delay="100"
-                    state="in-reveal"
-                    stroke="bold"
-                    colors="primary:#30c9e8,secondary:#242424"
-                    style="width:80px;height:80px">
-                </lord-icon>
+                        src="https://cdn.lordicon.com/sbnjyzil.json"
+                        trigger="in"
+                        delay="100"
+                        state="in-reveal"
+                        stroke="bold"
+                        colors="primary:#30c9e8,secondary:#242424"
+                        style="width:80px;height:80px">
+                    </lord-icon>
                 </div>
 
 
@@ -60,19 +63,20 @@
             </div>
         </div>
 
-        <div id="filterModal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn">&times;</span>
-                <h3>Filter Orders</h3>
-                <form method="GET" action="">
-                    <label>Start Date:</label>
-                    <input type="date" name="start_date" value="2025-03-01">
-                    <label>End Date:</label>
-                    <input type="date" name="end_date" value="2025-03-15">
-                    <button type="submit">Filter</button>
-                </form>
-            </div>
-        </div>
+        <!-- Filter Modal -->
+<div id="filterModal" class="modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5);">
+    <div class="modal-content" style="background: #fff; padding: 20px; width: 50%; margin: 10% auto; border-radius: 10px; text-align: center;">
+        <span class="close-btn" style="float: right; font-size: 25px; cursor: pointer;">&times;</span>
+        <h3>Filter Orders</h3>
+        <form method="GET" action="">
+            <label>Start Date:</label>
+            <input type="date" name="start_date" value="2025-03-01" required>
+            <label>End Date:</label>
+            <input type="date" name="end_date" value="2025-03-15" required>
+            <button type="submit" class="btn btn-success" style="margin-top: 10px; padding: 8px 15px;">Apply Filter</button>
+        </form>
+    </div>
+</div>
 
         @if(session('success'))
         <div class="success-message show">
@@ -150,7 +154,47 @@
     </div>
 </div>
 
-@include('action.javaproduct')
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        let modal = document.getElementById("filterModal");
+        let openBtn = document.getElementById("openFilterBtn");
+        let closeBtn = document.querySelector(".close-btn");
+
+        // Open modal
+        openBtn.addEventListener("click", function () {
+            modal.style.display = "block";
+        });
+
+        // Close modal when clicking the close button
+        closeBtn.addEventListener("click", function () {
+            modal.style.display = "none";
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener("click", function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        });
+    });
+
+    // Confirmation for Deleting Product
+    function confirmation(event) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = event.target.href;
+            }
+        });
+    }
+</script>
 <script src="https://cdn.lordicon.com/lordicon.js"></script>
 
 </body>

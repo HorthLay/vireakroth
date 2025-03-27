@@ -81,37 +81,38 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Description</th>
+                        <th align="left">Name</th>
+                        <th align="left">Description</th>
+                        <th align="left">Category</th>
                         <th>Stock</th>
-                        <th>Price</th>
-                        <th>Category</th>
-                        <th>Quantity Sold</th>
                         <th>Discount</th>
-                        <th>Status</th>
+                        <th style="padding-left: 10px;">Status</th>
+                        <th style="padding-right: 10px;padding-left:10px;">Sold</th>
+                        <th align="right" style="padding-left: 10px;padding-right:10px;">Price</th>
                         <th>Images</th>
                         <th>Action</th>
-                        <th>Edit</th>
+                        <th style="padding-left: 10px;">Edit</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     @foreach ($products as $product)
                     <tr>
-                        <td>{{ $product->name }}</td>
-                        <td>{{ Str::limit($product->description, 20) }}</td>
+                        <td align="left">{{ Str::limit($product->name, 10) }}</td>
+                        <td align="left">{{ Str::limit($product->description, 20) }}</td>
+                        <td align="left">{{ $product->category->name }}</td>
                         <td>{{ $product->stock }}</td>
-                        <td>
+                        <td>{{ number_format($product->discount,0) }}%</td>
+                        <td style="padding-left: 10px;">{{ $product->status }}</td>
+                        <td>{{ $product->quantity_sold }}</td>
+                        <td align="right" style="padding-left: 10px;padding-right:10px;">
                             @if ($product->discount > 0)
         <strong>{{ number_format($product->getDiscountedPrice(), 2) }}$</strong>
     @else
         {{ number_format($product->price, 2) }}$
     @endif
                         </td>
-                        <td>{{ $product->category->name }}</td>
-                        <td>{{ $product->quantity_sold }}</td>
-                        <td>{{ $product->discount }}%</td>
-                        <td>{{ $product->status }}</td>
+                        
 
                         <td>
                             <div class="image-wrapper">
@@ -121,7 +122,7 @@
                         <td>
                             <a class="btn btn-danger" onClick="confirmation(event)" href="{{ url('/product_delete', $product->id) }}">Delete</a>
                         </td>
-                        <td>
+                        <td style="padding-left: 10px;">
                             <a class="btn btn-primary" href="{{ url('/product_edit', $product->id) }}">Edit</a>
                         </td>
                     </tr>
