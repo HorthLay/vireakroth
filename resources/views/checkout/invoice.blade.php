@@ -280,7 +280,12 @@
                             </tr>
                             <tr>
                               <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
-                                Philip Brooks<br> Public Wales, Somewhere<br> New York NY<br> 4468, United States<br> T: 202-555-0133
+                                <strong>Address:</strong> {{ $order->address }}<br>
+                                <strong>Province:</strong> {{$order->province}}<br>
+                                <strong>Mobile:</strong> {{$order->telegram_number}}<br>
+                                <strong>Date:</strong> {{$order->created_at->format('Y-m-d H:i A')}}<br>
+                                <strong>Delivery:</strong> {{$order->delivery}}
+                                
                               </td>
                             </tr>
                           </tbody>
@@ -302,8 +307,7 @@
                             </tr>
                             <tr>
                               <td style="font-size: 12px; font-family: 'Open Sans', sans-serif; color: #5b5b5b; line-height: 20px; vertical-align: top; ">
-                                Credit Card<br> Credit Card Type: Visa<br> Worldpay Transaction ID: <a href="#" style="color: #ff0000; text-decoration:underline;">4185939336</a><br>
-                                <a href="#" style="color:#b0b0b0;">Right of Withdrawal</a>
+                                PAYMENT: {{ $order->payment_method }}
                               </td>
                             </tr>
                           </tbody>
@@ -339,7 +343,7 @@
               <tbody>
                 <tr>
                   <td style="font-size: 12px; color: #5b5b5b; font-family: 'Open Sans', sans-serif; line-height: 18px; vertical-align: top; text-align: left;">
-                    Have a nice day.
+                    Thank For Everything for Your Order and Have a Nice Day 🥰🙏
                   </td>
                 </tr>
               </tbody>

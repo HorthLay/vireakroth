@@ -432,4 +432,29 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'Order status updated successfully.');
     }
+
+
+    public function editRole($id)
+    {
+        $user = User::find($id);
+        $reminders = Reminder::where('status', true)->get();
+        return view('admin.edit_role', compact('user', 'reminders'));
+    }
+
+    public function updateRole(Request $request, $id)
+    {
+        $user = User::find($id);
+        $user->user_type = $request->user_type;
+        $user->save();
+        return redirect('/user')->with('success', 'Role updated successfully.');
+    }
+
+
+    public function searchUser(Request $request)
+    {
+        $searchKeyword = $request->input('searchKeyword');
+        $users = User::where('name', 'LIKE', '%' . $searchKeyword . '%')->orWhere('phone', 'LIKE', '%' . $searchKeyword . '%')->paginate(10);
+        $reminders = Reminder::where('status', true)->get();
+        return view('admin.userviewsearch', compact('users', 'reminders'));
+    }
 }

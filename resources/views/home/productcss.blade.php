@@ -126,6 +126,47 @@ font-weight: bold;
         padding: 5px 10px;
     }
 
+
+    /* Container for pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Pagination button styles */
+.pagination-btn {
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    color: #333;
+    padding: 10px 15px;
+    margin: 0 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Active page button */
+.pagination-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* Disabled button styles */
+.pagination-btn.disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Hover effect for buttons */
+.pagination-btn:hover:not(.disabled) {
+    background-color: #0056b3;
+    color: white;
+}
+
     /* Footer Styling */
     .footer {
         background-color: #141414;

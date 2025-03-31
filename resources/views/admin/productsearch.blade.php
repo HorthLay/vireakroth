@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <base href="public">
     <meta charset="UTF-8">
@@ -12,170 +13,171 @@
 
     @include('action.cssproduct')
 </head>
+
 <body>
 
-<div class="container">
-    <!-- Sidebar Section -->
-    @include('admin.sidebar')
-    <!-- End of Sidebar Section -->
+    <div class="container">
+        <!-- Sidebar Section -->
+        @include('admin.sidebar')
+        <!-- End of Sidebar Section -->
 
-    <!-- Main Content -->
-    <main>
-        <h1>Product</h1>
-        <div class="analyse">
-            <div class="sales">
-                <div class="status">
-                    <div class="info">
-                        <h3>Total Product</h3>
-                        <h1 align="center">{{ $products->count() }}</h1>
-                    </div>
-                    <lord-icon
-                    src="https://cdn.lordicon.com/ljgptdru.json"
-                    trigger="in"
-                    delay="400"
-                    state="in-reveal"
-                    style="width:80px;height:80px">
-                </lord-icon>
-                </div>
-            </div>
-            <div class="sales">
-                <div class="status">
-                    <div class="info">
-                        <a id="createCategoryBtn" class="btn btn-primary" style="text-decoration: none;background-color: #007bff;padding: 10px 20px;border-radius: 5px;color: #fff;">Add Product</a>
-                    </div>
-                    <lord-icon
-                    src="https://cdn.lordicon.com/sbnjyzil.json"
-                    trigger="in"
-                    delay="100"
-                    state="in-reveal"
-                    stroke="bold"
-                    colors="primary:#30c9e8,secondary:#242424"
-                    style="width:80px;height:80px">
-                </lord-icon>
-                </div>
-            </div>
-
-
-            <div class="search-box mt-4">
-                <form action="" method="GET">
-                    <div class="input-group">
-                        <input type="text" name="searchKeyword" class="form-control" placeholder="Search Orders..." required>
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-primary">🔍 Search</button>
+        <!-- Main Content -->
+        <main>
+            <h1>Product</h1>
+            <div class="analyse">
+                <div class="sales">
+                    <div class="status">
+                        <div class="info">
+                            <h3>Total Product</h3>
+                            <h1 align="center">{{ $products->count() }}</h1>
                         </div>
+                        <lord-icon src="https://cdn.lordicon.com/ljgptdru.json" trigger="in" delay="400"
+                            state="in-reveal" style="width:80px;height:80px">
+                        </lord-icon>
                     </div>
-                </form>
-            </div>
-        </div>
+                </div>
+                <div class="sales">
+                    <div class="status">
+                        <div class="info">
+                            <a id="createCategoryBtn" class="btn btn-primary"
+                                style="text-decoration: none;background-color: #007bff;padding: 10px 20px;border-radius: 5px;color: #fff;">Add
+                                Product</a>
+                        </div>
+                        <lord-icon src="https://cdn.lordicon.com/sbnjyzil.json" trigger="in" delay="100"
+                            state="in-reveal" stroke="bold" colors="primary:#30c9e8,secondary:#242424"
+                            style="width:80px;height:80px">
+                        </lord-icon>
+                    </div>
+                </div>
 
-        <!-- Success Message -->
-        @if(session('success'))
-        <div class="success-message show">
-            <p style="color: white;">{{ session('success') }}</p>
-            <button class="close-btn" onclick="document.querySelector('.success-message').classList.remove('show')">×</button>
-        </div>
-        @endif
 
-        <!-- Recent Products Table -->
-        <div class="recent-orders">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Stock</th>
-                        <th>Price</th>
-                        <th>Category</th>
-                        <th>Quantity Sold</th>
-                        <th>Discount</th>
-                        <th>Status</th>
-                        <th>Images</th>
-                        <th>Action</th>
-                        <th>Edit</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach ($products as $product)
-                    <tr>
-                        <td>{{ $product->name }}</td>
-                        <td>{{ Str::limit($product->description, 20) }}</td>
-                        <td>{{ $product->stock }}</td>
-                        <td>
-                            @if ($product->discount > 0)
-        <strong>{{ number_format($product->getDiscountedPrice(), 2) }}$</strong>
-    @else
-        {{ number_format($product->price, 2) }}$
-    @endif
-                        </td>
-                        <td>{{ $product->category->name }}</td>
-                        <td>{{ $product->quantity_sold }}</td>
-                        <td>{{ $product->discount }}%</td>
-                        <td>{{ $product->status }}</td>
-
-                        <td>
-                            <div class="image-wrapper">
-                                <img src="{{ asset('products/'.$product->image) }}" alt="" style="width: 100px; height: 100px;">
+                <div class="search-box mt-4">
+                    <form action="" method="GET">
+                        <div class="input-group">
+                            <input type="text" name="searchKeyword" class="form-control"
+                                placeholder="Search Orders..." required>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">🔍 Search</button>
                             </div>
-                        </td>
-                        <td>
-                            <a class="btn btn-danger" onClick="confirmation(event)" href="{{ url('/product_delete', $product->id) }}">Delete</a>
-                        </td>
-                        <td>
-                            <a class="btn btn-primary" href="{{ url('/product_edit', $product->id) }}">Edit</a>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-             <!-- Pagination Section -->
-             <div class="pagination">
-                @if ($products->onFirstPage())
-                    <button class="pagination-btn disabled">Previous</button>
-                @else
-                    <button class="pagination-btn" onclick="window.location='{{ $products->previousPageUrl() }}'">Previous</button>
-                @endif
+            <!-- Success Message -->
+            @if (session('success'))
+                <div class="success-message show">
+                    <p style="color: white;">{{ session('success') }}</p>
+                    <button class="close-btn"
+                        onclick="document.querySelector('.success-message').classList.remove('show')">×</button>
+                </div>
+            @endif
 
-                @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
-                    <button class="pagination-btn {{ $page == $products->currentPage() ? 'active' : '' }}"
+            <!-- Recent Products Table -->
+            <div class="recent-orders">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Stock</th>
+                            <th>Price</th>
+                            <th>Category</th>
+                            <th>Quantity Sold</th>
+                            <th>Discount</th>
+                            <th>Status</th>
+                            <th>Images</th>
+                            <th>Action</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach ($products as $product)
+                            <tr>
+                                <td>{{ $product->name }}</td>
+                                <td>{{ Str::limit($product->description, 20) }}</td>
+                                <td>{{ $product->stock }}</td>
+                                <td>
+                                    @if ($product->discount > 0)
+                                        <strong>{{ number_format($product->getDiscountedPrice(), 2) }}$</strong>
+                                    @else
+                                        {{ number_format($product->price, 2) }}$
+                                    @endif
+                                </td>
+                                <td>{{ $product->category->name }}</td>
+                                <td>{{ $product->quantity_sold }}</td>
+                                <td>{{ $product->discount }}%</td>
+                                <td>{{ $product->status }}</td>
+
+                                <td>
+                                    <div class="image-wrapper">
+                                        <img src="{{ asset('products/' . $product->image) }}" alt=""
+                                            style="width: 100px; height: 100px;">
+                                    </div>
+                                </td>
+                                <td>
+                                    <a class="btn btn-danger" onClick="confirmation(event)"
+                                        href="{{ url('/product_delete', $product->id) }}">Delete</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary" href="{{ url('/product_edit', $product->id) }}">Edit</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+                <!-- Pagination Section -->
+                <div class="pagination">
+                    @if ($products->onFirstPage())
+                        <button class="pagination-btn disabled">Previous</button>
+                    @else
+                        <button class="pagination-btn"
+                            onclick="window.location='{{ $products->previousPageUrl() }}'">Previous</button>
+                    @endif
+
+                    @foreach ($products->getUrlRange(1, $products->lastPage()) as $page => $url)
+                        <button class="pagination-btn {{ $page == $products->currentPage() ? 'active' : '' }}"
                             onclick="window.location='{{ $url }}'">
-                        {{ $page }}
-                    </button>
-                @endforeach
+                            {{ $page }}
+                        </button>
+                    @endforeach
 
-                @if ($products->hasMorePages())
-                    <button class="pagination-btn" onclick="window.location='{{ $products->nextPageUrl() }}'">Next</button>
-                @else
-                    <button class="pagination-btn disabled">Next</button>
-                @endif
+                    @if ($products->hasMorePages())
+                        <button class="pagination-btn"
+                            onclick="window.location='{{ $products->nextPageUrl() }}'">Next</button>
+                    @else
+                        <button class="pagination-btn disabled">Next</button>
+                    @endif
+                </div>
             </div>
-        </div>
 
-       @include('action.productmodal')
+            @include('action.productmodal')
 
-        <!-- Edit Product Modal -->
-        @include('action.editproductmodal') 
-        
-    </main>
+            <!-- Edit Product Modal -->
+            @include('action.editproductmodal')
 
-    <div class="right-section">
-        @include('admin.nav')
-        <!-- End of Nav -->
+        </main>
 
-        <div class="user-profile">
-            <div class="logo">
-                <img style="margin-left:20%;" src="{{ asset('pic/vireakroth.png') }}">
-                <h2>VireakRoth <br> PhoneShop</h2>
-                <p>address: Phum 2 Songkat 3 SihanoukVille Province</p>
+        <div class="right-section">
+            @include('admin.nav')
+            <!-- End of Nav -->
+
+            <div class="user-profile">
+                <div class="logo">
+                    <img style="margin-left:20%;" src="{{ asset('pic/vireakroth.png') }}">
+                    <h2>VireakRoth <br> PhoneShop</h2>
+                    <p>address: Phum 2 Songkat 3 SihanoukVille Province</p>
+                </div>
             </div>
-        </div>
 
-       @include('admin.reminder')
+            @include('admin.reminder')
+        </div>
     </div>
-</div>
 
-@include('action.javaproduct')
-<script src="https://cdn.lordicon.com/lordicon.js"></script>
+    @include('action.javaproduct')
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
 </body>
+
 </html>

@@ -202,7 +202,7 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">Order Number: <strong>{{ $orders[0]->order_number }}</strong></h5>
-                        <strong>Name:</strong><p style="font-family:'Khmer OS Battambang', Courier, monospace"> {{ $orders[0]->name }}</p>
+                        <strong>Name</strong><p style="font-family:'Khmer OS Battambang', Courier, monospace"> {{ $orders[0]->name }}</p>
                         <p><strong>Telegram Number:</strong> {{ $orders[0]->telegram_number }}</p>
                         <p><strong>Address:</strong> {{ $orders[0]->address }}</p>
                         <p><strong>Province:</strong> {{ $orders[0]->province }}</p>
@@ -256,7 +256,7 @@
                 <h4>Customer Information</h4>
                 <div class="card mb-4">
                     <div class="card-body">
-                        <strong>Name:</strong><p style="font-family: 'khmer os battambang';">{{ $order->name }}</p>
+                        <strong>Name</strong><p style="font-family: 'khmer os battambang';">{{ $order->name }}</p>
                         <p><strong>Telegram:</strong> {{ $order->telegram_number }}</p>
                         <p><strong>Province:</strong> {{ $order->province }}</p>
                     </div>

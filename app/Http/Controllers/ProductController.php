@@ -66,7 +66,7 @@ class ProductController extends Controller
             // Delete the category
             $product->delete();
 
-            return redirect()->back()->with('success', 'Category deleted successfully.');
+            return redirect()->back()->with('success', 'Product deleted successfully.');
         }
 
         return redirect()->back()->with('success', 'Product deleted successfully!');

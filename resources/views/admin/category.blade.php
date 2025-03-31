@@ -111,14 +111,40 @@
                 @else
                     <button class="pagination-btn" onclick="window.location='{{ $categories->previousPageUrl() }}'">Previous</button>
                 @endif
-
-                @foreach ($categories->getUrlRange(1, $categories->lastPage()) as $page => $url)
-                    <button class="pagination-btn {{ $page == $categories->currentPage() ? 'active' : '' }}"
+            
+                @php
+                    $totalPages = $categories->lastPage();
+                    $currentPage = $categories->currentPage();
+            
+                    // Determine the range of pages to show
+                    if ($totalPages <= 5) {
+                        // Show all pages if there are 5 or fewer
+                        $startPage = 1;
+                        $endPage = $totalPages;
+                    } else {
+                        // Show pages 1 to 5 initially
+                        if ($currentPage <= 3) {
+                            $startPage = 1;
+                            $endPage = 5;
+                        } elseif ($currentPage >= $totalPages - 2) {
+                            // Show the last 5 pages if near the end
+                            $startPage = $totalPages - 4;
+                            $endPage = $totalPages;
+                        } else {
+                            // Show the current page and the two pages before and after
+                            $startPage = $currentPage - 2;
+                            $endPage = $currentPage + 2;
+                        }
+                    }
+                @endphp
+            
+                @foreach ($categories->getUrlRange($startPage, $endPage) as $page => $url)
+                    <button class="pagination-btn {{ $page == $currentPage ? 'active' : '' }}"
                             onclick="window.location='{{ $url }}'">
                         {{ $page }}
                     </button>
                 @endforeach
-
+            
                 @if ($categories->hasMorePages())
                     <button class="pagination-btn" onclick="window.location='{{ $categories->nextPageUrl() }}'">Next</button>
                 @else

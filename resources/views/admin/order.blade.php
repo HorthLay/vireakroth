@@ -117,27 +117,54 @@
                 
             </table>
 
-             <!-- Pagination Section -->
-             <div class="pagination">
-                @if ($orders->onFirstPage())
-                    <button class="pagination-btn disabled">Previous</button>
-                @else
-                    <button class="pagination-btn" onclick="window.location='{{ $orders->previousPageUrl() }}'">Previous</button>
-                @endif
+            <!-- Pagination Section -->
+<div class="pagination">
+    @if ($orders->onFirstPage())
+        <button class="pagination-btn disabled">Previous</button>
+    @else
+        <button class="pagination-btn" onclick="window.location='{{ $orders->previousPageUrl() }}'">Previous</button>
+    @endif
 
-                @foreach ($orders->getUrlRange(1, $orders->lastPage()) as $page => $url)
-                    <button class="pagination-btn {{ $page == $orders->currentPage() ? 'active' : '' }}"
-                            onclick="window.location='{{ $url }}'">
-                        {{ $page }}
-                    </button>
-                @endforeach
+    @php
+        $totalPages = $orders->lastPage();
+        $currentPage = $orders->currentPage();
 
-                @if ($orders->hasMorePages())
-                    <button class="pagination-btn" onclick="window.location='{{ $orders->nextPageUrl() }}'">Next</button>
-                @else
-                    <button class="pagination-btn disabled">Next</button>
-                @endif
-            </div>
+        // Determine the range of pages to show
+        if ($totalPages <= 5) {
+            // Show all pages if there are 5 or fewer
+            $startPage = 1;
+            $endPage = $totalPages;
+        } else {
+            // Show pages 1 to 5 initially
+            if ($currentPage <= 3) {
+                $startPage = 1;
+                $endPage = 5;
+            } elseif ($currentPage >= $totalPages - 2) {
+                // Show the last 5 pages if near the end
+                $startPage = $totalPages - 4;
+                $endPage = $totalPages;
+            } else {
+                // Show the current page and the two pages before and after
+                $startPage = $currentPage - 2;
+                $endPage = $currentPage + 2;
+            }
+        }
+    @endphp
+
+    @foreach ($orders->getUrlRange($startPage, $endPage) as $page => $url)
+        <button class="pagination-btn {{ $page == $currentPage ? 'active' : '' }}"
+                onclick="window.location='{{ $url }}'">
+            {{ $page }}
+        </button>
+    @endforeach
+
+    @if ($orders->hasMorePages())
+        <button class="pagination-btn" onclick="window.location='{{ $orders->nextPageUrl() }}'">Next</button>
+    @else
+        <button class="pagination-btn disabled">Next</button>
+    @endif
+</div>
+
         </div>
 
         

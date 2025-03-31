@@ -88,7 +88,7 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/orderadmin', [AdminController::class, 'OrderView'])->name('orders.index');
     Route::get('/orders/search', [OrderController::class, 'search'])->name('orders.search');
     // product search
-
+    Route::get('/user/search', [AdminController::class, 'searchUser'])->name('user.search');
     Route::get('/product/search', [ProductController::class, 'searchproduct'])->name('products.search');
     // order view
     Route::get('/order_details/{order_number}', function ($order_number) {
@@ -107,6 +107,9 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     // adminorder change status 
     Route::put('/update_order_status/{id}', [AdminController::class, 'updateStatus']);
     Route::post('/update-status/{order_number}', [AdminController::class, 'Statusorders'])->name('update-statusadmin');
+    // Edit role 
+    Route::get('/edit-role/{id}', [AdminController::class, 'editRole'])->name('edit.role');
+    Route::post('/edit-role/{id}', [AdminController::class, 'updateRole'])->name('update.role');
 });
 
 

@@ -141,6 +141,47 @@
               font-size: 14px;
               padding: 5px 10px;
           }
+
+
+          /* Container for pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Pagination button styles */
+.pagination-btn {
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    color: #333;
+    padding: 10px 15px;
+    margin: 0 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Active page button */
+.pagination-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* Disabled button styles */
+.pagination-btn.disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Hover effect for buttons */
+.pagination-btn:hover:not(.disabled) {
+    background-color: #0056b3;
+    color: white;
+}
   
           /* Footer Styling */
           .footer {
@@ -535,8 +576,55 @@
         
 
         <!-- Pagination -->
-        <div class="pagination" style="justify-content: center;">
-            {{ $products->links() }}
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="pagination">
+                    @if ($products->onFirstPage())
+                    <button class="pagination-btn disabled">Previous</button>
+                @else
+                    <button class="pagination-btn" onclick="window.location='{{ $products->previousPageUrl() }}'">Previous</button>
+                @endif
+            
+                @php
+                    $totalPages = $products->lastPage();
+                    $currentPage = $products->currentPage();
+            
+                    // Determine the range of pages to show
+                    if ($totalPages <= 5) {
+                        // Show all pages if there are 5 or fewer
+                        $startPage = 1;
+                        $endPage = $totalPages;
+                    } else {
+                        // Show pages 1 to 5 initially
+                        if ($currentPage <= 3) {
+                            $startPage = 1;
+                            $endPage = 5;
+                        } elseif ($currentPage >= $totalPages - 2) {
+                            // Show the last 5 pages if near the end
+                            $startPage = $totalPages - 4;
+                            $endPage = $totalPages;
+                        } else {
+                            // Show the current page and the two pages before and after
+                            $startPage = $currentPage - 2;
+                            $endPage = $currentPage + 2;
+                        }
+                    }
+                @endphp
+            
+                @foreach ($products->getUrlRange($startPage, $endPage) as $page => $url)
+                    <button class="pagination-btn {{ $page == $currentPage ? 'active' : '' }}"
+                            onclick="window.location='{{ $url }}'">
+                        {{ $page }}
+                    </button>
+                @endforeach
+            
+                @if ($products->hasMorePages())
+                    <button class="pagination-btn" onclick="window.location='{{ $products->nextPageUrl() }}'">Next</button>
+                @else
+                    <button class="pagination-btn disabled">Next</button>
+                @endif
+                </ul>
+            </div>
         </div>
     </div>
 
