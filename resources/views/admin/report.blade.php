@@ -1,4 +1,4 @@
-a<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -90,7 +90,7 @@ a<!DOCTYPE html>
                         <tr>
                             <th>Order Date</th>
                             <th>Total Orders</th>
-                            <th>Sale Type</th>
+                            <th>Total Items</th>
                             <th>Total Sales</th>
                             <th>View</th>
                         </tr>
@@ -102,7 +102,7 @@ a<!DOCTYPE html>
                                 <td>{{ \Carbon\Carbon::parse($order->order_date)->format('d-m-Y') }}</td>
 
                                 <td>{{ $order->total_orders }}</td>
-                                <td>{{ $order->sale_type }}</td>
+                                <td>{{ $order->total_items }}</td>
                                 <td>${{ number_format($order->total_sales, 2) }}</td> <!-- Format total sales -->
                                 <td>
                                     <a href="{{ route('order.view.report', ['order_date' => $order->order_date]) }}"

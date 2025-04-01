@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
+<head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ asset('pic/vireakroth.png') }}">
     <title>VireakRoth PhoneShop - Home📱</title>
 
     <!-- Bootstrap core CSS -->
@@ -18,12 +21,12 @@
     <link rel="stylesheet" href="homes/assets/css/templatemo-lugx-gaming.css">
     <link rel="stylesheet" href="homes/assets/css/owl.css">
     <link rel="stylesheet" href="homes/assets/css/animate.css">
-    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
 
-   
-<style>
-      /* General Styling */
-      body {
+
+    <style>
+        /* General Styling */
+        body {
             font-size: 16px;
             line-height: 1.5;
         }
@@ -72,90 +75,99 @@
 
 
 
-       /* Floating cart button */
-.popup-cart-btn {
-    position: fixed;
-    bottom: 20px; /* Distance from the bottom of the screen */
-    right: 20px; /* Distance from the right side of the screen */
-    background-color: #007bff; /* Button background color */
-    color: white; /* Text color */
-    padding: 15px 20px;
-    border-radius: 50%; /* Round button */
-    font-size: 24px;
-    border: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    z-index: 1000; /* Ensure it stays on top */
-    transition: all 0.3s ease-in-out;
-}
+        /* Floating cart button */
+        .popup-cart-btn {
+            position: fixed;
+            bottom: 20px;
+            /* Distance from the bottom of the screen */
+            right: 20px;
+            /* Distance from the right side of the screen */
+            background-color: #007bff;
+            /* Button background color */
+            color: white;
+            /* Text color */
+            padding: 15px 20px;
+            border-radius: 50%;
+            /* Round button */
+            font-size: 24px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 1000;
+            /* Ensure it stays on top */
+            transition: all 0.3s ease-in-out;
+        }
 
-/* Hover effect */
-.popup-cart-btn:hover {
-    background-color: #0056b3;
-}
+        /* Hover effect */
+        .popup-cart-btn:hover {
+            background-color: #0056b3;
+        }
 
-/* Cart count styling (small red circle) */
-.cart-count {
-    position: absolute;
-    top: 10px;
-    right: 5px;
-    background-color: red;
-    color: white;
-    font-size: 12px;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 18px; /* Centers the number vertically */
-    font-weight: bold;
-}
+        /* Cart count styling (small red circle) */
+        .cart-count {
+            position: absolute;
+            top: 10px;
+            right: 5px;
+            background-color: red;
+            color: white;
+            font-size: 12px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 18px;
+            /* Centers the number vertically */
+            font-weight: bold;
+        }
 
 
-#overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
-    display: none; /* Hidden by default */
-    z-index: 999;
-}
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            /* Semi-transparent black */
+            display: none;
+            /* Hidden by default */
+            z-index: 999;
+        }
 
-/* Popup Ad */
-#adPopup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-    max-width: 400px;
-    width: 90%;
-    display: none;
-}
+        /* Popup Ad */
+        #adPopup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            max-width: 400px;
+            width: 90%;
+            display: none;
+        }
 
-/* Close Button */
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #000;
-}
+        /* Close Button */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #000;
+        }
 
-/* Link Style */
-#adLink {
-    display: block;
-    margin-top: 10px;
-    text-align: center;
-    color: #007bff;
-    text-decoration: none;
-}
+        /* Link Style */
+        #adLink {
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+            color: #007bff;
+            text-decoration: none;
+        }
 
 
 
@@ -196,25 +208,25 @@
         }
 
         .view-all-link {
-      text-decoration: none;
-      font-weight: bold;
-      padding: 10px 20px;
-      
-      border-radius: 5px;
-      color: #007bff;
-      background-color: #fff;
-      transition: all 0.3s ease;
-  }
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 20px;
 
-  .view-all-link:hover {
-      background-color: #007bff;
-      color: #fff;
-  }
+            border-radius: 5px;
+            color: #007bff;
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
 
-  /* Make the button bigger on hover */
-  .view-all-link:hover {
-      transform: scale(1.1);
-  }
+        .view-all-link:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        /* Make the button bigger on hover */
+        .view-all-link:hover {
+            transform: scale(1.1);
+        }
 
         /* Footer Styling */
         .footer {
@@ -231,7 +243,8 @@
             font-weight: bold;
         }
 
-        .footer p, .footer li {
+        .footer p,
+        .footer li {
             font-size: 14px;
             margin-bottom: 10px;
             line-height: 1.6;
@@ -298,7 +311,7 @@
         }
 
         /* Responsive Styling */
-        @media (max-width: 768px)  {
+        @media (max-width: 768px) {
             body {
                 font-size: 14px;
             }
@@ -331,44 +344,42 @@
         }
 
         .trending-box .down-content .price {
-    font-size: 14px; /* Default font size */
-}
+            font-size: 14px;
+            /* Default font size */
+        }
 
-/* Media Query for Small Screens */
-@media (max-width: 576px) {
-    .trending-box .down-content .price {
-        font-size: 10px; /* Smaller font size for mobile screens */
-    }
-}
-@media (max-width: 768px) {
-  .features .row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  
+        /* Media Query for Small Screens */
+        @media (max-width: 576px) {
+            .trending-box .down-content .price {
+                font-size: 10px;
+                /* Smaller font size for mobile screens */
+            }
+        }
 
-  .features .col-lg-3, 
-  .features .col-md-6 {
-    flex: 1 1 calc(50% - 10px); /* Adjust for 2 columns with spacing */
-    max-width: calc(50% - 10px); /* Ensure columns take up 50% of the row */
-    margin: 5px; /* Add some spacing between items */
-  }
+        @media (max-width: 768px) {
+            .features .row {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
 
 
-}
+            .features .col-lg-3,
+            .features .col-md-6 {
+                flex: 1 1 calc(50% - 10px);
+                /* Adjust for 2 columns with spacing */
+                max-width: calc(50% - 10px);
+                /* Ensure columns take up 50% of the row */
+                margin: 5px;
+                /* Add some spacing between items */
+            }
 
 
+        }
+    </style>
 
 
-    
-
-
-
-</style>
-
-   
-<!--
+    <!--
 
   
 
@@ -378,323 +389,365 @@ https://templatemo.com/tm-589-lugx-gaming
 
 -->
 
-  </head>
+</head>
 
 <body>
 
-  <!-- ***** Preloader Start ***** -->
-  <div id="js-preloader" class="js-preloader">
-    <div class="preloader-inner">
-      <span class="dot"></span>
-      <div class="dots">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </div>
-  </div>
-  <!-- ***** Preloader End ***** -->
-
-  <!-- ***** Header Area Start ***** -->
- @include('home.header')
-  <!-- ***** Header Area End ***** -->
-
- @include('home.slider')
-
-
-
- <div class="section trending">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="section-heading">
-            <h6>New</h6>
-            <h2>New Phone</h2>
-          </div>
+    <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+        <div class="preloader-inner">
+            <span class="dot"></span>
+            <div class="dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
-      </div>
-  
-      <!-- Dynamic Product Items -->
-      <div class="container px-1">
-        <div class="row g-3">
-            @foreach ($newProducts as $product)
-            <div class="col-6 col-md-4 col-lg-3 mb-4">
-                <div class="card h-90 d-flex flex-column px-2 py-3">
-                    <div class="card-img-container" style="aspect-ratio: 4/4; overflow: hidden;border-radius: 10%;border: 5px solid #2768ff;">
-                        <a href="{{ route('products.show', $product->id) }}">
-                            <img class="card-img-top img-fluid"
-                                 style="object-fit: contain; width: 100%; max-height: 100%;" 
-                                 src="{{ asset('products/' . $product->image) }}" 
-                                 alt="{{ $product->name }}">
-                        </a>
+    </div>
+    <!-- ***** Preloader End ***** -->
+
+    <!-- ***** Header Area Start ***** -->
+    @include('home.header')
+    <!-- ***** Header Area End ***** -->
+
+    @include('home.slider')
+
+
+
+    <div class="section trending">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="section-heading">
+                        <h6>New</h6>
+                        <h2>New Phone</h2>
                     </div>
-                    <div class="card-body text-center d-align flex-column justify-content-between p-4">
-                        <div class="text-center">
-                            @if ($product->stock <= 0)
-                                <p class="text-danger font-weight-bold">Out of Stock</p>
-                                <p class="price" style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
-                                    @if ($product->discount > 0)
-                                        <span class="text-muted text-decoration-line-through">${{ $product->price }}</span>
-                                        <span class="text-primary">${{ number_format($product->price - ($product->price * $product->discount / 100), 2) }}</span>
+                </div>
+            </div>
+
+            <!-- Dynamic Product Items -->
+            <div class="container px-1">
+                <div class="row g-3">
+                    @foreach ($newProducts as $product)
+                        <div class="col-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card h-90 d-flex flex-column px-2 py-3">
+                                <div class="card-img-container"
+                                    style="aspect-ratio: 4/4; overflow: hidden;border-radius: 10%;border: 5px solid #2768ff;">
+                                    <a href="{{ route('products.show', $product->id) }}">
+                                        <img class="card-img-top img-fluid"
+                                            style="object-fit: contain; width: 100%; max-height: 100%;"
+                                            src="{{ asset('products/' . $product->image) }}" alt="{{ $product->name }}">
+                                    </a>
+                                </div>
+                                <div class="card-body text-center d-align flex-column justify-content-between p-4">
+                                    <div class="text-center">
+                                        @if ($product->stock <= 0)
+                                            <p class="text-danger font-weight-bold">Out of Stock</p>
+                                            <p class="price"
+                                                style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
+                                                @if ($product->discount > 0)
+                                                    <span
+                                                        class="text-muted text-decoration-line-through">${{ $product->price }}</span>
+                                                    <span
+                                                        class="text-primary">${{ number_format($product->price - ($product->price * $product->discount) / 100, 2) }}</span>
+                                                @else
+                                                    <span>${{ $product->price }}</span>
+                                                @endif
+                                            </p>
+                                        @else
+                                            <p class="text-success font-weight-bold">In Stock</p>
+                                            <p class="price"
+                                                style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
+                                                @if ($product->discount > 0)
+                                                    <span
+                                                        class="text-muted text-decoration-line-through">{{ number_format($product->price, 2) }}</span>
+                                                    <span
+                                                        class="text-primary">${{ number_format($product->price - ($product->price * $product->discount) / 100, 2) }}
+                                                    </span>
+                                                @else
+                                                    <span>$ {{ number_format($product->price, 2) }}</span>
+                                                @endif
+                                            </p>
+                                        @endif
+                                        <span class="category text-muted">{{ $product->category->name }}</span>
+                                        <h5 class="card-title mt-2" style="font-size: 15px">{{ $product->name }}</h5>
+                                    </div>
+                                    @if ($product->stock > 0)
+                                        <form action="{{ route('cart.add') }}" method="POST" class="mt-3 text-center">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <button type="submit" class="btn btn-primary btn-sm mt-auto"><i
+                                                    class="fa fa-shopping-bag"></i> Cart</button>
+                                        </form>
                                     @else
-                                        <span>${{ $product->price }}</span>
+                                        <button type="button" class="btn btn-danger btn-sm mt-auto" disabled>
+                                            <i class="fa fa-times"></i> Unavailable
+                                        </button>
                                     @endif
-                                </p>
-                            @else
-                                <p class="text-success font-weight-bold">In Stock</p>
-                                <p class="price" style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
-                                    @if ($product->discount > 0)
-                                        <span class="text-muted text-decoration-line-through">{{ number_format($product->price, 2) }}</span>
-                                        <span class="text-primary">${{ number_format($product->price - ($product->price * $product->discount / 100), 2) }}
-                                        </span>
-                                    @else
-                                        <span>$ {{ number_format($product->price, 2) }}</span>
-                                    @endif
-                                </p>
-                            @endif
-                            <span class="category text-muted">{{ $product->category->name }}</span>
-                            <h5 class="card-title mt-2" style="font-size: 15px">{{ $product->name }}</h5>
+                                </div>
+                            </div>
                         </div>
-                        @if ($product->stock > 0)
-                            <form action="{{ route('cart.add') }}" method="POST" class="mt-3 text-center">
-                                @csrf
-                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <button type="submit" class="btn btn-primary btn-sm mt-auto"><i class="fa fa-shopping-bag"></i> Cart</button>
-                            </form>
-                        @else
-                            <button type="button" class="btn btn-danger btn-sm mt-auto" disabled>
-                                <i class="fa fa-times"></i> Unavailable
-                            </button>
-                        @endif
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- View All Button centered below items -->
+            <div class="row">
+                <div class="col-12 text-center mt-4">
+                    <div class="main-button">
+                        <a href="{{ route('products.index') }}" class="view-all-link">View All</a>
                     </div>
                 </div>
             </div>
-            @endforeach
         </div>
     </div>
-  
-      <!-- View All Button centered below items -->
-      <div class="row">
-        <div class="col-12 text-center mt-4">
-          <div class="main-button">
-            <a href="{{ route('products.index') }}" class="view-all-link">View All</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
 
-  <div class="section trending">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6">
-            <div class="section-heading">
-                <h6>Second Hand</h6>
-                <h2>Second Phone</h2>
-            </div>
-        </div>
-      </div>
-      
-      <!-- Dynamic Product Items -->
-      <div class="container px-1">
-        <div class="row g-3">
-            @foreach ($secondHandProducts as $product)
-            <div class="col-6 col-md-4 col-lg-3 mb-4">
-                <div class="card h-90 d-flex flex-column px-2 py-3">
-                    <div class="card-img-container" style="aspect-ratio: 4/4; overflow: hidden;border-radius: 10%;border: 5px solid #2768ff;">
-                        <a href="{{ route('products.show', $product->id) }}">
-                            <img class="card-img-top img-fluid"
-                                 style="object-fit: contain; width: 100%; max-height: 100%;" 
-                                 src="{{ asset('products/' . $product->image) }}" 
-                                 alt="{{ $product->name }}">
-                        </a>
+
+    <div class="section trending">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="section-heading">
+                        <h6>Second Hand</h6>
+                        <h2>Second Phone</h2>
                     </div>
-                    <div class="card-body text-center d-align flex-column justify-content-between p-4">
-                        <div class="text-center">
-                            @if ($product->stock <= 0)
-                                <p class="text-danger font-weight-bold">Out of Stock</p>
-                                <p class="price" style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
-                                    @if ($product->discount > 0)
-                                        <span class="text-muted text-decoration-line-through">$ {{ number_format($product->price, 2) }}$</span>
-                                        <span class="text-primary">${{ number_format($product->price - ($product->price * $product->discount / 100), 2) }}
-                                        </span>
+                </div>
+            </div>
+
+            <!-- Dynamic Product Items -->
+            <div class="container px-1">
+                <div class="row g-3">
+                    @foreach ($secondHandProducts as $product)
+                        <div class="col-6 col-md-4 col-lg-3 mb-4">
+                            <div class="card h-90 d-flex flex-column px-2 py-3">
+                                <div class="card-img-container"
+                                    style="aspect-ratio: 4/4; overflow: hidden;border-radius: 10%;border: 5px solid #2768ff;">
+                                    <a href="{{ route('products.show', $product->id) }}">
+                                        <img class="card-img-top img-fluid"
+                                            style="object-fit: contain; width: 100%; max-height: 100%;"
+                                            src="{{ asset('products/' . $product->image) }}"
+                                            alt="{{ $product->name }}">
+                                    </a>
+                                </div>
+                                <div class="card-body text-center d-align flex-column justify-content-between p-4">
+                                    <div class="text-center">
+                                        @if ($product->stock <= 0)
+                                            <p class="text-danger font-weight-bold">Out of Stock</p>
+                                            <p class="price"
+                                                style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
+                                                @if ($product->discount > 0)
+                                                    <span class="text-muted text-decoration-line-through">$
+                                                        {{ number_format($product->price, 2) }}$</span>
+                                                    <span
+                                                        class="text-primary">${{ number_format($product->price - ($product->price * $product->discount) / 100, 2) }}
+                                                    </span>
+                                                @else
+                                                    <span>$ {{ number_format($product->price, 2) }}</span>
+                                                @endif
+                                            </p>
+                                        @else
+                                            <p class="text-success font-weight-bold">In Stock</p>
+                                            <p class="price"
+                                                style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
+                                                @if ($product->discount > 0)
+                                                    <span
+                                                        class="text-muted text-decoration-line-through">${{ $product->price }}</span>
+                                                    <span
+                                                        class="text-primary">${{ number_format($product->price - ($product->price * $product->discount) / 100, 2) }}
+                                                    </span>
+                                                @else
+                                                    <span>${{ number_format($product->price, 2) }}</span>
+                                                @endif
+                                            </p>
+                                        @endif
+                                        <span class="category text-muted">{{ $product->category->name }}</span>
+                                        <h5 class="card-title mt-2" style="font-size: 15px">{{ $product->name }}</h5>
+                                    </div>
+                                    @if ($product->stock > 0)
+                                        <form action="{{ route('cart.add') }}" method="POST"
+                                            class="mt-3 text-center">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <button type="submit" class="btn btn-primary btn-sm mt-auto"><i
+                                                    class="fa fa-shopping-bag"></i> Cart</button>
+                                        </form>
                                     @else
-                                        <span>$ {{ number_format($product->price, 2) }}</span>
+                                        <button type="button" class="btn btn-danger btn-sm mt-auto" disabled>
+                                            <i class="fa fa-times"></i> Unavailable
+                                        </button>
                                     @endif
-                                </p>
-                            @else
-                                <p class="text-success font-weight-bold">In Stock</p>
-                                <p class="price" style="font-family: 'Poppins', sans-serif; font-weight: bold; font-size: 20px;">
-                                    @if ($product->discount > 0)
-                                        <span class="text-muted text-decoration-line-through">${{ $product->price }}</span>
-                                        <span class="text-primary">${{ number_format($product->price - ($product->price * $product->discount / 100), 2) }}
-                                        </span>
-                                    @else
-                                        <span>${{ number_format($product->price, 2) }}</span>
-                                    @endif
-                                </p>
-                            @endif
-                            <span class="category text-muted">{{ $product->category->name }}</span>
-                            <h5 class="card-title mt-2" style="font-size: 15px">{{ $product->name }}</h5>
+                                </div>
+                            </div>
                         </div>
-                        @if ($product->stock > 0)
-                            <form action="{{ route('cart.add') }}" method="POST" class="mt-3 text-center">
-                                @csrf
-                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <button type="submit" class="btn btn-primary btn-sm mt-auto"><i class="fa fa-shopping-bag"></i> Cart</button>
-                            </form>
-                        @else
-                            <button type="button" class="btn btn-danger btn-sm mt-auto" disabled>
-                                <i class="fa fa-times"></i> Unavailable
-                            </button>
-                        @endif
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- View All Button centered below items -->
+            <div class="row">
+                <div class="col-12 text-center mt-4">
+                    <div class="main-button">
+                        <a href="{{ route('products.index') }}" class="view-all-link">View All</a>
                     </div>
                 </div>
             </div>
-            @endforeach
         </div>
     </div>
-  
-      <!-- View All Button centered below items -->
-      <div class="row">
-        <div class="col-12 text-center mt-4">
-            <div class="main-button">
-                <a href="{{ route('products.index') }}" class="view-all-link">View All</a>
-            </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-<div class="section categories">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center mb-5">
-                <div class="section-heading">
-                    <h6>Categories</h6>
-                    <h2>Top Categories</h2>
-                </div>
-            </div>
-            @foreach($categories as $category)
-            <div class="col-6 col-sm-4 col-md-3 mb-4">
-                <div class="item text-center">
-                    <h4 class="mb-3">{{ $category->name }}</h4>
-                    <div class="thumb mb-3" style="height: 120px; overflow: hidden;">
-                        <a href="{{ route('category.show', $category->name) }}">
-                            <img src="{{ asset('categories/' . $category->image) }}" 
-                                 alt="{{ $category->name }}" 
-                                 class="img-fluid" 
-                                 style="width: 80%; height: 80%; object-fit: contain;">
-                        </a>
+    <div class="section categories">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center mb-5">
+                    <div class="section-heading">
+                        <h6>Categories</h6>
+                        <h2>Top Categories</h2>
                     </div>
                 </div>
             </div>
-            @endforeach
-        </div>
-    </div>
-</div>
-
-
-
-
-  
-  {{--  --}}
-  
-
-
-
-  <div class="container my-4">
-    <!-- Welcome Section -->
-
-
-    <!-- Ads Section -->
-    <div class="ads-section">
-        <h2 class="mb-4">Featured Ads</h2>
-        <div class="row">
-            @forelse($ads as $ad)
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm">
-                        <!-- Ad Image -->
-                        <img src="{{ asset('ads/' . $ad->image) }}" class="card-img-top" alt="Ad Image" style="height: 200px; object-fit: cover;">
-
-                        <!-- Ad Content -->
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $ad->title }}</h5>
-                            <p class="card-text">{{ Str::limit($ad->description, 100) }}</p>
-                            <a href="{{ $ad->cta_url }}" target="_blank" class="btn btn-primary">Learn More</a>
+            <!-- Swiper -->
+            <div class="swiper categorySwiper">
+                <div class="swiper-wrapper">
+                    @foreach ($categories as $category)
+                        <div class="swiper-slide">
+                            <div class="item text-center">
+                                <h4 class="mb-3">{{ $category->name }}</h4>
+                                <div class="thumb mb-3" style="height: 120px; overflow: hidden;">
+                                    <a href="{{ route('category.show', $category->name) }}">
+                                        <img src="{{ asset('categories/' . $category->image) }}"
+                                            alt="{{ $category->name }}" class="img-fluid"
+                                            style="width: 80%; height: 80%; object-fit: contain;">
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
-            @empty
-                <div class="col-12">
-                    <p class="text-center">No ads available at the moment. Check back later!</p>
-                </div>
-            @endforelse
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
         </div>
     </div>
-</div>
- @include('home.footer')
 
-  <!-- Scripts -->
-  <!-- Bootstrap core JavaScript -->
-  {{-- <script>
-     document.addEventListener("DOMContentLoaded", function () {
-    let ads = @json($ads); // Get ads from Laravel Blade
-    let index = 0;
-    let adPopup = document.getElementById("adPopup");
-    let isClosed = false; // Flag to check if the user closed the ad manually
-
-    function showAd() {
-        if (ads.length > 0 && index < ads.length && !isClosed) {
-            // Update ad content dynamically
-            document.getElementById("adTitle").innerText = ads[index].title;
-            document.getElementById("adImage").src = "{{ asset('ads/') }}/" + ads[index].image;
-            document.getElementById("adDescription").innerText = ads[index].description;
-            document.getElementById("adLink").href = ads[index].cta_url;
-
-            // Show ad popup
-            adPopup.style.display = "block";
-
-            // Hide after 5 seconds unless the user closes it
-            setTimeout(() => {
-                if (!isClosed) {
-                    adPopup.style.display = "none";
-                    index++;
-                    setTimeout(showAd, 2000); // Show next ad after 2 seconds
-                }
-            }, 5000);
+    <style>
+        .categorySwiper {
+            padding: 20px 40px;
+            position: relative;
         }
-    }
+        .categorySwiper .swiper-slide {
+            background: #fff;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .categorySwiper .swiper-slide:hover {
+            transform: translateY(-5px);
+        }
+        .categorySwiper .swiper-button-next,
+        .categorySwiper .swiper-button-prev {
+            color: #0056b3;
+            background: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        .categorySwiper .swiper-button-next:after,
+        .categorySwiper .swiper-button-prev:after {
+            font-size: 18px;
+        }
+        .categorySwiper .swiper-pagination-bullet-active {
+            background: #0056b3;
+        }
+    </style>
 
-    // Function to manually close the ad
-    function closeAd() {
-        adPopup.style.display = "none";
-        isClosed = true; // Stop showing ads after closing manually
-    }
-
-    // Attach closeAd function to the close button
-    document.querySelector(".close-btn").addEventListener("click", closeAd);
-
-    setTimeout(showAd, 1000); // Start showing ads after 1 second
-});
+    {{--  --}}
 
 
-    document.addEventListener("DOMContentLoaded", function() {
-        setTimeout(function() {
-            document.getElementById('js-preloader').style.display = 'none';
-        }, 100); // Adjust the timeout if needed
-    });
-</script> --}}
-  
-  <script src="homes/vendor/jquery/jquery.min.js"></script>
-  <script src="homes/vendor/bootstrap/js/bootstrap.min.js"></script>
-  <script src="homes/assets/js/isotope.min.js"></script>
-  <script src="homes/assets/js/owl-carousel.js"></script>
-  <script src="homes/assets/js/counter.js"></script>
-  <script src="homes/assets/js/custom.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="container my-4">
+        <!-- Welcome Section -->
 
 
-  </body>
+        <!-- Ads Section -->
+        <div class="ads-section">
+            <h2 class="mb-4">Featured Ads</h2>
+            <div class="row">
+                @forelse($ads as $ad)
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm">
+                            <!-- Ad Image -->
+                            <img src="{{ asset('ads/' . $ad->image) }}" class="card-img-top" alt="Ad Image"
+                                style="height: 200px; object-fit: cover;">
+
+                            <!-- Ad Content -->
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $ad->title }}</h5>
+                                <p class="card-text">{{ Str::limit($ad->description, 100) }}</p>
+                                <a href="{{ $ad->cta_url }}" target="_blank" class="btn btn-primary">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-12">
+                        <p class="text-center">No ads available at the moment. Check back later!</p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+    </div>
+    @include('home.footer')
+
+    <!-- Scripts -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="homes/vendor/jquery/jquery.min.js"></script>
+    <script src="homes/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="homes/assets/js/isotope.min.js"></script>
+    <script src="homes/assets/js/owl-carousel.js"></script>
+    <script src="homes/assets/js/counter.js"></script>
+    <script src="homes/assets/js/custom.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+    
+    <script>
+        var categorySwiper = new Swiper(".categorySwiper", {
+            slidesPerView: 'auto',
+            spaceBetween: 20,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                320: {
+                    slidesPerView: 1,
+                    spaceBetween: 10
+                },
+                480: {
+                    slidesPerView: 2,
+                    spaceBetween: 15
+                },
+                768: {
+                    slidesPerView: 3,
+                    spaceBetween: 20
+                },
+                1024: {
+                    slidesPerView: 4,
+                    spaceBetween: 20
+                }
+            }
+        });
+    </script>
+
+</body>
+
 </html>

@@ -49,47 +49,54 @@
 
 
 
-   /* Floating cart button */
-.popup-cart-btn {
-position: fixed;
-bottom: 20px; /* Distance from the bottom of the screen */
-right: 20px; /* Distance from the right side of the screen */
-background-color: #007bff; /* Button background color */
-color: white; /* Text color */
-padding: 15px 20px;
-border-radius: 50%; /* Round button */
-font-size: 24px;
-border: none;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-cursor: pointer;
-z-index: 1000; /* Ensure it stays on top */
-transition: all 0.3s ease-in-out;
-}
+    /* Floating cart button */
+    .popup-cart-btn {
+        position: fixed;
+        bottom: 20px;
+        /* Distance from the bottom of the screen */
+        right: 20px;
+        /* Distance from the right side of the screen */
+        background-color: #007bff;
+        /* Button background color */
+        color: white;
+        /* Text color */
+        padding: 15px 20px;
+        border-radius: 50%;
+        /* Round button */
+        font-size: 24px;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        z-index: 1000;
+        /* Ensure it stays on top */
+        transition: all 0.3s ease-in-out;
+    }
 
-/* Hover effect */
-.popup-cart-btn:hover {
-background-color: #0056b3;
-}
+    /* Hover effect */
+    .popup-cart-btn:hover {
+        background-color: #0056b3;
+    }
 
-/* Cart count styling (small red circle) */
-.cart-count {
-position: absolute;
-top: 10px;
-right: 5px;
-background-color: red;
-color: white;
-font-size: 12px;
-width: 18px;
-height: 18px;
-border-radius: 50%;
-text-align: center;
-line-height: 18px; /* Centers the number vertically */
-font-weight: bold;
-}
+    /* Cart count styling (small red circle) */
+    .cart-count {
+        position: absolute;
+        top: 10px;
+        right: 5px;
+        background-color: red;
+        color: white;
+        font-size: 12px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 18px;
+        /* Centers the number vertically */
+        font-weight: bold;
+    }
 
 
 
-   
+
     /* Product Item Styling */
     .trending-box .trending-items .item {
         padding: 10px;
@@ -128,44 +135,44 @@ font-weight: bold;
 
 
     /* Container for pagination */
-.pagination {
-    display: flex;
-    justify-content: center;
-    list-style-type: none;
-    padding: 0;
-}
+    .pagination {
+        display: flex;
+        justify-content: center;
+        list-style-type: none;
+        padding: 0;
+    }
 
-/* Pagination button styles */
-.pagination-btn {
-    background-color: #f1f1f1;
-    border: 1px solid #ddd;
-    color: #333;
-    padding: 10px 15px;
-    margin: 0 2px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
-}
+    /* Pagination button styles */
+    .pagination-btn {
+        background-color: #f1f1f1;
+        border: 1px solid #ddd;
+        color: #333;
+        padding: 10px 15px;
+        margin: 0 2px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+    }
 
-/* Active page button */
-.pagination-btn.active {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
-}
+    /* Active page button */
+    .pagination-btn.active {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
 
-/* Disabled button styles */
-.pagination-btn.disabled {
-    background-color: #e9ecef;
-    color: #6c757d;
-    cursor: not-allowed;
-}
+    /* Disabled button styles */
+    .pagination-btn.disabled {
+        background-color: #e9ecef;
+        color: #6c757d;
+        cursor: not-allowed;
+    }
 
-/* Hover effect for buttons */
-.pagination-btn:hover:not(.disabled) {
-    background-color: #0056b3;
-    color: white;
-}
+    /* Hover effect for buttons */
+    .pagination-btn:hover:not(.disabled) {
+        background-color: #0056b3;
+        color: white;
+    }
 
     /* Footer Styling */
     .footer {
@@ -182,7 +189,8 @@ font-weight: bold;
         font-weight: bold;
     }
 
-    .footer p, .footer li {
+    .footer p,
+    .footer li {
         font-size: 14px;
         margin-bottom: 10px;
         line-height: 1.6;
@@ -249,7 +257,7 @@ font-weight: bold;
     }
 
     /* Responsive Styling */
-    @media (max-width: 768px)  {
+    @media (max-width: 768px) {
         body {
             font-size: 14px;
         }
@@ -282,19 +290,15 @@ font-weight: bold;
     }
 
     .trending-box .down-content .price {
-font-size: 14px; /* Default font size */
-}
+        font-size: 14px;
+        /* Default font size */
+    }
 
-/* Media Query for Small Screens */
-@media (max-width: 576px) {
-.trending-box .down-content .price {
-    font-size: 10px; /* Smaller font size for mobile screens */
-}
-}
-
-
-
-
-
-
+    /* Media Query for Small Screens */
+    @media (max-width: 576px) {
+        .trending-box .down-content .price {
+            font-size: 10px;
+            /* Smaller font size for mobile screens */
+        }
+    }
 </style>

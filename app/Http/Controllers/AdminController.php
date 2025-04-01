@@ -315,6 +315,7 @@ class AdminController extends Controller
         $orders = Order::select(
             DB::raw('DATE(created_at) as order_date'),
             DB::raw('sale_type'),
+            DB::raw('SUM(quantity) as total_items'),
             DB::raw('COUNT(DISTINCT order_number) as total_orders'), // Count distinct order_number
             DB::raw('SUM(total_price) as total_sales') // Summing the total price
         )

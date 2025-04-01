@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <base href="public">
     <meta charset="UTF-8">
@@ -11,174 +12,181 @@
     <title>Responsive Dashboard Design #1 | AsmrProg</title>
     @include('action.csscategory')
 </head>
+
 <body>
 
-<div class="container">
-    <!-- Sidebar Section -->
-    @include('admin.sidebar')
-    
-    <!-- End of Sidebar Section -->
+    <div class="container">
+        <!-- Sidebar Section -->
+        @include('admin.sidebar')
 
-    <!-- Main Content -->
-    <main>
-        <h1>Category</h1>
-        <div class="analyse">
-            <div class="sales">
-                <div class="status">
-                    <div class="info">
-                        <h3>Total Category</h3>
-                        <h1 align="center">{{ $categorycount->count() }}</h1>
+        <!-- End of Sidebar Section -->
+
+        <!-- Main Content -->
+        <main>
+            <h1>Category</h1>
+            <div class="analyse">
+                <div class="sales">
+                    <div class="status">
+                        <div class="info">
+                            <h3>Total Category</h3>
+                            <h1 align="center">{{ $categorycount->count() }}</h1>
+                        </div>
+                        <div class="progresss">
+                            <img src="{{ asset('pic/category.png') }}" alt="">
+                        </div>
                     </div>
-                    <div class="progresss">
-                        <img src="{{ asset('pic/category.png') }}" alt="">
+                </div>
+                <div class="sales">
+                    <div class="status">
+                        <div class="info">
+                            <a id="createCategoryBtn" class="btn btn-primary"
+                                style="text-decoration: none;background-color: #007bff;padding: 10px 20px;border-radius: 5px;color: #fff;">Add
+                                Category</a>
+                        </div>
+                        <lord-icon src="https://cdn.lordicon.com/sbnjyzil.json" trigger="in" delay="100"
+                            state="in-reveal" stroke="bold" colors="primary:#30c9e8,secondary:#242424"
+                            style="width:80px;height:80px">
+                        </lord-icon>
                     </div>
                 </div>
             </div>
-            <div class="sales">
-                <div class="status">
-                    <div class="info">
-                        <a id="createCategoryBtn" class="btn btn-primary" style="text-decoration: none;background-color: #007bff;padding: 10px 20px;border-radius: 5px;color: #fff;">Add Category</a>
-                    </div>
-                    <lord-icon
-                    src="https://cdn.lordicon.com/sbnjyzil.json"
-                    trigger="in"
-                    delay="100"
-                    state="in-reveal"
-                    stroke="bold"
-                    colors="primary:#30c9e8,secondary:#242424"
-                    style="width:80px;height:80px">
-                </lord-icon>
+
+            <!-- Success Message -->
+            @if (session('success'))
+                <div class="success-message show">
+                    <p style="color: white;">{{ session('success') }}</p>
+                    <button class="close-btn"
+                        onclick="document.querySelector('.success-message').classList.remove('show')">×</button>
                 </div>
-            </div>
-        </div>
+            @endif
 
-        <!-- Success Message -->
-        @if(session('success'))
-        <div class="success-message show">
-            <p style="color: white;">{{ session('success') }}</p>
-            <button class="close-btn" onclick="document.querySelector('.success-message').classList.remove('show')">×</button>
-        </div>
-        @endif
-
-        <!-- Error Message --->
-        @if(session('error'))
-        <div class="error-message show">
-            <p style="color: white;">{{ session('error') }}</p>
-            <button class="close-btn" onclick="document.querySelector('.error-message').classList.remove('show')">×</button>
-        </div>
-    @endif
-    
+            <!-- Error Message --->
+            @if (session('error'))
+                <div class="error-message show">
+                    <p style="color: white;">{{ session('error') }}</p>
+                    <button class="close-btn"
+                        onclick="document.querySelector('.error-message').classList.remove('show')">×</button>
+                </div>
+            @endif
 
 
-        <!-- Recent Categories Table -->
-        <div class="recent-orders">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Images</th>
-                        <th>Action</th>
-                        <th>Edit</th>
-                    </tr>
-                </thead>
 
-                <tbody>
-                    @foreach ($categories as $category)
-                    <tr>
-                        <td>{{ $category->name }}</td>
-                        <td>
-                            <div class="image-wrapper">
-                                <img src="{{ asset('categories/'.$category->image) }}" alt="" style="width: 200px; height: 100px;">
-                            </div>
-                        </td>
-                        <td>
-                            <a class="btn btn-danger" onClick="confirmation(event)" href="{{ url('/category_delete', $category->id) }}">Delete</a>
-                        </td>
-                        <td>
-                            <a class="btn btn-primary text-white" href="{{ route('categories.view', $category->id) }}" style="text-decoration: none;">
-                              Edit
-                            </a>
-                          </td>
+            <!-- Recent Categories Table -->
+            <div class="recent-orders">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Images</th>
+                            <th>Action</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
 
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    <tbody>
+                        @foreach ($categories as $category)
+                            <tr>
+                                <td>{{ $category->name }}</td>
+                                <td>
+                                    <div class="image-wrapper">
+                                        <img src="{{ asset('categories/' . $category->image) }}" alt=""
+                                            style="width: 200px; height: 100px;">
+                                    </div>
+                                </td>
+                                <td>
+                                    <a class="btn btn-danger" onClick="confirmation(event)"
+                                        href="{{ url('/category_delete', $category->id) }}">Delete</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary text-white"
+                                        href="{{ route('categories.view', $category->id) }}"
+                                        style="text-decoration: none;">
+                                        Edit
+                                    </a>
+                                </td>
 
-            <div class="pagination">
-                @if ($categories->onFirstPage())
-                    <button class="pagination-btn disabled">Previous</button>
-                @else
-                    <button class="pagination-btn" onclick="window.location='{{ $categories->previousPageUrl() }}'">Previous</button>
-                @endif
-            
-                @php
-                    $totalPages = $categories->lastPage();
-                    $currentPage = $categories->currentPage();
-            
-                    // Determine the range of pages to show
-                    if ($totalPages <= 5) {
-                        // Show all pages if there are 5 or fewer
-                        $startPage = 1;
-                        $endPage = $totalPages;
-                    } else {
-                        // Show pages 1 to 5 initially
-                        if ($currentPage <= 3) {
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+                <div class="pagination">
+                    @if ($categories->onFirstPage())
+                        <button class="pagination-btn disabled">Previous</button>
+                    @else
+                        <button class="pagination-btn"
+                            onclick="window.location='{{ $categories->previousPageUrl() }}'">Previous</button>
+                    @endif
+
+                    @php
+                        $totalPages = $categories->lastPage();
+                        $currentPage = $categories->currentPage();
+
+                        // Determine the range of pages to show
+                        if ($totalPages <= 5) {
+                            // Show all pages if there are 5 or fewer
                             $startPage = 1;
-                            $endPage = 5;
-                        } elseif ($currentPage >= $totalPages - 2) {
-                            // Show the last 5 pages if near the end
-                            $startPage = $totalPages - 4;
                             $endPage = $totalPages;
                         } else {
-                            // Show the current page and the two pages before and after
-                            $startPage = $currentPage - 2;
-                            $endPage = $currentPage + 2;
+                            // Show pages 1 to 5 initially
+                            if ($currentPage <= 3) {
+                                $startPage = 1;
+                                $endPage = 5;
+                            } elseif ($currentPage >= $totalPages - 2) {
+                                // Show the last 5 pages if near the end
+                                $startPage = $totalPages - 4;
+                                $endPage = $totalPages;
+                            } else {
+                                // Show the current page and the two pages before and after
+                                $startPage = $currentPage - 2;
+                                $endPage = $currentPage + 2;
+                            }
                         }
-                    }
-                @endphp
-            
-                @foreach ($categories->getUrlRange($startPage, $endPage) as $page => $url)
-                    <button class="pagination-btn {{ $page == $currentPage ? 'active' : '' }}"
+                    @endphp
+
+                    @foreach ($categories->getUrlRange($startPage, $endPage) as $page => $url)
+                        <button class="pagination-btn {{ $page == $currentPage ? 'active' : '' }}"
                             onclick="window.location='{{ $url }}'">
-                        {{ $page }}
-                    </button>
-                @endforeach
-            
-                @if ($categories->hasMorePages())
-                    <button class="pagination-btn" onclick="window.location='{{ $categories->nextPageUrl() }}'">Next</button>
-                @else
-                    <button class="pagination-btn disabled">Next</button>
-                @endif
+                            {{ $page }}
+                        </button>
+                    @endforeach
+
+                    @if ($categories->hasMorePages())
+                        <button class="pagination-btn"
+                            onclick="window.location='{{ $categories->nextPageUrl() }}'">Next</button>
+                    @else
+                        <button class="pagination-btn disabled">Next</button>
+                    @endif
+                </div>
             </div>
-        </div>
 
-        <!-- Add Category Modal -->
-      @include('action.categoryModal')
-        <!-- Edit Category Modal -->
-        
-    </main>
+            <!-- Add Category Modal -->
+            @include('action.categoryModal')
+            <!-- Edit Category Modal -->
 
-    <div class="right-section">
-        @include('admin.nav')
-        <!-- End of Nav -->
+        </main>
 
-        <div class="user-profile">
-            <div class="logo">
-                <img style="margin-left:20%;" src="{{ asset('pic/vireakroth.png') }}">
-                <h2>VireakRoth <br> PhoneShop</h2>
-                <p>address: Phum 2 Songkat 3 SihanoukVille Province</p>
+        <div class="right-section">
+            @include('admin.nav')
+            <!-- End of Nav -->
+
+            <div class="user-profile">
+                <div class="logo">
+                    <img style="margin-left:20%;" src="{{ asset('pic/vireakroth.png') }}">
+                    <h2>VireakRoth <br> PhoneShop</h2>
+                    <p>address: Phum 2 Songkat 3 SihanoukVille Province</p>
+                </div>
             </div>
-        </div>
 
-       @include('admin.reminder')
+            @include('admin.reminder')
+        </div>
     </div>
-</div>
-@include('action.javacategory')
-<script src="https://cdn.lordicon.com/lordicon.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-<script src="{{ asset('admin/orders.js') }}"></script>
-<script src="{{ asset('admin/index.js') }}"></script>
+    @include('action.javacategory')
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="{{ asset('admin/orders.js') }}"></script>
+    <script src="{{ asset('admin/index.js') }}"></script>
 
 </body>
+
 </html>

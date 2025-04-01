@@ -1,71 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+
+<head>
     <base href="public">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
-    <link rel="stylesheet" href="{{asset('admin/style.css')}}">
+    <link rel="stylesheet" href="{{ asset('admin/style.css') }}">
     <title>Responsive Dashboard Design #1 | AsmrProg</title>
     <style>
         /* The Modal (Hidden by default) */
-.reminder-modal {
-    display: none;
-    position: fixed;
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Black with transparency */
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-}
+        .reminder-modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Black with transparency */
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
 
-/* Modal Content */
-.modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    max-width: 100%;
-    position: relative;
-}
+        /* Modal Content */
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            max-width: 100%;
+            position: relative;
+        }
 
-/* Close button */
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 30px;
-    cursor: pointer;
-}
+        /* Close button */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 30px;
+            cursor: pointer;
+        }
 
-/* Form inputs */
-.form-group {
-    margin-bottom: 15px;
-}
+        /* Form inputs */
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-input[type="text"], input[type="datetime-local"], button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
+        input[type="text"],
+        input[type="datetime-local"],
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
 
-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
 
-button:hover {
-    background-color: #45a049;
-}
-
+        button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 
@@ -73,11 +77,11 @@ button:hover {
 
     <div class="container">
         <!-- Sidebar Section -->
-       @include('admin.sidebar')
+        @include('admin.sidebar')
         <!-- End of Sidebar Section -->
 
         <!-- Main Content -->
-       @include('admin.main')
+        @include('admin.main')
         <!-- End of Main Content -->
 
         <!-- Right Section -->
@@ -99,11 +103,11 @@ button:hover {
 
                 <div class="profile">
                     <div class="info">
-                        <p>Hey, <b>{{Auth::user()->name}}</b></p>
-                        <small class="text-muted">{{Auth::user()->user_type}}</small>
+                        <p>Hey, <b>{{ Auth::user()->name }}</b></p>
+                        <small class="text-muted">{{ Auth::user()->user_type }}</small>
                     </div>
                     <div class="profile-photo">
-                        <img src="{{asset('pic/admin.png')}}">
+                        <img src="{{ asset('pic/admin.png') }}">
                     </div>
                 </div>
 
@@ -123,8 +127,8 @@ button:hover {
                     <h2>Reminders</h2>
                     <span class="material-icons-sharp">notifications_none</span>
                 </div>
-            
-                @foreach($reminders as $reminder)
+
+                @foreach ($reminders as $reminder)
                     <div class="notification">
                         <div class="icon">
                             <span class="material-icons-sharp">volume_up</span>
@@ -133,7 +137,7 @@ button:hover {
                             <div class="info">
                                 <h3>{{ $reminder->title }}</h3>
                                 <small class="text_muted">
-                                    {{ \Carbon\Carbon::parse($reminder->start_time)->format('h:i A') }} - 
+                                    {{ \Carbon\Carbon::parse($reminder->start_time)->format('h:i A') }} -
                                     {{ \Carbon\Carbon::parse($reminder->end_time)->format('h:i A') }}
                                 </small>
                             </div>
@@ -141,43 +145,43 @@ button:hover {
                         </div>
                     </div>
                 @endforeach
-            
+
                 <!-- Add New Reminder Section -->
                 <!-- Add Reminder Button -->
-<div class="notification add-reminder" onclick="openReminderForm()">
-    <div>
-        <span class="material-icons-sharp">add</span>
-        <h3>Add Reminder</h3>
-    </div>
-</div>
+                <div class="notification add-reminder" onclick="openReminderForm()">
+                    <div>
+                        <span class="material-icons-sharp">add</span>
+                        <h3>Add Reminder</h3>
+                    </div>
+                </div>
 
-<!-- The Pop-up Modal (Initially hidden) -->
-<div id="reminderModal" class="reminder-modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeReminderForm()">&times;</span>
-        <h3>Create Reminder</h3>
-        <form action="{{ route('reminders.store') }}" method="POST">
-            @csrf
-            <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" name="title" id="title" required>
-            </div>
-            <div class="form-group">
-                <label for="start_time">Start Time</label>
-                <input type="datetime-local" name="start_time" id="start_time" required>
-            </div>
-            <div class="form-group">
-                <label for="end_time">End Time</label>
-                <input type="datetime-local" name="end_time" id="end_time" required>
-            </div>
-            <div class="form-group">
-                <button type="submit">Save Reminder</button>
-            </div>
-        </form>
-    </div>
-</div>
+                <!-- The Pop-up Modal (Initially hidden) -->
+                <div id="reminderModal" class="reminder-modal">
+                    <div class="modal-content">
+                        <span class="close-btn" onclick="closeReminderForm()">&times;</span>
+                        <h3>Create Reminder</h3>
+                        <form action="{{ route('reminders.store') }}" method="POST">
+                            @csrf
+                            <div class="form-group">
+                                <label for="title">Title</label>
+                                <input type="text" name="title" id="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="start_time">Start Time</label>
+                                <input type="datetime-local" name="start_time" id="start_time" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="end_time">End Time</label>
+                                <input type="datetime-local" name="end_time" id="end_time" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit">Save Reminder</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
 
-            
+
 
             </div>
 
@@ -191,49 +195,49 @@ button:hover {
             const form = document.getElementById('reminderForm');
             form.style.display = form.style.display === 'none' ? 'block' : 'none';
         }
-    
+
         // Get all sidebar links
         const sidebarLinks = document.querySelectorAll('.sidebar a');
-    
+
         // Add click event listener to each sidebar link
         sidebarLinks.forEach(link => {
             link.addEventListener('click', function() {
                 // Remove 'active' class from all links
                 sidebarLinks.forEach(link => link.classList.remove('active'));
-    
+
                 // Add 'active' class to the clicked link
                 this.classList.add('active');
             });
         });
-    
+
         // Toggle sidebar visibility when close button is clicked
         document.getElementById('close-btn').addEventListener('click', function() {
             document.querySelector('.sidebar').classList.toggle('hidden');
         });
 
-          // Function to open the modal
-    function openReminderForm() {
-        const modal = document.getElementById('reminderModal');
-        modal.style.display = 'flex';
-    }
-
-    // Function to close the modal
-    function closeReminderForm() {
-        const modal = document.getElementById('reminderModal');
-        modal.style.display = 'none';
-    }
-
-    // If the user clicks anywhere outside the modal, close it
-    window.onclick = function(event) {
-        const modal = document.getElementById('reminderModal');
-        if (event.target === modal) {
-            closeReminderForm();
+        // Function to open the modal
+        function openReminderForm() {
+            const modal = document.getElementById('reminderModal');
+            modal.style.display = 'flex';
         }
-    }
+
+        // Function to close the modal
+        function closeReminderForm() {
+            const modal = document.getElementById('reminderModal');
+            modal.style.display = 'none';
+        }
+
+        // If the user clicks anywhere outside the modal, close it
+        window.onclick = function(event) {
+            const modal = document.getElementById('reminderModal');
+            if (event.target === modal) {
+                closeReminderForm();
+            }
+        }
     </script>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
-    <script src="{{asset('admin/orders.js')}}"></script>
-    <script src="{{asset("admin/index.js")}}"></script>
+    <script src="{{ asset('admin/orders.js') }}"></script>
+    <script src="{{ asset('admin/index.js') }}"></script>
 </body>
 
 </html>
