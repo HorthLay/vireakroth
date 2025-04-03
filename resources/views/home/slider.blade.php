@@ -5,8 +5,8 @@
                 <div class="caption header-text">
                     <h6>Welcome to ViireakRothShop</h6>
                     <h2>Best Phone Shop</h2>
-                    <p>LUGX Gaming is free Bootstrap 5 HTML CSS website template for your gaming websites. You can
-                        download and use this layout for commercial purposes. Please tell your friends about TemplateMo.
+                    <p>ViireakRothShop is a best phone shop. You can find the best phone here. or search for your
+                        favorite phone.come and buy your favorite phone.
                     </p>
                     <div class="search-input">
                         <form id="search" action="{{ route('item.search') }}" method="GET">

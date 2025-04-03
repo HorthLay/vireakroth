@@ -74,12 +74,12 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     // product
     Route::get('/product', [ProductController::class, 'product'])->name('product');
     Route::post('/product_store', [AdminController::class, 'prosuctstore'])->name('products.store');
-    Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
     Route::get('/product_delete/{id}', [ProductController::class, 'productdelete'])->name('product.delete');
 
     // ads
     Route::post('/addads', [AdminController::class, 'adsadd'])->name('ads.store');
     Route::post('/ads_update/{id}', [AdminController::class, 'adsupdate'])->name('ads.update');
+    Route::get('/ads_delete/{id}', [AdminController::class, 'adsdelete'])->name('ads.delete');
 
 
 

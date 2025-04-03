@@ -148,23 +148,30 @@ class AdminController extends Controller
 
 
     public function categorydelete($id)
-    {
-        $category = Category::find($id);
+{
+    $category = Category::find($id);
 
-        if ($category) {
-            // Delete the image file if it exists
-            if (File::exists(public_path('categories/' . $category->image))) {
-                File::delete(public_path('categories/' . $category->image));
-            }
-
-            // Delete the category
-            $category->delete();
-
-            return redirect()->back()->with('success', 'Category deleted successfully.');
+    if ($category) {
+        // Check if there are any products that reference this category
+        $products = Product::where('category_id', $id)->count();
+        if ($products > 0) {
+            return redirect()->back()->with('error', 'Cannot delete category. It is referenced by one or more products.');
         }
 
-        return redirect()->back()->with('error', 'Category not found.');
+        // Delete the image file if it exists
+        if (File::exists(public_path('categories/' . $category->image))) {
+            File::delete(public_path('categories/' . $category->image));
+        }
+
+        // Delete the category
+        $category->delete();
+
+        return redirect()->back()->with('success', 'Category deleted successfully.');
     }
+
+    return redirect()->back()->with('error', 'Category not found.');
+}
+
 
     public function update_category(Request $request, $id)
     {
@@ -185,19 +192,19 @@ class AdminController extends Controller
         // Update the category's name
         $category->name = $request->name;
 
-        // Check if a new image is uploaded
         if ($request->hasFile('image')) {
-            // Delete the old image if it exists
-            if ($category->image && file_exists(public_path('categories/' . $category->image))) {
-                unlink(public_path('categories/' . $category->image));
+            // Check if there is an existing image and delete it
+            if ($category->image) {
+                $oldImagePath = public_path('categories/' . $category->image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
             }
-
-            // Save the new image
-            $image = $request->image;
+        
+            // Upload the new image
+            $image = $request->file('image');
             $imagename = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('categories'), $imagename);
-
-            // Update the category's image path
+            $image->move('categories', $imagename);
             $category->image = $imagename;
         }
 
@@ -384,6 +391,24 @@ class AdminController extends Controller
         }
 
         return view('admin.orderviewdetails', compact('orders', 'order_date'));
+    }
+
+    public function adsdelete($id)
+    {
+        $ad = Ad::find($id);
+        if ($ad) {
+            // Delete the image file if it exists
+            if (File::exists(public_path('ads/' . $ad->image))) {
+                File::delete(public_path('ads/' . $ad->image));
+            }
+
+            // Delete the ad
+            $ad->delete();
+
+            return redirect()->back()->with('success', 'Ad deleted successfully.');
+        }
+
+        return redirect()->back()->with('error', 'Ad not found.');
     }
 
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\File;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Reminder;
 use Illuminate\Http\Request;
@@ -23,19 +24,20 @@ class ProductController extends Controller
 
 
 
-    public function update(Request $request, $id)
-    {
-        $product = Product::findOrFail($id);
+  public function update(Request $request, $id)
+{
+    $product = Product::findOrFail($id);
 
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->stock = $request->stock;
-        $product->price = $request->price;
-        $product->category_id = $request->category_id;
-        $product->status = $request->status;
-        $product->discount = $request->discount;
+    $product->name = $request->name;
+    $product->description = $request->description;
+    $product->stock = $request->stock;
+    $product->price = $request->price;
+    $product->category_id = $request->category_id;
+    $product->status = $request->status;
+    $product->discount = $request->discount;
 
-        if ($request->hasFile('image')) {
+    if ($request->hasFile('image')) {
+        try {
             // Delete the old image if it exists
             if ($product->image && file_exists(public_path('products/' . $product->image))) {
                 unlink(public_path('products/' . $product->image));
@@ -46,31 +48,40 @@ class ProductController extends Controller
             $imagename = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('products'), $imagename);
 
-            // Update the category's image path
+            // Update the product's image path
             $product->image = $imagename;
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to update image: ' . $e->getMessage());
         }
-        $product->save();
-
-        return redirect()->back()->with('success', 'Product updated successfully!');
     }
+
+    $product->save();
+
+    return redirect()->back()->with('success', 'Product updated successfully!');
+}
+
 
     public function productdelete($id)
-    {
-        $product = Product::find($id);
-        if ($product) {
-            // Delete the image file if it exists
-            if (File::exists(public_path('products/' . $product->image))) {
-                File::delete(public_path('products/' . $product->image));
-            }
+{
+    $product = Product::find($id);
+    if ($product) {
+        // Delete related orders
+        Order::where('product_id', $id)->delete();
 
-            // Delete the category
-            $product->delete();
-
-            return redirect()->back()->with('success', 'Product deleted successfully.');
+        // Delete the image file if it exists
+        if (File::exists(public_path('products/' . $product->image))) {
+            File::delete(public_path('products/' . $product->image));
         }
 
-        return redirect()->back()->with('success', 'Product deleted successfully!');
+        // Delete the product
+        $product->delete();
+
+        return redirect()->back()->with('success', 'Product and related orders deleted successfully.');
     }
+
+    return redirect()->back()->with('error', 'Product not found.');
+}
+
 
 
 
@@ -157,6 +168,7 @@ class ProductController extends Controller
     public function productupdate(Request $request, $id)
     {
         $product = Product::findOrFail($id);
+
         $product->name = $request->name;
         $product->description = $request->description;
         $product->stock = $request->stock;
@@ -164,7 +176,18 @@ class ProductController extends Controller
         $product->category_id = $request->category_id;
         $product->status = $request->status;
         $product->discount = $request->discount;
+    
+         // Handle Image Upload
+         if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imagename = time() . '.' . $image->getClientOriginalExtension();
+            $image->move('products', $imagename);
+            $product->image = $imagename;
+        }
+
         $product->save();
+    
+    
         return redirect('/product')->with('success', 'Product updated successfully!');
     }
 

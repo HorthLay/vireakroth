@@ -76,7 +76,7 @@
                                 </td>
                                 <td>
                                     <a class="btn btn-danger" onClick="confirmation(event)"
-                                        href="{{ url('/category_delete', $ad->id) }}">Delete</a>
+                                        href="{{ url('/ads_delete', $ad->id) }}">Delete</a>
                                 </td>
                                 <td>
                                     <a class="btn btn-primary" href="{{ url('/ads_edit', $ad->id) }}">Edit</a>
