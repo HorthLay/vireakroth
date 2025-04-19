@@ -378,6 +378,103 @@
         }
     </style>
 
+    <style>
+        /* Popup Ad Styles */
+        .popup-ad {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .close-popup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        .close-popup:hover {
+            color: #000;
+        }
+
+        .popup-content {
+            text-align: center;
+        }
+
+        .popup-ad-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+
+        .popup-ad-item img {
+            max-width: 100%;
+            height: 300px;
+            object-fit: contain;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+            padding: 10px;
+        }
+
+        .popup-ad-item h4 {
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .popup-ad-item p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .popup-button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #0d6efd;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .popup-button:hover {
+            background-color: #0b5ed7;
+            color: white;
+        }
+
+        .swiper-popup {
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        .swiper-popup .swiper-pagination {
+            bottom: 0;
+        }
+    </style>
 
     <!--
 
@@ -426,9 +523,9 @@ https://templatemo.com/tm-589-lugx-gaming
             </div>
 
             <!-- Dynamic Product Items -->
-            <div class="container px-1">
+            <<div class="container px-1">
                 <div class="row g-3">
-                    @foreach ($newProducts as $product)
+                    @foreach ($newProducts->take(4) as $product)
                         <div class="col-6 col-md-4 col-lg-3 mb-4">
                             <div class="card h-90 d-flex flex-column px-2 py-3">
                                 <div class="card-img-container"
@@ -490,6 +587,7 @@ https://templatemo.com/tm-589-lugx-gaming
                     @endforeach
                 </div>
             </div>
+            
 
             <!-- View All Button centered below items -->
             <div class="row">
@@ -517,7 +615,7 @@ https://templatemo.com/tm-589-lugx-gaming
             <!-- Dynamic Product Items -->
             <div class="container px-1">
                 <div class="row g-3">
-                    @foreach ($secondHandProducts as $product)
+                    @foreach ($secondHandProducts->take(4) as $product)
                         <div class="col-6 col-md-4 col-lg-3 mb-4">
                             <div class="card h-90 d-flex flex-column px-2 py-3">
                                 <div class="card-img-container"
@@ -748,6 +846,98 @@ https://templatemo.com/tm-589-lugx-gaming
         });
     </script>
 
+    <!-- Popup Ad -->
+    @if(count($ads) > 0)
+    <div class="popup-overlay" id="popupOverlay"></div>
+    <div class="popup-ad" id="popupAd">
+        <span class="close-popup" onclick="closePopup()">&times;</span>
+        <div class="popup-content">
+            <h3 class="mb-4">Featured Advertisements</h3>
+            <div class="countdown-timer" id="popupTimer">Closing in: 5s</div>
+            <div class="swiper swiper-popup">
+                <div class="swiper-wrapper">
+                    @foreach($ads as $ad)
+                        <div class="swiper-slide">
+                            <div class="popup-ad-item">
+                                <img src="{{ asset('ads/' . $ad->image) }}" alt="{{ $ad->title }}">
+                                <h4>{{ $ad->title }}</h4>
+                                <p>{{ Str::limit($ad->description, 100) }}</p>
+                                <a href="{{ $ad->cta_url }}" target="_blank" class="popup-button">Learn More</a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .countdown-timer {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+    </style>
+
+    <script>
+        // Initialize Swiper for popup
+        document.addEventListener('DOMContentLoaded', function() {
+            new Swiper('.swiper-popup', {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+            });
+        });
+
+        // Show popup after 2 seconds and start countdown
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('popupOverlay').style.display = 'block';
+                document.getElementById('popupAd').style.display = 'block';
+                startCountdown();
+            }, 2000);
+        });
+
+        // Countdown timer function
+        function startCountdown() {
+            let timeLeft = 5;
+            const timerElement = document.getElementById('popupTimer');
+            
+            const countdownInterval = setInterval(function() {
+                timeLeft--;
+                timerElement.textContent = `Closing in: ${timeLeft}s`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    closePopup();
+                }
+            }, 1000);
+        }
+
+        // Close popup function
+        function closePopup() {
+            document.getElementById('popupOverlay').style.display = 'none';
+            document.getElementById('popupAd').style.display = 'none';
+        }
+
+        // Close popup when clicking overlay
+        document.getElementById('popupOverlay').addEventListener('click', closePopup);
+    </script>
+    @endif
 </body>
 
 </html>

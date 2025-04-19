@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Success Page</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ asset('pic/vireakroth.png') }}">
+    <title>Success Page✅</title>
     <style>
         body {
             display: flex;
@@ -101,7 +104,7 @@
         @foreach ($groupedOrders as $orderNumber => $group)
             <p>Your order has been successfully placed. Order Number: {{ $orderNumber }}</p>
             
-            <a href="{{url('/')}}">Ok</a>
+            <a class="btn btn-primary mt-3" href="{{url('/')}}">Ok</a>
         @endforeach
     </div>
 </body>

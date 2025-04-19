@@ -1,6 +1,8 @@
-
+<title>VireakRoth - Order confirmation🗒️</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ asset('pic/vireakroth.png') }}">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title> Order confirmation </title>
 <meta name="robots" content="noindex,nofollow" />
 <meta name="viewport" content="width=device-width; initial-scale=1.0;" />
 <style type="text/css">

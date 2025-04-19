@@ -148,29 +148,29 @@ class AdminController extends Controller
 
 
     public function categorydelete($id)
-{
-    $category = Category::find($id);
+    {
+        $category = Category::find($id);
 
-    if ($category) {
-        // Check if there are any products that reference this category
-        $products = Product::where('category_id', $id)->count();
-        if ($products > 0) {
-            return redirect()->back()->with('error', 'Cannot delete category. It is referenced by one or more products.');
+        if ($category) {
+            // Check if there are any products that reference this category
+            $products = Product::where('category_id', $id)->count();
+            if ($products > 0) {
+                return redirect()->back()->with('error', 'Cannot delete category. It is referenced by one or more products.');
+            }
+
+            // Delete the image file if it exists
+            if (File::exists(public_path('categories/' . $category->image))) {
+                File::delete(public_path('categories/' . $category->image));
+            }
+
+            // Delete the category
+            $category->delete();
+
+            return redirect()->back()->with('success', 'Category deleted successfully.');
         }
 
-        // Delete the image file if it exists
-        if (File::exists(public_path('categories/' . $category->image))) {
-            File::delete(public_path('categories/' . $category->image));
-        }
-
-        // Delete the category
-        $category->delete();
-
-        return redirect()->back()->with('success', 'Category deleted successfully.');
+        return redirect()->back()->with('error', 'Category not found.');
     }
-
-    return redirect()->back()->with('error', 'Category not found.');
-}
 
 
     public function update_category(Request $request, $id)
@@ -200,7 +200,7 @@ class AdminController extends Controller
                     unlink($oldImagePath);
                 }
             }
-        
+
             // Upload the new image
             $image = $request->file('image');
             $imagename = time() . '.' . $image->getClientOriginalExtension();
@@ -446,10 +446,10 @@ class AdminController extends Controller
                     $product->stock -= $order->quantity;
                     $product->quantity_sold += $order->quantity;
                 }
-            
+
                 $product->save();
             }
-            
+
 
             // Update order status
             $order->status = $status;

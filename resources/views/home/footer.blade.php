@@ -14,9 +14,9 @@
             <div class="col-lg-4 col-md-6">
                 <h5>Quick Links</h5>
                 <ul class="footer-links">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Shop</a></li>
-                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="{{url('/')}}">Home</a></li>
+                    <li><a href="{{url('/shop')}}">Shop</a></li>
+                    <li><a href="{{url('/contact-us')}}">Contact Us</a></li>
                 </ul>
             </div>
             <!-- Contact Information -->

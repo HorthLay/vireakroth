@@ -5,7 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <title>Lugx Gaming - Cart</title>
+    <title>VireakRoth - Cart🛒</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ asset('pic/vireakroth.png') }}">
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('homes/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Additional CSS Files -->
@@ -18,7 +21,7 @@
     <style>
         /* Success Message Styling */
     .success-message {
-        background-color: #f73838;
+        background-color: #4CAF50;
         color: white;
         padding: 15px;
         border-radius: 5px;
@@ -54,7 +57,7 @@
         color: #ffffff;
     }
 
-    border: 1px solid #ddd;
+    border: 1px solid #ddd{
         border-radius: 5px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         background-color: #fff;
