@@ -16,9 +16,10 @@
     <link rel="stylesheet" href="{{ asset('homes/assets/css/animate.css') }}">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     {{-- Link Bootstrap --}}
-   
+
     {{-- Bakong KHQR --}}
-    <script src="https://github.com/davidhuotkeo/bakong-khqr/releases/download/bakong-khqr-1.0.6/khqr-1.0.6.min.js"></script>
+    <script src="https://github.com/davidhuotkeo/bakong-khqr/releases/download/bakong-khqr-1.0.6/khqr-1.0.6.min.js">
+    </script>
 
     {{-- QR Code Reader --}}
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
@@ -65,7 +66,7 @@
         }
 
         /* Show modal when checkbox is checked */
-        #successModalToggle:checked + .modal {
+        #successModalToggle:checked+.modal {
             display: flex;
         }
 
@@ -130,7 +131,7 @@
         .btn-secondary:hover {
             background-color: #616161;
         }
-  
+
         /* Footer Styling */
         .footer {
             background-color: #141414;
@@ -146,7 +147,8 @@
             font-weight: bold;
         }
 
-        .footer p, .footer li {
+        .footer p,
+        .footer li {
             font-size: 14px;
             margin-bottom: 10px;
             line-height: 1.6;
@@ -238,7 +240,7 @@
                 <div class="col-lg-12">
                     <h3> Checkout💵</h3>
                     <span class="breadcrumb">
-                        <a href="{{ route('home') }}">Home</a> > 
+                        <a href="{{ route('home') }}">Home</a> >
                         <a href="{{ route('orders.index') }}">Orders</a> > Checkout💵
                     </span>
                 </div>
@@ -249,76 +251,82 @@
     <!-- Order Details Section -->
     <div class="container mt-5">
         <div class="row">
-<!-- QR Code Modal Structure -->
-    <!-- QR Code Modal -->
-    <div class="modal fade" id="qrCodeModal" tabindex="-1" aria-labelledby="qrCodeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm"> <!-- Centered and small modal for mobile -->
-            <div class="modal-content" style="position: relative;">
-                <button type="button" class="close-button" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 1.5rem; font-weight: bold; cursor: pointer;">
-                    X
-                </button>
-    
-                <div id="countdownTimer" style="font-size: 1.5rem; font-weight: bold; color: black; margin-bottom: 10px; text-align: center;">
-                    02:00
-                </div>
-    
-                <!-- Modal Header -->
-                <div class="modal-header" style="padding: 10px; position: relative;">
-                    <h5 class="modal-title" id="qrCodeModalLabel" style="margin: 0 auto;">
-                        <img src="{{ asset('pic/khqr.png') }}" alt="QR Logo" style="max-width: 100px; height: auto;">
-                    </h5>
-                </div>
-    
-                <!-- Modal Body -->
-                <div class="modal-body text-center" style="padding: 15px;">
-                    <h3 style="color: #000000; font-size: 1.5rem; margin-bottom: 10px;">${{ number_format($totalPrice, 2) }}</h3>
-    
-                    <h4 style="font-size: 1.2rem; margin-bottom: 20px;">SOUNG LAY HORTH</h4>
-                    <!-- Canvas for QR Code Rendering -->
-                    <p>-----------------------------</p>
-                    <canvas id="qrCodeCanvas" style="max-width: 100%; height: auto; border: 1px solid #ccc; padding: 10px;"></canvas>
+            <!-- QR Code Modal -->
+            <div class="modal fade" id="qrCodeModal" tabindex="-1" aria-labelledby="qrCodeModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-sm"> <!-- Centered and small modal for mobile -->
+                    <div class="modal-content" style="position: relative;">
+                        <button type="button" class="close-button" data-bs-dismiss="modal" aria-label="Close"
+                            style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 1.5rem; font-weight: bold; cursor: pointer;">
+                            X
+                        </button>
+
+                        <div id="countdownTimer"
+                            style="font-size: 1.5rem; font-weight: bold; color: black; margin-bottom: 10px; text-align: center;">
+                            02:00
+                        </div>
+
+                        <!-- Modal Header -->
+                        <div class="modal-header" style="padding: 10px; position: relative;">
+                            <h5 class="modal-title" id="qrCodeModalLabel" style="margin: 0 auto;">
+                                <img src="{{ asset('pic/khqr.png') }}" alt="QR Logo"
+                                    style="max-width: 100px; height: auto;">
+                            </h5>
+                        </div>
+
+                        <!-- Modal Body -->
+                        <div class="modal-body text-center" style="padding: 15px;">
+                            <h3 style="color: #000000; font-size: 1.5rem; margin-bottom: 10px;">
+                                ${{ number_format($totalPrice, 2) }}</h3>
+
+                            <h4 style="font-size: 1.2rem; margin-bottom: 20px;">SOUNG LAY HORTH</h4>
+                            <!-- Canvas for QR Code Rendering -->
+                            <p>-----------------------------</p>
+                            <canvas id="qrCodeCanvas"
+                                style="max-width: 100%; height: auto; border: 1px solid #ccc; padding: 10px;"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+
+
+
+
+            <div class="row m-0" style="height: 30vh; display: flex; justify-content: center; align-items: center;">
+                @php
+                    $displayedOrderNumbers = [];
+                @endphp
+
+                @foreach ($order as $orders)
+                    @if (!in_array($orders->order_number, $displayedOrderNumbers))
+                        <h5 class="text-center"><strong>Order Number:</strong> {{ $orders->order_number }}</h5>
+                        @php
+                            $displayedOrderNumbers[] = $orders->order_number;
+                        @endphp
+                    @endif
+                @endforeach
+
+                <div class="col-12 mb-4 p-0 text-center">
+                    <img src="{{ asset('pic/khqr.png') }}" style="cursor: pointer; max-width: 20%; height: auto;"><br>
+                    <button class="btn btn-primary" style="margin-top:10px;" alt="Checkout" id="checkout">Check
+                        Out</button>
+                </div>
+            </div>
+
+
         </div>
     </div>
-    
-    
-    
 
-
-    <div class="row m-0" style="height: 30vh; display: flex; justify-content: center; align-items: center;">
-        @php
-    $displayedOrderNumbers = [];
-@endphp
-
-@foreach($order as $orders)
-    @if(!in_array($orders->order_number, $displayedOrderNumbers))
-        <h5 class="text-center"><strong>Order Number:</strong> {{ $orders->order_number }}</h5>
-        @php
-            $displayedOrderNumbers[] = $orders->order_number;
-        @endphp
-    @endif
-@endforeach
-
-        <div class="col-12 mb-4 p-0 text-center">
-            <img src="{{ asset('pic/khqr.png') }}" style="cursor: pointer; max-width: 20%; height: auto;"><br>
-            <button class="btn btn-primary" style="margin-top:10px;" alt="Checkout" id="checkout">Check Out</button>
-        </div>
-    </div>
-    
-    
-        </div>
-    </div>
-
-@include('home.footer')
+    @include('home.footer')
     <!-- Scripts -->
-     {{-- Script Bootstrap--}}
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-     {{-- Script jquery  --}}
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
- 
-     @include('checkout.khqr')
-     <script src="{{ asset('homes/times.js') }}"></script>
+    {{-- Script Bootstrap --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- Script jquery  --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    @include('checkout.khqr')
+    <script src="{{ asset('homes/times.js') }}"></script>
     <script src="{{ asset('homes/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('homes/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('homes/assets/js/isotope.min.js') }}"></script>

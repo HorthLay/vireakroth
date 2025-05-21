@@ -3,7 +3,9 @@
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\GoogleLogin;
+use App\Http\Controllers\Api\LockedActionController;
 use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KHQRController;
 use Illuminate\Http\Request;
@@ -28,6 +30,14 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'forgotPasswor
 Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword']);
 Route::get('/get-password-reset-token', [ForgotPasswordController::class, 'getPasswordResetToken']);
 Route::put('/update-password', [ForgotPasswordController::class, 'updatePassword']);
+
+Route::get(('/products'), [ProductController::class, 'index']);
+Route::get(('/products/{id}'), [ProductController::class, 'show']);
+// category
+Route::get('/category', [ProductController::class, 'getCategories']);
+Route::get('/category/{id}', [ProductController::class, 'showByCategoryApi']);
+Route::middleware('auth:sanctum')->post('/locked-action', [LockedActionController::class, 'handle']);
+
 
 Route::put('/update-cart/{id}', [CartController::class, 'update']);
 
