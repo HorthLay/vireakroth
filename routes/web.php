@@ -157,6 +157,6 @@ Route::get('/success/{order_number}', [OrderController::class, 'success'])->name
 Route::post('/statushome/{order_number}', [OrderController::class, 'Statushome'])->name('statushome');
 Route::get('/invoice/{order_number}', [OrderController::class, 'invoice'])->name('order.invoice');
 // Route::post('/update-order-status', [OrderController::class, 'updateOrderStatus']);
-
+Route::post('/check-transaction', [HomeController::class, 'checkTransaction']);
 // khqrpost
 Route::post('/update-order-status/{order_number}', [OrderController::class, 'Status'])->name('update-status');

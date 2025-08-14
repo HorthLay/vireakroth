@@ -7,7 +7,9 @@ use App\Http\Controllers\Api\LockedActionController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KHQRController;
+use App\Models\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -38,7 +40,7 @@ Route::get('/category', [ProductController::class, 'getCategories']);
 Route::get('/category/{id}', [ProductController::class, 'showByCategoryApi']);
 Route::middleware('auth:sanctum')->post('/locked-action', [LockedActionController::class, 'handle']);
 
-
+Route::post('/proxy-check-transaction', [HomeController::class, 'checkTransaction']);
 Route::put('/update-cart/{id}', [CartController::class, 'update']);
 
 Route::post('/register', [LoginController::class, 'register']);
@@ -55,5 +57,15 @@ Route::middleware('auth:api')->get('/check-token', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/cart/add', [CartController::class, 'addToCart']);
     Route::get('/cart', [CartController::class, 'getCart']);
-    Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart']);
+    Route::delete('/cart/remove/{cart}', [CartController::class, 'removeFromCart']);
+    Route::put('/cart/update-quantity', [CartController::class, 'updateQuantity']);
+    Route::post('/cart/checkout', [CartController::class, 'checkoutCart']);
+    Route::get('/cart/order/{order_number}', [CartController::class, 'getOrderDetails']);
+});
+Route::middleware('auth:sanctum')->get('/check-token', function (Request $request) {
+    return response()->json([
+        'success' => true,
+        'message' => 'Token is valid',
+        'user' => $request->user()
+    ]);
 });

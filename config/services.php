@@ -39,4 +39,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+
+    'bakong' => [
+        'api_url' => env('BAKONG_API_URL'),
+        'token' => env('BAKONG_API_TOKEN'),
+    ],
+
 ];

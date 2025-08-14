@@ -11,6 +11,8 @@ use App\Models\Reminder;
 use App\Models\User;
 use App\Models\Visitor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
 
 class HomeController extends Controller
 {
@@ -56,5 +58,58 @@ class HomeController extends Controller
         $ads = Ad::all();
         $cart = Cart::all();
         return view('home.index', compact('newProducts', 'products', 'ads', 'cart', 'secondHandProducts', 'categories'));
+    }
+
+
+
+
+    public function checkTransaction(Request $request)
+    {
+        try {
+            $payload = json_encode($request->all());
+
+            $ch = curl_init();
+
+            curl_setopt_array($ch, [
+                CURLOPT_URL => "https://api-bakong.nbc.gov.kh/v1/check_transaction_by_md5",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => $payload,
+                CURLOPT_HTTPHEADER => [
+                    "Content-Type: application/json",
+                    "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiMzYyZTU0Y2RmNDk2NDUzNSJ9LCJpYXQiOjE3NTQ5OTAxMTUsImV4cCI6MTc2Mjc2NjExNX0.GJlWmtw-TY3JJR2Ve25RdC1Msiy1wBWBvJvGfCk9F38",
+                    "Content-Length: " . strlen($payload)
+                ],
+                CURLOPT_SSL_VERIFYPEER => false, // disable SSL verification if needed
+                CURLOPT_TIMEOUT => 30
+            ]);
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            if (curl_errno($ch)) {
+                throw new \Exception(curl_error($ch));
+            }
+
+            curl_close($ch);
+
+            // Decode response so we can check status
+            $decodedResponse = json_decode($response, true);
+
+            if (isset($decodedResponse['responseMessage']) && $decodedResponse['responseMessage'] === 'Success') {
+                // Update order status in database
+                if ($request->has('order_number')) {
+                    \App\Models\Order::where('order_number', $request->order_number)
+                        ->update(['status' => 'success']);
+                }
+            }
+
+            return response()->json($decodedResponse, $httpCode);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to check transaction',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }

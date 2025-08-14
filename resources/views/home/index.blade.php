@@ -523,7 +523,7 @@ https://templatemo.com/tm-589-lugx-gaming
             </div>
 
             <!-- Dynamic Product Items -->
-            <<div class="container px-1">
+            <div class="container px-1">
                 <div class="row g-3">
                     @foreach ($newProducts->take(4) as $product)
                         <div class="col-6 col-md-4 col-lg-3 mb-4">
@@ -587,7 +587,7 @@ https://templatemo.com/tm-589-lugx-gaming
                     @endforeach
                 </div>
             </div>
-            
+
 
             <!-- View All Button centered below items -->
             <div class="row">
@@ -732,16 +732,19 @@ https://templatemo.com/tm-589-lugx-gaming
             padding: 20px 40px;
             position: relative;
         }
+
         .categorySwiper .swiper-slide {
             background: #fff;
             border-radius: 15px;
             padding: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
         }
+
         .categorySwiper .swiper-slide:hover {
             transform: translateY(-5px);
         }
+
         .categorySwiper .swiper-button-next,
         .categorySwiper .swiper-button-prev {
             color: #0056b3;
@@ -749,12 +752,14 @@ https://templatemo.com/tm-589-lugx-gaming
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         }
+
         .categorySwiper .swiper-button-next:after,
         .categorySwiper .swiper-button-prev:after {
             font-size: 18px;
         }
+
         .categorySwiper .swiper-pagination-bullet-active {
             background: #0056b3;
         }
@@ -806,7 +811,7 @@ https://templatemo.com/tm-589-lugx-gaming
     <script src="homes/assets/js/custom.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
-    
+
     <script>
         var categorySwiper = new Swiper(".categorySwiper", {
             slidesPerView: 'auto',
@@ -847,96 +852,97 @@ https://templatemo.com/tm-589-lugx-gaming
     </script>
 
     <!-- Popup Ad -->
-    @if(count($ads) > 0)
-    <div class="popup-overlay" id="popupOverlay"></div>
-    <div class="popup-ad" id="popupAd">
-        <span class="close-popup" onclick="closePopup()">&times;</span>
-        <div class="popup-content">
-            <h3 class="mb-4">Featured Advertisements</h3>
-            <div class="countdown-timer" id="popupTimer">Closing in: 5s</div>
-            <div class="swiper swiper-popup">
-                <div class="swiper-wrapper">
-                    @foreach($ads as $ad)
-                        <div class="swiper-slide">
-                            <div class="popup-ad-item">
-                                <img src="{{ asset('ads/' . $ad->image) }}" alt="{{ $ad->title }}">
-                                <h4>{{ $ad->title }}</h4>
-                                <p>{{ Str::limit($ad->description, 100) }}</p>
-                                <a href="{{ $ad->cta_url }}" target="_blank" class="popup-button">Learn More</a>
+    @if (count($ads) > 0)
+        <div class="popup-overlay" id="popupOverlay"></div>
+        <div class="popup-ad" id="popupAd">
+            <span class="close-popup" onclick="closePopup()">&times;</span>
+            <div class="popup-content">
+                <h3 class="mb-4">Featured Advertisements</h3>
+                <div class="countdown-timer" id="popupTimer">Closing in: 5s</div>
+                <div class="swiper swiper-popup">
+                    <div class="swiper-wrapper">
+                        @foreach ($ads as $ad)
+                            <div class="swiper-slide">
+                                <div class="popup-ad-item">
+                                    <img src="{{ asset('ads/' . $ad->image) }}" alt="{{ $ad->title }}">
+                                    <h4>{{ $ad->title }}</h4>
+                                    <p>{{ Str::limit($ad->description, 100) }}</p>
+                                    <a href="{{ $ad->cta_url }}" target="_blank" class="popup-button">Learn
+                                        More</a>
+                                </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
+                    <div class="swiper-pagination"></div>
                 </div>
-                <div class="swiper-pagination"></div>
             </div>
         </div>
-    </div>
 
-    <style>
-        .countdown-timer {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: rgba(0, 0, 0, 0.6);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 14px;
-        }
-    </style>
+        <style>
+            .countdown-timer {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                background-color: rgba(0, 0, 0, 0.6);
+                color: white;
+                padding: 5px 10px;
+                border-radius: 15px;
+                font-size: 14px;
+            }
+        </style>
 
-    <script>
-        // Initialize Swiper for popup
-        document.addEventListener('DOMContentLoaded', function() {
-            new Swiper('.swiper-popup', {
-                slidesPerView: 1,
-                spaceBetween: 30,
-                loop: true,
-                autoplay: {
-                    delay: 3000,
-                    disableOnInteraction: false,
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
+        <script>
+            // Initialize Swiper for popup
+            document.addEventListener('DOMContentLoaded', function() {
+                new Swiper('.swiper-popup', {
+                    slidesPerView: 1,
+                    spaceBetween: 30,
+                    loop: true,
+                    autoplay: {
+                        delay: 3000,
+                        disableOnInteraction: false,
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                });
             });
-        });
 
-        // Show popup after 2 seconds and start countdown
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.getElementById('popupOverlay').style.display = 'block';
-                document.getElementById('popupAd').style.display = 'block';
-                startCountdown();
-            }, 2000);
-        });
+            // Show popup after 2 seconds and start countdown
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    document.getElementById('popupOverlay').style.display = 'block';
+                    document.getElementById('popupAd').style.display = 'block';
+                    startCountdown();
+                }, 2000);
+            });
 
-        // Countdown timer function
-        function startCountdown() {
-            let timeLeft = 5;
-            const timerElement = document.getElementById('popupTimer');
-            
-            const countdownInterval = setInterval(function() {
-                timeLeft--;
-                timerElement.textContent = `Closing in: ${timeLeft}s`;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(countdownInterval);
-                    closePopup();
-                }
-            }, 1000);
-        }
+            // Countdown timer function
+            function startCountdown() {
+                let timeLeft = 5;
+                const timerElement = document.getElementById('popupTimer');
 
-        // Close popup function
-        function closePopup() {
-            document.getElementById('popupOverlay').style.display = 'none';
-            document.getElementById('popupAd').style.display = 'none';
-        }
+                const countdownInterval = setInterval(function() {
+                    timeLeft--;
+                    timerElement.textContent = `Closing in: ${timeLeft}s`;
 
-        // Close popup when clicking overlay
-        document.getElementById('popupOverlay').addEventListener('click', closePopup);
-    </script>
+                    if (timeLeft <= 0) {
+                        clearInterval(countdownInterval);
+                        closePopup();
+                    }
+                }, 1000);
+            }
+
+            // Close popup function
+            function closePopup() {
+                document.getElementById('popupOverlay').style.display = 'none';
+                document.getElementById('popupAd').style.display = 'none';
+            }
+
+            // Close popup when clicking overlay
+            document.getElementById('popupOverlay').addEventListener('click', closePopup);
+        </script>
     @endif
 </body>
 

@@ -7,7 +7,6 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="{{ asset('pic/vireakroth.png') }}">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>VireakRoth PhoneShop - Checkout💵</title>
     <link href="{{ asset('homes/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('homes/assets/css/fontawesome.css') }}">
@@ -15,7 +14,7 @@
     <link rel="stylesheet" href="{{ asset('homes/assets/css/owl.css') }}">
     <link rel="stylesheet" href="{{ asset('homes/assets/css/animate.css') }}">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    {{-- Link Bootstrap --}}
+
 
     {{-- Bakong KHQR --}}
     <script src="https://github.com/davidhuotkeo/bakong-khqr/releases/download/bakong-khqr-1.0.6/khqr-1.0.6.min.js">

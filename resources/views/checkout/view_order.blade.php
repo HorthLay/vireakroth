@@ -54,7 +54,7 @@
             padding: 10px;
         }
 
-        #successModalToggle:checked + .modal {
+        #successModalToggle:checked+.modal {
             display: flex;
         }
 
@@ -68,43 +68,52 @@
         .btn-close:hover {
             cursor: pointer;
         }
-          /* Floating cart button */
-.popup-cart-btn {
-position: fixed;
-bottom: 20px; /* Distance from the bottom of the screen */
-right: 20px; /* Distance from the right side of the screen */
-background-color: #007bff; /* Button background color */
-color: white; /* Text color */
-padding: 15px 20px;
-border-radius: 50%; /* Round button */
-font-size: 24px;
-border: none;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-cursor: pointer;
-z-index: 1000; /* Ensure it stays on top */
-transition: all 0.3s ease-in-out;
-}
 
-/* Hover effect */
-.popup-cart-btn:hover {
-background-color: #0056b3;
-}
+        /* Floating cart button */
+        .popup-cart-btn {
+            position: fixed;
+            bottom: 20px;
+            /* Distance from the bottom of the screen */
+            right: 20px;
+            /* Distance from the right side of the screen */
+            background-color: #007bff;
+            /* Button background color */
+            color: white;
+            /* Text color */
+            padding: 15px 20px;
+            border-radius: 50%;
+            /* Round button */
+            font-size: 24px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 1000;
+            /* Ensure it stays on top */
+            transition: all 0.3s ease-in-out;
+        }
 
-/* Cart count styling (small red circle) */
-.cart-count {
-position: absolute;
-top: 10px;
-right: 5px;
-background-color: red;
-color: white;
-font-size: 12px;
-width: 18px;
-height: 18px;
-border-radius: 50%;
-text-align: center;
-line-height: 18px; /* Centers the number vertically */
-font-weight: bold;
-}
+        /* Hover effect */
+        .popup-cart-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Cart count styling (small red circle) */
+        .cart-count {
+            position: absolute;
+            top: 10px;
+            right: 5px;
+            background-color: red;
+            color: white;
+            font-size: 12px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 18px;
+            /* Centers the number vertically */
+            font-weight: bold;
+        }
+
         /* Footer Styling */
         .footer {
             background-color: #141414;
@@ -120,7 +129,8 @@ font-weight: bold;
             font-weight: bold;
         }
 
-        .footer p, .footer li {
+        .footer p,
+        .footer li {
             font-size: 14px;
             margin-bottom: 10px;
             line-height: 1.6;
@@ -212,7 +222,7 @@ font-weight: bold;
                 <div class="col-lg-12">
                     <h3>Order Details</h3>
                     <span class="breadcrumb">
-                        <a href="{{ route('home') }}">Home</a> > 
+                        <a href="{{ route('home') }}">Home</a> >
                         <a href="{{ route('orders.index') }}">Orders</a> > Order Details
                     </span>
                 </div>
@@ -220,178 +230,186 @@ font-weight: bold;
         </div>
     </div>
 
-   <!-- Order Details Section -->
-<div class="container mt-5">
-    <div class="row">
-        <!-- Check if there are any orders -->
-        @if($orders->isNotEmpty())
-            <div class="col-lg-8">
-                <h4>Order Summary</h4>
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">🆔Order Number: <strong>{{ $orders[0]->order_number }}</strong></h5>
-                        <p><strong>👤Name:</strong> {{ $orders[0]->name }}</p>
-                        <p><strong>📅Date:</strong> {{ $orders[0]->created_at }}</p>
-                        <p><strong>📧Telegram Number:</strong> {{ $orders[0]->telegram_number }}</p>
-                        <p><strong>🏠Address:</strong> {{ $orders[0]->address }}</p>
-                        <p><strong>🌐Province:</strong> {{ $orders[0]->province }}</p>
-                        <p><strong>🚚Delivery:</strong> {{ $orders[0]->delivery }}</p>
-                        <p><strong>💵Payment Method:</strong> {{ $orders[0]->payment_method }}</p>
-                        <p><strong>💵Total Price:</strong> ${{ number_format($orders->sum('total_price'), 2) }}</p>
-                        <p><strong>📊Status:</strong> 
-                            @if($orders[0]->status == 'pending')
-                                <span style="color: orange;">{{ $orders[0]->status }}⏳</span>
-                            @elseif($orders[0]->status == 'success')
-                                <span style="color: green;">{{ $orders[0]->status }}✅</span>
-                            @elseif($orders[0]->status == 'canceled')
-                                <span style="color: red;">{{ $orders[0]->status }}❌</span>
-                            @else
-                                <span>{{ $orders[0]->status }}</span>
-                            @endif
-                        </p>
-                        
-                    </div>
-                </div>
+    <!-- Order Details Section -->
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Check if there are any orders -->
+            @if ($orders->isNotEmpty())
+                <div class="col-lg-8">
+                    <h4>Order Summary</h4>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">🆔Order Number: <strong>{{ $orders[0]->order_number }}</strong></h5>
+                            <p><strong>👤Name:</strong> {{ $orders[0]->name }}</p>
+                            <p><strong>📅Date:</strong> {{ $orders[0]->created_at }}</p>
+                            <p><strong>📧Telegram Number:</strong> {{ $orders[0]->telegram_number }}</p>
+                            <p><strong>🏠Address:</strong> {{ $orders[0]->address }}</p>
+                            <p><strong>🌐Province:</strong> {{ $orders[0]->province }}</p>
+                            <p><strong>🚚Delivery:</strong> {{ $orders[0]->delivery }}</p>
+                            <p><strong>💵Payment Method:</strong> {{ $orders[0]->payment_method }}</p>
+                            <p><strong>💵Total Price:</strong> ${{ number_format($orders->sum('total_price'), 2) }}</p>
+                            <p><strong>📊Status:</strong>
+                                @if ($orders[0]->status == 'pending')
+                                    <span style="color: orange;">{{ $orders[0]->status }}⏳</span>
+                                @elseif($orders[0]->status == 'success')
+                                    <span style="color: green;">{{ $orders[0]->status }}✅</span>
+                                @elseif($orders[0]->status == 'canceled')
+                                    <span style="color: red;">{{ $orders[0]->status }}❌</span>
+                                @else
+                                    <span>{{ $orders[0]->status }}</span>
+                                @endif
+                            </p>
 
-                <h4>📦Items in Your Order</h4>
-                <div class="row">
-                    @foreach($orders as $order)
-                    @php
-                    $product = $order->product;
-                    $priceAfterDiscount = $product->price;
-                    $discountAmount = 0;
-                    if ($product->discount > 0) {
-                        $discountAmount = $product->price * ($product->discount / 100);
-                        $priceAfterDiscount = $product->price - $discountAmount;
-                    }
-                @endphp
-                    <div class="col-md-6 mb-4">
-                        <div class="card border-primary">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <img src="{{ asset('products/' . $order->product->image) }}" alt="{{ $order->product->name }}" class="img-thumbnail me-3" style="width: 100px; height: auto;">
-                                    <div>
-                                        <h5 class="card-title mb-1">{{ $order->product->name }}</h5>
-                                        <p class="mb-1"><strong>Quantity:</strong> {{ $order->quantity }}</p>
-                                        <p class="mb-1"><strong>Price:</strong> ${{ number_format($order->product->price, 2) }}</p>
-                                        <p class="mb-1"><strong>Total:</strong> ${{ number_format($order->total_price, 2) }}</p>
-                                        @if($discountAmount > 0)
-                                        <p class="mb-0 text-danger"><strong>Discount:</strong> - ${{ number_format($discountAmount, 2) }}</p>
-                                        @else
-                                        <p class="mb-0 text-muted">No Discount</p>
-                                        @endif
+                        </div>
+                    </div>
+
+                    <h4>📦Items in Your Order</h4>
+                    <div class="row">
+                        @foreach ($orders as $order)
+                            @php
+                                $product = $order->product;
+                                $priceAfterDiscount = $product->price;
+                                $discountAmount = 0;
+                                if ($product->discount > 0) {
+                                    $discountAmount = $product->price * ($product->discount / 100);
+                                    $priceAfterDiscount = $product->price - $discountAmount;
+                                }
+                            @endphp
+                            <div class="col-md-6 mb-4">
+                                <div class="card border-primary">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ asset('products/' . $order->product->image) }}"
+                                                alt="{{ $order->product->name }}" class="img-thumbnail me-3"
+                                                style="width: 100px; height: auto;">
+                                            <div>
+                                                <h5 class="card-title mb-1">{{ $order->product->name }}</h5>
+                                                <p class="mb-1"><strong>Quantity:</strong> {{ $order->quantity }}</p>
+                                                <p class="mb-1"><strong>Price:</strong>
+                                                    ${{ number_format($order->product->price, 2) }}</p>
+                                                <p class="mb-1"><strong>Total:</strong>
+                                                    ${{ number_format($order->total_price, 2) }}</p>
+                                                @if ($discountAmount > 0)
+                                                    <p class="mb-0 text-danger"><strong>Discount:</strong> -
+                                                        ${{ number_format($discountAmount, 2) }}</p>
+                                                @else
+                                                    <p class="mb-0 text-muted">No Discount</p>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endforeach
                     </div>
-                    @endforeach
+
+
+
                 </div>
+            @else
+                <div class="col-lg-12">
+                    <p>No order found with the given order number.</p>
+                </div>
+            @endif
 
+            @php
+                $displayedOrderNumbers = [];
+            @endphp
 
-                
+            @foreach ($orders as $order)
+                @if (!in_array($order->order_number, $displayedOrderNumbers))
+                    @if ($order->status == 'canceled')
+                        <div class="col-lg-12">
+                            <p style="color: red;">This order has been cancelled.</p>
+                        </div>
+                    @elseif($order->status == 'success')
+                        <div class="col-lg-12"></div>
+                        <p style="color: green;">This order has been Pay.</p>
+        </div>
+        <a class="btn btn-success" style="padding: 5px 10px; font-size: 14px;"
+            href="{{ url('/invoice', $order->order_number) }}">
+            View Invoice
+        </a>
+    @else
+        <a class="btn btn-danger" onClick="cancelConfirmation(event)" style="padding: 5px 10px; font-size: 14px;"
+            href="{{ url('/order_cancel', $order->order_number) }}">
+            Cancel Order
+        </a>
+        @if ($order->status == 'pending')
+            <div class="text-center mt-4">
+                <p style="color: red;">
+                    <strong>Scan QR Code</strong>: {{ $order->status }}
+                </p>
+
+                <a href="{{ route('order.checkoutpage', ['order_number' => $order->order_number]) }}"
+                    style="display: inline-block;">
+                    <p>checkout</p>
+                    <img src="{{ asset('pic/khqr.png') }}" alt="Checkout" style="max-width: 200px;">
+                </a>
             </div>
         @else
-            <div class="col-lg-12">
-                <p>No order found with the given order number.</p>
-            </div>
-        @endif
-
-        @php
-        $displayedOrderNumbers = [];
-    @endphp
-    
-    @foreach($orders as $order)
-        @if(!in_array($order->order_number, $displayedOrderNumbers))
-            @if($order->status == 'canceled')
-                <div class="col-lg-12">
-                    <p style="color: red;">This order has been cancelled.</p>
-                </div>
-
-            @elseif($order->status == 'success')
-                <div class="col-lg-12"></div>
-                    <p style="color: green;">This order has been Pay.</p>
-                </div>
-                <a class="btn btn-success"  style="padding: 5px 10px; font-size: 14px;" href="{{ url('/invoice', $order->order_number) }}">
-                    View Invoice
-                </a>
-            @else
-                <a class="btn btn-danger" onClick="cancelConfirmation(event)" style="padding: 5px 10px; font-size: 14px;" href="{{ url('/order_cancel', $order->order_number) }}">
-                    Cancel Order
-                </a>
-                @if($order->status == 'pending')
-                <div class="text-center mt-4">
-                    <p style="color: red;"><strong>Scan QR Code</strong>:{{ $order->status }}</p>
-                    <form action="{{ route('order.checkoutpage', ['order_number' => $order->order_number])}}" method="GET">
-                        @csrf
-                        <p>checkout</p>
-                        <button type="submit" style="border: none; background: none; padding: 0;">
-                            <img src="{{ asset('pic/khqr.png') }}" alt="Checkout" style="max-width: 200px;">
-                        </button>
-                    </form>
-
-                </div>
-                @else
-                <h4>Payment Information</h4>
-                <div class="card">
-                    <div class="card-body">
-                        <strong>Payment Status:</strong> <p class="text-success">{{ $order->status}}</p>
-                        <div style="padding: 10px;color: rgb(36, 25, 245);background-color: #2181ff;border-radius: 5px" >
-                            <p style="color: rgb(255, 255, 255);">Thank For Everything for Your Order and Have a Nice Day :)🥰🙏</p>
-                        </div>
+            <h4>Payment Information</h4>
+            <div class="card">
+                <div class="card-body">
+                    <strong>Payment Status:</strong>
+                    <p class="text-success">{{ $order->status }}</p>
+                    <div style="padding: 10px;color: rgb(36, 25, 245);background-color: #2181ff;border-radius: 5px">
+                        <p style="color: rgb(255, 255, 255);">Thank For Everything for Your Order and Have a Nice Day
+                            :)🥰🙏</p>
                     </div>
                 </div>
-                @endif
-            @endif
-            @php
-                $displayedOrderNumbers[] = $order->order_number;
-            @endphp
+            </div>
         @endif
-    @endforeach
-    
-    
-    </div>
-</div>
+        @endif
+        @php
+            $displayedOrderNumbers[] = $order->order_number;
+        @endphp
+        @endif
+        @endforeach
 
-@include('home.footer')
+
+    </div>
+    </div>
+
+    @include('home.footer')
 
     <!-- Scripts -->
 
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    function cancelConfirmation(ev) {
-        ev.preventDefault();
-        var urlToRedirect = ev.currentTarget.getAttribute('href');
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function cancelConfirmation(ev) {
+            ev.preventDefault();
+            var urlToRedirect = ev.currentTarget.getAttribute('href');
 
-        Swal.fire({
-            title: "Are you sure?",
-            text: "Do you really want to cancel this order?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: 'Yes, cancel it!',
-            cancelButtonText: 'No, keep it',
-            dangerMode: true,
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Processing...',
-                    text: 'Please wait while we cancel your order.',
-                    icon: 'info',
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    willOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Do you really want to cancel this order?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: 'Yes, cancel it!',
+                cancelButtonText: 'No, keep it',
+                dangerMode: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Processing...',
+                        text: 'Please wait while we cancel your order.',
+                        icon: 'info',
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        willOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
 
-                setTimeout(() => {
-                    window.location.href = urlToRedirect;
-                }, 1000);
-            }
-        });
-    }
-</script>
+                    setTimeout(() => {
+                        window.location.href = urlToRedirect;
+                    }, 1000);
+                }
+            });
+        }
+    </script>
 
 
     <script src="{{ asset('homes/vendor/jquery/jquery.min.js') }}"></script>

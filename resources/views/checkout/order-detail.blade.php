@@ -16,9 +16,10 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     {{-- Link Bootstrap --}}
-   
+
     {{-- Bakong KHQR --}}
-    <script src="https://github.com/davidhuotkeo/bakong-khqr/releases/download/bakong-khqr-1.0.6/khqr-1.0.6.min.js"></script>
+    <script src="https://github.com/davidhuotkeo/bakong-khqr/releases/download/bakong-khqr-1.0.6/khqr-1.0.6.min.js">
+    </script>
 
     {{-- QR Code Reader --}}
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
@@ -65,7 +66,7 @@
         }
 
         /* Show modal when checkbox is checked */
-        #successModalToggle:checked + .modal {
+        #successModalToggle:checked+.modal {
             display: flex;
         }
 
@@ -96,7 +97,8 @@
             font-weight: bold;
         }
 
-        .footer p, .footer li {
+        .footer p,
+        .footer li {
             font-size: 14px;
             margin-bottom: 10px;
             line-height: 1.6;
@@ -188,7 +190,7 @@
                 <div class="col-lg-12">
                     <h3>Order Details</h3>
                     <span class="breadcrumb">
-                        <a href="{{ route('home') }}">Home</a> > 
+                        <a href="{{ route('home') }}">Home</a> >
                         <a href="{{ route('orders.index') }}">Orders</a> > Order Details
                     </span>
                 </div>
@@ -205,7 +207,8 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">Order Number: <strong>{{ $orders[0]->order_number }}</strong></h5>
-                        <strong>Name</strong><p style="font-family:'Khmer OS Battambang', Courier, monospace"> {{ $orders[0]->name }}</p>
+                        <strong>Name</strong>
+                        <p style="font-family:'Khmer OS Battambang', Courier, monospace"> {{ $orders[0]->name }}</p>
                         <p><strong>Telegram Number:</strong> {{ $orders[0]->telegram_number }}</p>
                         <p><strong>Address:</strong> {{ $orders[0]->address }}</p>
                         <p><strong>Province:</strong> {{ $orders[0]->province }}</p>
@@ -216,42 +219,47 @@
 
                 <!-- Items in the Order -->
                 <h4>Items in Your Order</h4>
-<div class="row">
-    @foreach($orders as $order)
-    @php
-    $product = $order->product;
-    $priceAfterDiscount = $product->price;
-    $discountAmount = 0;
-    if ($product->discount > 0) {
-        $discountAmount = $product->price * ($product->discount / 100);
-        $priceAfterDiscount = $product->price - $discountAmount;
-    }
-@endphp
-    <div class="col-md-6 mb-4">
-        <div class="card border-primary">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <img src="{{ asset('products/' . $order->product->image) }}" alt="{{ $order->product->name }}" class="img-thumbnail me-3" style="width: 100px; height: auto;">
-                    <div>
-                        <h5 class="card-title mb-1">{{ $order->product->name }}</h5>
-                        <p class="mb-1"><strong>Quantity:</strong> {{ $order->quantity }}</p>
-                        <p class="mb-1"><strong>Price:</strong> ${{ number_format($order->product->price, 2) }}</p>
-                        <p class="mb-1"><strong>Total:</strong> ${{ number_format($order->total_price, 2) }}</p>
-                        @if($discountAmount > 0)
-                        <p class="mb-0 text-danger"><strong>Discount:</strong> - ${{ number_format($discountAmount, 2) }}</p>
-                        @else
-                        <p class="mb-0 text-muted">No Discount</p>
-                        @endif
-                    </div>
+                <div class="row">
+                    @foreach ($orders as $order)
+                        @php
+                            $product = $order->product;
+                            $priceAfterDiscount = $product->price;
+                            $discountAmount = 0;
+                            if ($product->discount > 0) {
+                                $discountAmount = $product->price * ($product->discount / 100);
+                                $priceAfterDiscount = $product->price - $discountAmount;
+                            }
+                        @endphp
+                        <div class="col-md-6 mb-4">
+                            <div class="card border-primary">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ asset('products/' . $order->product->image) }}"
+                                            alt="{{ $order->product->name }}" class="img-thumbnail me-3"
+                                            style="width: 100px; height: auto;">
+                                        <div>
+                                            <h5 class="card-title mb-1">{{ $order->product->name }}</h5>
+                                            <p class="mb-1"><strong>Quantity:</strong> {{ $order->quantity }}</p>
+                                            <p class="mb-1"><strong>Price:</strong>
+                                                ${{ number_format($order->product->price, 2) }}</p>
+                                            <p class="mb-1"><strong>Total:</strong>
+                                                ${{ number_format($order->total_price, 2) }}</p>
+                                            @if ($discountAmount > 0)
+                                                <p class="mb-0 text-danger"><strong>Discount:</strong> -
+                                                    ${{ number_format($discountAmount, 2) }}</p>
+                                            @else
+                                                <p class="mb-0 text-muted">No Discount</p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
-            </div>
-        </div>
-    </div>
-    @endforeach
-</div>
-<hr class="my-4">
+                <hr class="my-4">
 
-                
+
             </div>
 
             <!-- Customer and Delivery Information -->
@@ -259,7 +267,8 @@
                 <h4>Customer Information</h4>
                 <div class="card mb-4">
                     <div class="card-body">
-                        <strong>Name</strong><p style="font-family: 'khmer os battambang';">{{ $order->name }}</p>
+                        <strong>Name</strong>
+                        <p style="font-family: 'khmer os battambang';">{{ $order->name }}</p>
                         <p><strong>Telegram:</strong> {{ $order->telegram_number }}</p>
                         <p><strong>Province:</strong> {{ $order->province }}</p>
                     </div>
@@ -274,62 +283,67 @@
                     </div>
                 </div>
 
-                @if($order->status == 'pending')
-                <div class="text-center mt-4">
-                    <p style="color: red;"><strong>Scan QR Code</strong>:{{ $order->status }}</p>
-                    <form action="{{ route('order.checkoutpage', ['order_number' => $order->order_number])}}" method="GET">
-                        @csrf
-                        <p>checkout</p>
-                        <button type="submit" style="border: none; background: none; padding: 0;">
-                            <img src="{{ asset('pic/khqr.png') }}" alt="Checkout" style="max-width: 200px;">
-                        </button>
-                    </form>
+                @if ($order->status == 'pending')
+                    <div class="text-center mt-4">
+                        <p style="color: red;">
+                            <strong>Scan QR Code</strong>: {{ $order->status }}
+                        </p>
 
-                </div>
+                        <a href="{{ route('order.checkoutpage', ['order_number' => $order->order_number]) }}"
+                            style="display: inline-block;">
+                            <p>checkout</p>
+                            <img src="{{ asset('pic/khqr.png') }}" alt="Checkout" style="max-width: 200px;">
+                        </a>
+                    </div>
                 @else
-                <h4>Payment Information</h4>
-                <div class="card">
-                    <div class="card-body">
-                        <strong>Payment Status:</strong> <p class="text-success">{{ $order->status}}</p>
-                        <div style="padding: 10px;color: rgb(36, 25, 245);background-color: #2181ff;border-radius: 5px" >
-                            <p style="color: rgb(255, 255, 255);">Thank For Everything for Your Order and Have a Nice Day :)🥰🙏</p>
+                    <h4>Payment Information</h4>
+                    <div class="card">
+                        <div class="card-body">
+                            <strong>Payment Status:</strong>
+                            <p class="text-success">{{ $order->status }}</p>
+                            <div
+                                style="padding: 10px;color: rgb(36, 25, 245);background-color: #2181ff;border-radius: 5px">
+                                <p style="color: rgb(255, 255, 255);">Thank For Everything for Your Order and Have a
+                                    Nice Day :)🥰🙏</p>
+                            </div>
                         </div>
                     </div>
-                </div>
                 @endif
 
-                
-                
-                
+
+
+
             </div>
         </div>
     </div>
 
 
 
-    @if(session('success'))
-    <!-- Hidden checkbox to trigger modal -->
-    <input type="checkbox" id="successModalToggle" checked />
-    
-    <div class="modal">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title">Success</h5>
-                <label for="successModalToggle" class="btn-close" aria-label="Close">&times;</label>
-            </div>
-            <div class="modal-body">
-                {{ session('success') }}
-                <p style="color: green;">Please Contect us on Telegram To <strong class="text-success">Checkout</strong> Your Order</p>
-                <a href="https://t.me/Horth_lay"><img src="{{asset('pic/telegram.png')}}" alt="" style="max-width: 50px;">Telegram</a>
-            </div>
-            <div class="modal-footer">
-                <label for="successModalToggle" class="btn btn-success">Close</label>
+    @if (session('success'))
+        <!-- Hidden checkbox to trigger modal -->
+        <input type="checkbox" id="successModalToggle" checked />
+
+        <div class="modal">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Success</h5>
+                    <label for="successModalToggle" class="btn-close" aria-label="Close">&times;</label>
+                </div>
+                <div class="modal-body">
+                    {{ session('success') }}
+                    <p style="color: green;">Please Contect us on Telegram To <strong
+                            class="text-success">Checkout</strong> Your Order</p>
+                    <a href="https://t.me/Horth_lay"><img src="{{ asset('pic/telegram.png') }}" alt=""
+                            style="max-width: 50px;">Telegram</a>
+                </div>
+                <div class="modal-footer">
+                    <label for="successModalToggle" class="btn btn-success">Close</label>
+                </div>
             </div>
         </div>
-    </div>
     @endif
 
-@include('home.footer')
+    @include('home.footer')
     <!-- Scripts -->
     <script src="{{ asset('homes/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('homes/vendor/bootstrap/js/bootstrap.min.js') }}"></script>

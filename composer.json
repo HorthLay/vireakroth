@@ -10,6 +10,7 @@
         "endroid/qr-code": "^6.0",
         "fruitcake/laravel-cors": "^3.0",
         "guzzlehttp/guzzle": "^7.9",
+        "khqr-gateway/bakong-khqr-php": "^1.0",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.16",

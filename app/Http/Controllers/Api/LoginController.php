@@ -17,21 +17,26 @@ class LoginController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'required|string|digits:10',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
             'password' => Hash::make($request->password),
+            'email_verified_at' => now(),
         ]);
 
         return response()->json([
             'message' => 'User registered successfully',
             'user' => $user,
-            'token' => $user->createToken('API Token')->plainTextToken
+            'token' => $user->createToken('API Token')->plainTextToken,
         ], 201);
     }
+
+
 
     // User Login
     public function login(Request $request)
