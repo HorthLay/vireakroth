@@ -10,42 +10,52 @@
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <li><a href="{{ url('/') }}" class="active">Home</a></li>
-                        <li><a href="{{ route('products.index') }}">Our Shop</a></li>
-                        <li><a href="{{ url('/contact-us') }}">Contact Us</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
+                        <li>
+                            <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('products.index') }}"
+                                class="{{ request()->routeIs('products.index') ? 'active' : '' }}">
+                                Our Shop
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url('/contact-us') }}"
+                                class="{{ request()->is('contact-us') ? 'active' : '' }}">
+                                Contact Us
+                            </a>
+                        </li>
 
                         @auth
                             <li>
-                                <a href="{{ route('orders.view') }}" id="cart-icon">My Orders</a>
+                                <a href="{{ route('orders.view') }}" id="cart-icon"
+                                    class="{{ request()->routeIs('orders.view') ? 'active' : '' }}">
+                                    My Orders
+                                </a>
                             </li>
                             <li>
-                                <span style="color: rgb(0, 0, 0);font-family: 'Kantumruy', sans-serif;">Welcome,
-                                    {{ auth()->user()->name }}!</span>
+                                <span style="color: rgb(0, 0, 0);font-family: 'Kantumruy', sans-serif;">
+                                    Welcome, {{ auth()->user()->name }}!
+                                </span>
                             </li>
                             <li>
-                                <!-- Logout link -->
                                 <a href="#"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     Log out
                                 </a>
-                                <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
+                                <form id="logout-form" method="POST" action="{{ route('logout') }}"
+                                    style="display: none;">
                                     @csrf
                                 </form>
                             </li>
                         @else
-                            <li><a href="{{ route('login') }}">Sign In</a></li>
+                            <li>
+                                <a href="{{ route('login') }}" class="{{ request()->routeIs('login') ? 'active' : '' }}">
+                                    Sign In
+                                </a>
+                            </li>
                         @endauth
                     </ul>
 
@@ -94,20 +104,3 @@
         </div>
     </div>
 </header>
-
-
-{{-- <h1>home</h1>
-
-@if (auth()->check())
-    <p>Welcome, {{ auth()->user()->name }}!</p>
-@else
-    <p>You are not logged in.</p>
-@endif
-
-
-@auth
-    <form method="POST" action="{{ route('logout') }}">
-        @csrf
-        <button type="submit">Logout</button>
-    </form>
-@endauth --}}

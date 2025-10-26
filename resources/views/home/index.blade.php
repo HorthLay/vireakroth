@@ -768,37 +768,111 @@ https://templatemo.com/tm-589-lugx-gaming
     {{--  --}}
 
 
-    <div class="container my-4">
-        <!-- Welcome Section -->
-
-
+    <div class="container my-5">
         <!-- Ads Section -->
         <div class="ads-section">
-            <h2 class="mb-4">Featured Ads</h2>
-            <div class="row">
-                @forelse($ads as $ad)
-                    <div class="col-md-4 mb-4">
-                        <div class="card shadow-sm">
-                            <!-- Ad Image -->
-                            <img src="{{ asset('ads/' . $ad->image) }}" class="card-img-top" alt="Ad Image"
-                                style="height: 200px; object-fit: cover;">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold display-5 mb-2">Featured Ads</h2>
+                <p class="text-muted">Discover amazing opportunities and offers</p>
+            </div>
 
-                            <!-- Ad Content -->
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $ad->title }}</h5>
-                                <p class="card-text">{{ Str::limit($ad->description, 100) }}</p>
-                                <a href="{{ $ad->cta_url }}" target="_blank" class="btn btn-primary">Learn More</a>
+            <div class="row g-4">
+                @if ($ads->isNotEmpty())
+                    @foreach ($ads as $ad)
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card border-0 shadow-lg h-100 overflow-hidden hover-card">
+                                <!-- Ad Image with Overlay -->
+                                <div class="position-relative overflow-hidden"
+                                    style="height: 280px; background: #f8f9fa;">
+                                    <img src="{{ asset('ads/' . $ad->image) }}" class="w-100 h-100"
+                                        alt="{{ $ad->title }}"
+                                        style="object-fit: contain; transition: transform 0.4s ease; object-position: center;">
+                                    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-10">
+                                    </div>
+                                </div>
+
+                                <!-- Ad Content -->
+                                <div class="card-body d-flex flex-column p-4">
+                                    <h5 class="card-title fw-bold mb-3" style="color: #2c3e50;">
+                                        {{ $ad->title }}
+                                    </h5>
+                                    <p class="card-text text-muted flex-grow-1 mb-4" style="line-height: 1.6;">
+                                        {{ Str::limit($ad->description, 100) }}
+                                    </p>
+                                    <a href="{{ $ad->cta_url }}" target="_blank"
+                                        class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm"
+                                        style="transition: all 0.3s ease;">
+                                        <span class="me-2">Learn More</span>
+                                        <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @empty
+                    @endforeach
+                @else
                     <div class="col-12">
-                        <p class="text-center">No ads available at the moment. Check back later!</p>
+                        <div class="text-center py-5">
+                            <div class="mb-4">
+                                <i class="fas fa-bullhorn fa-4x text-muted opacity-50"></i>
+                            </div>
+                            <h4 class="text-muted mb-2">No Ads Available</h4>
+                            <p class="text-muted">Check back later for exciting offers and opportunities!</p>
+                        </div>
                     </div>
-                @endforelse
+                @endif
             </div>
         </div>
     </div>
+
+    <style>
+        .hover-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 16px;
+        }
+
+        .hover-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .hover-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff 0%, #c6d4ff 100%);
+            border: none;
+            font-weight: 600;
+            padding: 12px 24px;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #c6d4ff 0%, #007bff 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            letter-spacing: -0.5px;
+        }
+
+        .ads-section {
+            padding: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .display-5 {
+                font-size: 2rem;
+            }
+
+            .hover-card:hover {
+                transform: translateY(-4px);
+            }
+        }
+    </style>
+
+
     @include('home.footer')
 
     <!-- Scripts -->
@@ -851,10 +925,9 @@ https://templatemo.com/tm-589-lugx-gaming
         });
     </script>
 
-    <!-- Popup Ad -->
     @if (count($ads) > 0)
-        <div class="popup-overlay" id="popupOverlay"></div>
-        <div class="popup-ad" id="popupAd">
+        <div class="popup-overlay" id="popupOverlay" style="display:none;"></div>
+        <div class="popup-ad" id="popupAd" style="display:none;">
             <span class="close-popup" onclick="closePopup()">&times;</span>
             <div class="popup-content">
                 <h3 class="mb-4">Featured Advertisements</h3>
@@ -878,22 +951,9 @@ https://templatemo.com/tm-589-lugx-gaming
             </div>
         </div>
 
-        <style>
-            .countdown-timer {
-                position: absolute;
-                top: 10px;
-                left: 10px;
-                background-color: rgba(0, 0, 0, 0.6);
-                color: white;
-                padding: 5px 10px;
-                border-radius: 15px;
-                font-size: 14px;
-            }
-        </style>
-
         <script>
-            // Initialize Swiper for popup
             document.addEventListener('DOMContentLoaded', function() {
+                // Swiper init
                 new Swiper('.swiper-popup', {
                     slidesPerView: 1,
                     spaceBetween: 30,
@@ -909,16 +969,19 @@ https://templatemo.com/tm-589-lugx-gaming
                 });
             });
 
-            // Show popup after 2 seconds and start countdown
             window.addEventListener('load', function() {
-                setTimeout(function() {
-                    document.getElementById('popupOverlay').style.display = 'block';
-                    document.getElementById('popupAd').style.display = 'block';
-                    startCountdown();
-                }, 2000);
+                // Only show if not shown before
+                if (!localStorage.getItem('popupShown')) {
+                    setTimeout(function() {
+                        document.getElementById('popupOverlay').style.display = 'block';
+                        document.getElementById('popupAd').style.display = 'block';
+                        startCountdown();
+                        // mark as shown
+                        localStorage.setItem('popupShown', 'true');
+                    }, 2000);
+                }
             });
 
-            // Countdown timer function
             function startCountdown() {
                 let timeLeft = 5;
                 const timerElement = document.getElementById('popupTimer');
@@ -934,16 +997,15 @@ https://templatemo.com/tm-589-lugx-gaming
                 }, 1000);
             }
 
-            // Close popup function
             function closePopup() {
                 document.getElementById('popupOverlay').style.display = 'none';
                 document.getElementById('popupAd').style.display = 'none';
             }
 
-            // Close popup when clicking overlay
             document.getElementById('popupOverlay').addEventListener('click', closePopup);
         </script>
     @endif
+
 </body>
 
 </html>

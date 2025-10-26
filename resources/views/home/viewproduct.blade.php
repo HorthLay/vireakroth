@@ -57,32 +57,37 @@
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
-                            <li><a href="{{ url('/') }}" class="active">Home</a></li>
-                            <li><a href="{{ route('products.index') }}">Our Shop</a></li>
-                            <li><a href="{{ url('/contact-us') }}">Contact Us</a></li>
-
-
-
-
-
-
-
-
-
-
-
-
+                            <li>
+                                <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">
+                                    Home
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('products.index') }}"
+                                    class="{{ request()->routeIs('products.index') ? 'active' : '' }}">
+                                    Our Shop
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('/contact-us') }}"
+                                    class="{{ request()->is('contact-us') ? 'active' : '' }}">
+                                    Contact Us
+                                </a>
+                            </li>
 
                             @auth
                                 <li>
-                                    <a href="{{ route('orders.view') }}" id="cart-icon">My Orders</a>
+                                    <a href="{{ route('orders.view') }}" id="cart-icon"
+                                        class="{{ request()->routeIs('orders.view') ? 'active' : '' }}">
+                                        My Orders
+                                    </a>
                                 </li>
                                 <li>
-                                    <span style="color: rgb(0, 0, 0);font-family: 'Kantumruy', sans-serif;">Welcome,
-                                        {{ auth()->user()->name }}!</span>
+                                    <span style="color: rgb(0, 0, 0);font-family: 'Kantumruy', sans-serif;">
+                                        Welcome, {{ auth()->user()->name }}!
+                                    </span>
                                 </li>
                                 <li>
-                                    <!-- Logout link -->
                                     <a href="#"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         Log out
@@ -93,7 +98,12 @@
                                     </form>
                                 </li>
                             @else
-                                <li><a href="{{ route('login') }}">Sign In</a></li>
+                                <li>
+                                    <a href="{{ route('login') }}"
+                                        class="{{ request()->routeIs('login') ? 'active' : '' }}">
+                                        Sign In
+                                    </a>
+                                </li>
                             @endauth
                         </ul>
 
@@ -123,10 +133,24 @@
                             </button>
                         @endif
                     @endif
+
+                    {{-- <!-- Overlay -->
+                                     <div id="overlay"></div>
+
+                                     <!-- Ad Popup -->
+                                     <div id="adPopup" style="display: none;">
+                                         <span class="close-btn" onclick="closeAd()">×</span>
+                                         <h3 id="adTitle">Special Offer!</h3>
+                                         <img id="adImage" src="https://via.placeholder.com/250" alt="Ad Image" style="width:100%; border-radius:5px;">
+                                         <p id="adDescription">Get 20% off on your first purchase.</p>
+                                         <a id="adLink" href="https://example.com" target="_blank">Shop Now</a>
+                                     </div> --}}
+
                 </div>
             </div>
         </div>
     </header>
+
 
     <div class="page-heading header-text">
         <div class="container">
@@ -163,10 +187,8 @@
                 @foreach ($categories as $category)
                     <li>
                         <a href="{{ route('category.show', $category->name) }}" class="category-link">
-                            <img src="{{ asset('categories/' . $category->image) }}" 
-                                 alt="{{ $category->name }}" 
-                                 class="category-icon"
-                                 onerror="this.src='{{ asset('pic/vireakroth.png') }}'">
+                            <img src="{{ asset('categories/' . $category->image) }}" alt="{{ $category->name }}"
+                                class="category-icon" onerror="this.src='{{ asset('pic/vireakroth.png') }}'">
                             <span>{{ $category->name }}</span>
                         </a>
                     </li>
@@ -197,14 +219,14 @@
                     text-decoration: none;
                     color: #333;
                     transition: all 0.3s ease;
-                    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+                    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
                     font-size: 17px;
                     font-weight: 500;
                 }
 
                 .category-link:hover {
                     transform: translateY(-3px);
-                    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
                     background: #f8f9fa;
                 }
 
@@ -221,7 +243,7 @@
                     .trending-filter {
                         gap: 15px;
                     }
-                    
+
                     .category-link {
                         padding: 10px 20px;
                         font-size: 15px;

@@ -76,7 +76,8 @@
         cursor: pointer;
     }
 
-    .modal input, .modal button {
+    .modal input,
+    .modal button {
         width: 100%;
         padding: 10px;
         margin: 10px 0;
@@ -104,34 +105,34 @@
 
     /* Pagination Styling */
     .pagination {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-        }
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 20px;
+    }
 
-        .pagination-btn {
-            background-color: #007bff;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
+    .pagination-btn {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
 
-        .pagination-btn:hover {
-            background-color: #0056b3;
-        }
+    .pagination-btn:hover {
+        background-color: #0056b3;
+    }
 
-        .pagination-btn.active {
-            background-color: #0056b3;
-        }
+    .pagination-btn.active {
+        background-color: #0056b3;
+    }
 
-        .pagination-btn.disabled {
-            background-color: #ccc;
-            color: #666;
-            cursor: not-allowed;
-        }
+    .pagination-btn.disabled {
+        background-color: #ccc;
+        color: #666;
+        cursor: not-allowed;
+    }
 </style>

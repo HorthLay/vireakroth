@@ -38,8 +38,16 @@ class HomeController extends Controller
             return view('admin.index', compact('users', 'totalOrders', 'totalOrderSales', 'currentVisits', 'percentageChange', 'previousVisits', 'reminders', 'orders', 'recentorders'));
         } else {
             $user = User::all();
-            $newProducts = Product::where('status', 'new')->take(4)->get();
-            $secondHandProducts = Product::where('status', 'second_hand')->take(4)->get();
+            $newProducts = Product::where('status', 'new')
+                ->orderBy('created_at', 'desc') // show newest first
+                ->take(4)
+                ->get();
+
+            $secondHandProducts = Product::where('status', 'second_hand')
+                ->orderBy('created_at', 'desc') // show newest first
+                ->take(4)
+                ->get();
+
             $categories = Category::all()->take(5);
             $products = Product::all();
             $ads = Ad::all();
@@ -63,48 +71,78 @@ class HomeController extends Controller
 
 
 
+    // public function checkTransaction(Request $request)
+    // {
+    //     try {
+    //         $payload = json_encode($request->all());
+
+    //         $ch = curl_init();
+
+    //         curl_setopt_array($ch, [
+    //             CURLOPT_URL => "https://api-bakong.nbc.gov.kh/v1/check_transaction_by_md5",
+    //             CURLOPT_RETURNTRANSFER => true,
+    //             CURLOPT_POST => true,
+    //             CURLOPT_POSTFIELDS => $payload,
+    //             CURLOPT_HTTPHEADER => [
+    //                 "Content-Type: application/json",
+    //                 "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiMzYyZTU0Y2RmNDk2NDUzNSJ9LCJpYXQiOjE3NTQ5OTAxMTUsImV4cCI6MTc2Mjc2NjExNX0.GJlWmtw-TY3JJR2Ve25RdC1Msiy1wBWBvJvGfCk9F38",
+    //                 "Content-Length: " . strlen($payload)
+    //             ],
+    //             CURLOPT_SSL_VERIFYPEER => false, // disable SSL verification if needed
+    //             CURLOPT_TIMEOUT => 30
+    //         ]);
+
+    //         $response = curl_exec($ch);
+    //         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+    //         if (curl_errno($ch)) {
+    //             throw new \Exception(curl_error($ch));
+    //         }
+
+    //         curl_close($ch);
+
+    //         // Decode response so we can check status
+    //         $decodedResponse = json_decode($response, true);
+
+    //         if (isset($decodedResponse['responseMessage']) && $decodedResponse['responseMessage'] === 'Success') {
+    //             // Update order status in database
+    //             if ($request->has('order_number')) {
+    //                 \App\Models\Order::where('order_number', $request->order_number)
+    //                     ->update(['status' => 'success']);
+    //             }
+    //         }
+
+    //         return response()->json($decodedResponse, $httpCode);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'error' => 'Failed to check transaction',
+    //             'message' => $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
+
     public function checkTransaction(Request $request)
     {
         try {
-            $payload = json_encode($request->all());
-
-            $ch = curl_init();
-
-            curl_setopt_array($ch, [
-                CURLOPT_URL => "https://api-bakong.nbc.gov.kh/v1/check_transaction_by_md5",
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_POST => true,
-                CURLOPT_POSTFIELDS => $payload,
-                CURLOPT_HTTPHEADER => [
-                    "Content-Type: application/json",
-                    "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiMzYyZTU0Y2RmNDk2NDUzNSJ9LCJpYXQiOjE3NTQ5OTAxMTUsImV4cCI6MTc2Mjc2NjExNX0.GJlWmtw-TY3JJR2Ve25RdC1Msiy1wBWBvJvGfCk9F38",
-                    "Content-Length: " . strlen($payload)
-                ],
-                CURLOPT_SSL_VERIFYPEER => false, // disable SSL verification if needed
-                CURLOPT_TIMEOUT => 30
+            $client = new \GuzzleHttp\Client();
+            $response = $client->post('http://localhost:8081/check-transaction', [
+                'json' => [
+                    'md5' => $request->md5,
+                    'order_number' => $request->order_number,
+                ]
             ]);
 
-            $response = curl_exec($ch);
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $decodedResponse = json_decode($response->getBody(), true);
 
-            if (curl_errno($ch)) {
-                throw new \Exception(curl_error($ch));
-            }
-
-            curl_close($ch);
-
-            // Decode response so we can check status
-            $decodedResponse = json_decode($response, true);
-
+            // If success, update order status in DB
             if (isset($decodedResponse['responseMessage']) && $decodedResponse['responseMessage'] === 'Success') {
-                // Update order status in database
                 if ($request->has('order_number')) {
                     \App\Models\Order::where('order_number', $request->order_number)
                         ->update(['status' => 'success']);
                 }
             }
 
-            return response()->json($decodedResponse, $httpCode);
+            return response()->json($decodedResponse, $response->getStatusCode());
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Failed to check transaction',

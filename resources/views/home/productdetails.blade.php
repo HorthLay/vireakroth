@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="{{ asset('pic/vireakroth.png') }}">
@@ -42,42 +43,44 @@
                 <div class="col-12">
                     <nav class="main-nav">
                         <!-- ***** Logo Start ***** -->
-                        <a href="{{url('/')}}" class="logo">
-                            <img src="{{asset ('pic/vireakroth.png')}}" alt="" style="width: 50px;">
+                        <a href="{{ url('/') }}" class="logo">
+                            <img src="{{ asset('pic/vireakroth.png') }}" alt="" style="width: 50px;">
                         </a>
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
                             <li><a href="{{ url('/') }}" class="active">Home</a></li>
                             <li><a href="{{ route('products.index') }}">Our Shop</a></li>
-                            <li><a href="{{url('/contact-us')}}">Contact Us</a></li>
-                            
-     
-    
-    
-    
-    
-                            
-    
-    
-                          
-                            
-                            
-                        
+                            <li><a href="{{ url('/contact-us') }}">Contact Us</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
                             @auth
-                            <li>
-                                <a href="{{ route('orders.view') }}" id="cart-icon">My Orders</a>
-                            </li>
                                 <li>
-                                    <span style="color: rgb(0, 0, 0);font-family: 'Kantumruy', sans-serif;">Welcome, {{ auth()->user()->name }}!</span>
+                                    <a href="{{ route('orders.view') }}" id="cart-icon">My Orders</a>
+                                </li>
+                                <li>
+                                    <span style="color: rgb(0, 0, 0);font-family: 'Kantumruy', sans-serif;">Welcome,
+                                        {{ auth()->user()->name }}!</span>
                                 </li>
                                 <li>
                                     <!-- Logout link -->
-                                    <a href="#" 
-                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                       Log out
+                                    <a href="#"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        Log out
                                     </a>
-                                    <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none;">
+                                    <form id="logout-form" method="POST" action="{{ route('logout') }}"
+                                        style="display: none;">
                                         @csrf
                                     </form>
                                 </li>
@@ -85,54 +88,56 @@
                                 <li><a href="{{ route('login') }}">Sign In</a></li>
                             @endauth
                         </ul>
-                        
-                        
-                       
+
+
+
                         <!-- ***** Menu End ***** -->
                     </nav>
-                                         <!-- Cart button, shown when there is at least one item -->
-                                         @if (Auth::check())
-                                         @php
-                                             $cartCount = \App\Models\Cart::where('user_id', Auth::id())->count();
-                                         @endphp
-                                         @if ($cartCount > 0)
-                                             <button class="popup-cart-btn" onclick="window.location.href='{{ route('cart.view') }}'">
-                                                 <i class="fa fa-shopping-cart"></i>
-                                                 <span class="cart-count">{{ $cartCount }}</span>
-                                             </button>
-                                         @endif
-                                         @else
-                                         @php
-                                             $guestCartCount = count(session()->get('guest_cart', []));
-                                         @endphp
-                                         @if ($guestCartCount > 0)
-                                             <button class="popup-cart-btn" onclick="window.location.href='{{ route('cart.view') }}'">
-                                                 <i class="fa fa-shopping-cart"></i>
-                                                 <span class="cart-count">{{ $guestCartCount }}</span>
-                                             </button>
-                                         @endif
-                                         @endif
+                    <!-- Cart button, shown when there is at least one item -->
+                    @if (Auth::check())
+                        @php
+                            $cartCount = \App\Models\Cart::where('user_id', Auth::id())->count();
+                        @endphp
+                        @if ($cartCount > 0)
+                            <button class="popup-cart-btn" onclick="window.location.href='{{ route('cart.view') }}'">
+                                <i class="fa fa-shopping-cart"></i>
+                                <span class="cart-count">{{ $cartCount }}</span>
+                            </button>
+                        @endif
+                    @else
+                        @php
+                            $guestCartCount = count(session()->get('guest_cart', []));
+                        @endphp
+                        @if ($guestCartCount > 0)
+                            <button class="popup-cart-btn" onclick="window.location.href='{{ route('cart.view') }}'">
+                                <i class="fa fa-shopping-cart"></i>
+                                <span class="cart-count">{{ $guestCartCount }}</span>
+                            </button>
+                        @endif
+                    @endif
                 </div>
             </div>
         </div>
-      </header>
+    </header>
     <!-- ***** Header Area End ***** -->
 
 
-      <!-- Succuess Message -->
-      @if(session('success'))
-      <div class="success-message show">
-          <p style="color: white;">{{ session('success') }}</p>
-          <button class="close-btn" onclick="document.querySelector('.success-message').classList.remove('show')">×</button>
-      </div>
-      @endif
+    <!-- Succuess Message -->
+    @if (session('success'))
+        <div class="success-message show">
+            <p style="color: white;">{{ session('success') }}</p>
+            <button class="close-btn"
+                onclick="document.querySelector('.success-message').classList.remove('show')">×</button>
+        </div>
+    @endif
 
     <div class="page-heading header-text">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <h3>{{ $product->name }}</h3>
-                    <span class="breadcrumb"><a href="#">Home</a> > <a href="#">Shop</a> > {{ $product->name }}</span>
+                    <span class="breadcrumb"><a href="#">Home</a> > <a href="#">Shop</a> >
+                        {{ $product->name }}</span>
                 </div>
             </div>
         </div>
@@ -144,7 +149,8 @@
                 <!-- Product Image -->
                 <div class="col-lg-6">
                     <div class="left-image">
-                        <img src="{{ $product->image ? asset('products/' . $product->image) : asset('images/default-product.png') }}" alt="{{ $product->name }}">
+                        <img src="{{ $product->image ? asset('products/' . $product->image) : asset('images/default-product.png') }}"
+                            alt="{{ $product->name }}">
                     </div>
                 </div>
 
@@ -155,7 +161,7 @@
                     <span class="price">
                         @if (!is_null($product->discount) && $product->discount > 0)
                             <em style="text-decoration: line-through;">${{ $product->price }}</em>
-                            ${{ number_format($product->price - ($product->price * $product->discount / 100), 2) }}
+                            ${{ number_format($product->price - ($product->price * $product->discount) / 100, 2) }}
                         @else
                             ${{ $product->price }}
                         @endif
@@ -166,16 +172,16 @@
 
                     <!-- Add to Cart Form -->
 
-                    
+
                     @if ($product->stock <= 0)
-                    <p class="text-danger font-weight-bold">Out of Stock</p>
+                        <p class="text-danger font-weight-bold">Out of Stock</p>
                     @else
-                    <form action="{{ route('cart.details') }}" method="POST">
-                        @csrf
-                        <input type="number" name="quantity" class="form-control" value="1" required>
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <button type="submit" class="btn btn-primary mt-2">Add to Cart</button>
-                    </form>
+                        <form action="{{ route('cart.details') }}" method="POST">
+                            @csrf
+                            <input type="number" name="quantity" class="form-control" value="1" required>
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <button type="submit" class="btn btn-primary mt-2">Add to Cart</button>
+                        </form>
                     @endif
                     <!-- Additional Information -->
                     <ul>
@@ -194,6 +200,37 @@
     </div>
 
     <!-- Related Games Section -->
+    <style>
+        .related-games .thumb {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .related-games .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.3s ease;
+        }
+
+        .related-games .thumb:hover img {
+            transform: scale(1.05);
+        }
+
+        .related-games .item {
+            transition: box-shadow 0.3s ease;
+            height: 100%;
+        }
+
+        .related-games .item:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
     <div class="section categories related-games">
         <div class="container">
             <div class="row align-items-center mb-4">
@@ -215,27 +252,27 @@
                         <div class="item border rounded p-3 text-center">
                             <div class="thumb mb-3 position-relative">
                                 <a href="{{ route('products.show', $item->id) }}">
-                                    <img src="{{ asset('products/' . $item->image) }}" alt="{{ $item->name }}" class="img-fluid">
+                                    <img src="{{ asset('products/' . $item->image) }}" alt="{{ $item->name }}"
+                                        class="img-fluid">
                                 </a>
-                              
                             </div>
                             <h4 class="mb-0">{{ $item->name }}</h4>
                             <h4 class="price d-block mt-2">
                                 @if (!is_null($item->discount) && $item->discount > 0)
-                                    <em style="text-decoration: line-through;color: #ffea00;">${{ $item->price }}</em>
-                                    ${{ number_format($item->price - ($item->price * $item->discount / 100), 2) }}
+                                    <em
+                                        style="text-decoration: line-through;color: #ffea00;">${{ $item->price }}</em>
+                                    ${{ number_format($item->price - ($item->price * $item->discount) / 100, 2) }}
                                 @else
                                     ${{ $item->price }}
                                 @endif
                             </h4>
-                            
                         </div>
                     </div>
                 @endforeach
             </div>
         </div>
     </div>
-    
+
 
     @include('home.footer')
 
@@ -248,4 +285,5 @@
     <script src="{{ asset('homes/assets/js/custom.js') }}"></script>
 
 </body>
+
 </html>

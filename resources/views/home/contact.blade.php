@@ -22,6 +22,9 @@
     <link rel="stylesheet" href="homes/assets/css/owl.css">
     <link rel="stylesheet" href="homes/assets/css/animate.css">
     <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    {{-- <script src="https://kit.fontawesome.com/a2e0f9e6a3.js" crossorigin="anonymous"></script> --}}
+
 
     <style>
         /* Success Message Styling */
@@ -235,41 +238,73 @@ https://templatemo.com/tm-589-lugx-gaming
         </div>
     </div>
 
-    <div class="contact-page section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 align-self-center">
-                    <div class="left-text">
-                        <div class="section-heading">
-                            <h6>Contact Us</h6>
-                            <h2>Hello!</h2>
-                        </div>
-                        <p>VireakRoth Phone Shop is a place where you can buy and sell your phone platform to order</p>
-                        <ul>
-                            <li><span>Address</span>PHUM2, SihanoukVille, Cambodia</li>
-                            <li><span>Phone</span> +855 99 99 99 99</li>
-                            <li><span>Email</span> vireakroth@gmail.com</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="right-content">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div id="map">
-                                    <iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12469.776493332698!2d-80.14036379941481!3d25.907788681148624!2m3!1f357.26927939317244!2f20.870722720054623!3f0!3m2!1i1024!2i768!4f35!3m3!1m2!1s0x88d9add4b4ac788f%3A0xe77469d09480fcdb!2sSunny%20Isles%20Beach!5e1!3m2!1sen!2sth!4v1642869952544!5m2!1sen!2sth"
-                                        width="100%" height="325px" frameborder="0"
-                                        style="border:0; border-radius: 23px;" allowfullscreen=""></iframe>
-                                </div>
-                            </div>
+    <section class="py-16 bg-gradient-to-br from-white via-gray-50 to-blue-50">
+        <div class="container mx-auto px-6 lg:px-12">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
 
-                        </div>
+                <!-- Left Section -->
+                <div class="space-y-6">
+                    <div>
+                        <p class="text-blue-600 font-semibold uppercase tracking-widest text-sm mb-2">Contact Us</p>
+                        <h2 class="text-4xl font-bold text-gray-800 mb-4">Hello 👋</h2>
+                        <p class="text-gray-600 leading-relaxed">
+                            <strong class="text-blue-600">VireakRoth Phone Shop</strong> — your trusted place to buy,
+                            sell,
+                            or order your next device. We’re here to help you with any questions or requests.
+                        </p>
+                    </div>
+
+                    <ul class="space-y-4 text-gray-700">
+                        <li class="flex items-start">
+                            <div
+                                class="w-10 h-10 flex items-center justify-center bg-blue-100 text-blue-600 rounded-xl mr-3">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <span class="font-semibold">Address:</span><br>
+                                PHUM2, SihanoukVille, Cambodia
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div
+                                class="w-10 h-10 flex items-center justify-center bg-green-100 text-green-600 rounded-xl mr-3">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <span class="font-semibold">Phone:</span><br>
+                                +855 96 6011 905
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <div
+                                class="w-10 h-10 flex items-center justify-center bg-yellow-100 text-yellow-600 rounded-xl mr-3">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <span class="font-semibold">Email:</span><br>
+                                vireakroth@gmail.com
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Right Section -->
+                <div class="relative rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                    <div class="aspect-[4/3]">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3921.351270885132!2d103.51499407480273!3d10.629795189510196!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3107e1b7afac750b%3A0xab2f286eb3d0e423!2sKamakor%20St%2C%20Preah%20Sihanouk!5e0!3m2!1sen!2skh!4v1761107208016!5m2!1sen!2skh"
+                            class="w-full h-full" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                    <div
+                        class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-gray-900/60 to-transparent p-4 text-white text-sm">
+                        <p class="font-medium">Find us on Google Maps</p>
                     </div>
                 </div>
+
             </div>
         </div>
-    </div>
+    </section>
+
 
 
     @include('home.footer')

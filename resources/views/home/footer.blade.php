@@ -14,9 +14,9 @@
             <div class="col-lg-4 col-md-6">
                 <h5>Quick Links</h5>
                 <ul class="footer-links">
-                    <li><a href="{{url('/')}}">Home</a></li>
-                    <li><a href="{{url('/shop')}}">Shop</a></li>
-                    <li><a href="{{url('/contact-us')}}">Contact Us</a></li>
+                    <li><a href="{{ url('/') }}">Home</a></li>
+                    <li><a href="{{ url('/shop') }}">Shop</a></li>
+                    <li><a href="{{ url('/contact-us') }}">Contact Us</a></li>
                 </ul>
             </div>
             <!-- Contact Information -->
@@ -26,8 +26,8 @@
                     <img src="{{ asset('pic/telegram.png') }}" alt="Telegram Icon" class="social-icon">
                     <img src="{{ asset('pic/tiktok.png') }}" alt="TikTok Icon" class="social-icon">
                 </div>
-                <p>Phone: +1 (555) 123-4567</p>
-                <p>Address: 123 Gaming Street, Game City, GC 10101</p>
+                <p>Phone: +855 96 6011 905</p>
+                <p>Address: Phum 123, Phnom Penh, Cambodia</p>
             </div>
         </div>
         <div class="text-center mt-4">

@@ -42,7 +42,7 @@
             <!-- Success Message -->
             @if (session('success'))
                 <div class="success-message show">
-                    <p>{{ session('success') }}</p>
+                    <p style="color: white;">{{ session('success') }}</p>
                     <button class="close-btn"
                         onclick="document.querySelector('.success-message').classList.remove('show')">×</button>
                 </div>
